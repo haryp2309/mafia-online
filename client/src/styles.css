@@ -502,8 +502,34 @@ button:disabled {
   background: #ffe2a3;
   font-size: 0.92rem;
 }
-.banner.relay .link {
-  margin-left: 0.4rem;
+.banner.relay .relay-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+.banner.relay .relay-toggle {
+  margin-left: auto;
+  white-space: nowrap;
+  font-size: 0.85rem;
+}
+.banner.relay .relay-details {
+  margin-top: 0.55rem;
+  padding-top: 0.55rem;
+  border-top: 2px dashed rgba(23, 18, 31, 0.25);
+  font-weight: 700;
+  font-size: 0.88rem;
+}
+.banner.relay .relay-details p {
+  margin: 0 0 0.4rem;
+}
+.banner.relay .relay-details ul {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+.banner.relay .relay-details li {
+  margin-bottom: 0.2rem;
 }
 .ghost-banner {
   background: #e9e3ff;
@@ -1579,4 +1605,10 @@ body:has(.is-night) {
   text-align: center;
   color: var(--text);
   font-weight: 900;
+}
+
+/* A player whose phone reaches the host through a relay. */
+.relay-badge {
+  font-size: 0.95rem;
+  line-height: 1;
 }

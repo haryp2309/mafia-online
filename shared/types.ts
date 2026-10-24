@@ -138,6 +138,8 @@ export interface PublicPlayer {
   roleId?: string;
   /** Only present when a death reveals just whether they were mafia. */
   isMafia?: boolean;
+  /** Their phone reaches the host through a relay instead of directly. */
+  relayed?: boolean;
 }
 
 export interface PublicState {

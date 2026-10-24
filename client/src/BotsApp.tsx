@@ -1,15 +1,21 @@
-import Peer, { type DataConnection } from 'peerjs';
+import Peer from 'peerjs';
 import { useEffect, useState } from 'react';
 import { normaliseRoomCode, PEER_PREFIX, type ClientMessage, type HostMessage } from '../../shared/protocol';
 import type { ClientState } from '../../shared/types';
 import { iceServers } from './net/ice';
+import { isValidRoomSecret } from './net/mqttCrypto';
+import { MqttClientConnection, type PeerConnectionLike } from './net/mqttTransport';
 
 /**
  * Test helper: /bots?room=ABCDE&except=Ann,Bob fills every other empty seat with a bot that
  * plays randomly (mafia and police bots follow their group's first member so groups agree).
+ * Add the QR link's #k=… to let bots use the encrypted relay, and &relay to force it.
  */
 const params = new URLSearchParams(window.location.search);
 const ROOM = normaliseRoomCode(params.get('room') ?? '');
+const hashKey = new URLSearchParams(window.location.hash.slice(1)).get('k');
+const SECRET = isValidRoomSecret(hashKey) ? hashKey : null;
+const FORCE_RELAY = params.has('relay') && SECRET !== null;
 const EXCEPT = new Set(
   (params.get('except') ?? '')
     .split(',')
@@ -24,8 +30,8 @@ interface BotInfo {
   status: string;
 }
 
-function startBot(playerId: string, name: string, report: (status: string) => void) {
-  let conn: DataConnection | null = null;
+function startBot(playerId: string, _name: string, report: (status: string) => void) {
+  let conn: PeerConnectionLike | null = null;
   let lastAction = '';
   let phase = '';
   const send = (msg: ClientMessage) => conn?.open && conn.send(msg);
@@ -75,12 +81,11 @@ function startBot(playerId: string, name: string, report: (status: string) => vo
     }
   };
 
-  // Like a real phone: keep the seat token and reconnect if the host reloads.
+  // Like a real phone: keep the seat token and reconnect if the host reloads, with MQTT fallback.
   let token: string | null = null;
   void iceServers().then((ice) => {
     const peer = new Peer({ config: { iceServers: ice } });
-    const connect = () => {
-      const c = peer.connect(PEER_PREFIX + ROOM, { reliable: true });
+    const wire = (c: PeerConnectionLike) => {
       conn = c;
       c.on('open', () => {
         report('connected');
@@ -92,14 +97,34 @@ function startBot(playerId: string, name: string, report: (status: string) => vo
         if (msg.t === 'token') token = msg.token;
       });
       c.on('close', () => {
+        if (conn !== c) return;
         report('reconnecting');
         setTimeout(connect, 2000);
       });
     };
+    const connectMqtt = () => {
+      if (conn?.open || !SECRET) return;
+      conn?.close();
+      wire(new MqttClientConnection(ROOM, SECRET));
+    };
+    const connect = () => {
+      if (conn?.open) return;
+      if (FORCE_RELAY) return connectMqtt();
+      conn?.close();
+      const c = peer.connect(PEER_PREFIX + ROOM, { reliable: true });
+      wire(c);
+      setTimeout(() => {
+        if (conn === c && !c.open) {
+          c.close();
+          connectMqtt();
+        }
+      }, 5000);
+    };
     peer.on('open', connect);
     peer.on('error', (e) => {
       report(`error: ${e.type}`);
-      if (e.type === 'peer-unavailable') setTimeout(connect, 3000);
+      if (SECRET) connectMqtt();
+      else setTimeout(connect, 3000);
     });
   });
 }
@@ -111,27 +136,44 @@ export function BotsApp() {
   useEffect(() => {
     if (ROOM.length !== 5) return setNote('Add ?room=ABCDE to the address.');
     const started = new Set<string>();
+    const onScoutData = (d: unknown) => {
+      const msg = d as HostMessage;
+      if (msg.t !== 'state') return;
+      const pub = msg.state.public;
+      if (pub.phase === 'SETUP') return setNote('The host is still in setup.');
+      setNote(`Room ${ROOM}: ${pub.phase}`);
+      for (const p of pub.players) {
+        if (p.claimed || EXCEPT.has(p.name.toLowerCase()) || started.has(p.id)) continue;
+        started.add(p.id);
+        setBots((b) => ({ ...b, [p.id]: { name: p.name, status: 'starting' } }));
+        startBot(p.id, p.name, (status) => setBots((b) => ({ ...b, [p.id]: { name: p.name, status } })));
+      }
+    };
+    const scoutMqtt = () => {
+      if (!SECRET) return setNote('Direct connection failed. Open this page with the QR link’s #k=… to use the relay.');
+      const mc = new MqttClientConnection(ROOM, SECRET);
+      mc.on('open', () => mc.send({ t: 'hello', build: __BUILD__, token: null } satisfies ClientMessage));
+      mc.on('data', onScoutData);
+    };
     void iceServers().then((ice) => {
       // A scout connection reads the seat list, then one bot connects per empty seat.
+      if (FORCE_RELAY) return scoutMqtt();
       const scout = new Peer({ config: { iceServers: ice } });
       scout.on('open', () => {
         const c = scout.connect(PEER_PREFIX + ROOM, { reliable: true });
         c.on('open', () => c.send({ t: 'hello', build: __BUILD__, token: null } satisfies ClientMessage));
-        c.on('data', (d) => {
-          const msg = d as HostMessage;
-          if (msg.t !== 'state') return;
-          const pub = msg.state.public;
-          if (pub.phase === 'SETUP') return setNote('The host is still in setup.');
-          setNote(`Room ${ROOM}: ${pub.phase}`);
-          for (const p of pub.players) {
-            if (p.claimed || EXCEPT.has(p.name.toLowerCase()) || started.has(p.id)) continue;
-            started.add(p.id);
-            setBots((b) => ({ ...b, [p.id]: { name: p.name, status: 'starting' } }));
-            startBot(p.id, p.name, (status) => setBots((b) => ({ ...b, [p.id]: { name: p.name, status } })));
+        c.on('data', onScoutData);
+        setTimeout(() => {
+          if (!c.open) {
+            c.close();
+            scoutMqtt();
           }
-        });
+        }, 5000);
       });
-      scout.on('error', (e) => setNote(`Scout error: ${e.type}`));
+      scout.on('error', (e) => {
+        setNote(`Scout fallback (${e.type})…`);
+        scoutMqtt();
+      });
     });
   }, []);
 

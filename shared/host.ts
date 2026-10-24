@@ -8,11 +8,14 @@ import { clientView } from './views';
 export interface Connection {
   id: string;
   send(msg: HostMessage): void;
+  /** Goes through a relay (TURN or the public MQTT fallback) rather than directly. */
+  relayed?: boolean;
 }
 
 interface ConnState {
   conn: Connection;
   playerId: string | null;
+  relayed: boolean;
 }
 
 /**
@@ -38,7 +41,7 @@ export class HostController {
 
   /** The host screen's own view: public state only, no player secrets. */
   view(): ClientState {
-    return clientView(this.game, null, this.isConnected, this.build);
+    return clientView(this.game, null, this.isConnected, this.build, this.isRelayed);
   }
 
   subscribe(listener: () => void): () => void {
@@ -77,8 +80,16 @@ export class HostController {
   }
 
   connect(conn: Connection) {
-    this.conns.set(conn.id, { conn, playerId: null });
+    this.conns.set(conn.id, { conn, playerId: null, relayed: !!conn.relayed });
     this.sendState(this.conns.get(conn.id)!);
+  }
+
+  /** Marks a connection as relayed once that's known (TURN is only detected after it opens). */
+  setRelayed(connId: string, relayed: boolean) {
+    const c = this.conns.get(connId);
+    if (!c || c.relayed === relayed) return;
+    c.relayed = relayed;
+    this.changed();
   }
 
   disconnect(connId: string) {
@@ -151,8 +162,23 @@ export class HostController {
     return false;
   };
 
+  /** A player counts as relayed only if none of their connections is direct. */
+  private isRelayed = (playerId: string) => {
+    let any = false;
+    for (const c of this.conns.values()) {
+      if (c.playerId !== playerId) continue;
+      if (!c.relayed) return false;
+      any = true;
+    }
+    return any;
+  };
+
   private sendState(c: ConnState) {
-    c.conn.send({ t: 'state', state: clientView(this.game, c.playerId, this.isConnected, this.build), build: this.build });
+    c.conn.send({
+      t: 'state',
+      state: clientView(this.game, c.playerId, this.isConnected, this.build, this.isRelayed),
+      build: this.build,
+    });
   }
 
   /** After any change: save, update every phone and the host screen, re-arm the timer. */

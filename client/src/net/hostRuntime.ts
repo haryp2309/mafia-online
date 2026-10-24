@@ -1,10 +1,12 @@
-import Peer, { type DataConnection } from 'peerjs';
+import Peer from 'peerjs';
 import { useSyncExternalStore } from 'react';
 import { GameError } from '../../../shared/game';
 import { HostController } from '../../../shared/host';
 import { newRoomCode, PEER_PREFIX, type HostEvent } from '../../../shared/protocol';
 import type { ClientState, Game } from '../../../shared/types';
-import { iceServers } from './ice';
+import { iceServers, usesRelay } from './ice';
+import { isValidRoomSecret, newRoomSecret } from './mqttCrypto';
+import { MqttHostServer, type PeerConnectionLike } from './mqttTransport';
 import { setSendHandler } from './send';
 
 /**
@@ -17,17 +19,24 @@ export type HostStatus = 'starting' | 'online' | 'reconnecting' | 'taken' | 'off
 
 interface Stored {
   roomCode: string;
+  /** Random secret for the encrypted relay; travels to phones only inside the QR link. */
+  roomSecret: string;
   game: Game | null;
 }
 
 function load(): Stored {
   try {
     const raw = localStorage.getItem(STORE_KEY);
-    if (raw) return JSON.parse(raw) as Stored;
+    if (raw) {
+      const stored = JSON.parse(raw) as Stored;
+      // Saves from before the room secret existed get one now.
+      if (!isValidRoomSecret(stored.roomSecret)) stored.roomSecret = newRoomSecret();
+      return stored;
+    }
   } catch {
     // Unreadable or blocked storage: start fresh.
   }
-  return { roomCode: newRoomCode(), game: null };
+  return { roomCode: newRoomCode(), roomSecret: newRoomSecret(), game: null };
 }
 
 let saveTimer: ReturnType<typeof setTimeout> | null = null;
@@ -46,6 +55,7 @@ interface Snapshot {
   state: ClientState;
   status: HostStatus;
   roomCode: string;
+  roomSecret: string;
   error: string | null;
   /** A phone runs a newer version of the app than this host page. */
   newerVersion: boolean;
@@ -55,6 +65,7 @@ class HostRuntime {
   private stored = load();
   readonly controller: HostController;
   private peer: Peer | null = null;
+  private mqtt: MqttHostServer | null = null;
   private listeners = new Set<() => void>();
   private snapshot: Snapshot;
   private retry: ReturnType<typeof setTimeout> | null = null;
@@ -70,10 +81,28 @@ class HostRuntime {
     );
     this.stored.game = this.controller.game;
     persist(this.stored);
-    this.snapshot = { state: this.controller.view(), status: 'starting', roomCode: this.stored.roomCode, error: null, newerVersion: false };
+    this.snapshot = {
+      state: this.controller.view(),
+      status: 'starting',
+      roomCode: this.stored.roomCode,
+      roomSecret: this.stored.roomSecret,
+      error: null,
+      newerVersion: false,
+    };
     this.controller.subscribe(() => this.update({ state: this.controller.view() }));
     setSendHandler((event, args) => this.act(event as HostEvent, args));
-    window.addEventListener('pagehide', () => this.peer?.destroy());
+    window.addEventListener('pagehide', () => {
+      this.peer?.destroy();
+      this.mqtt?.destroy();
+    });
+    this.mqtt = new MqttHostServer(this.stored.roomCode, this.stored.roomSecret, {
+      onConnection: (conn) => this.accept(conn),
+      onStatusChange: (online) => {
+        if (online && (this.snapshot.status === 'starting' || this.snapshot.status === 'offline')) {
+          this.update({ status: 'online' });
+        }
+      },
+    });
     void this.open();
   }
 
@@ -117,17 +146,28 @@ class HostRuntime {
     peer.on('error', (err) => {
       if (peer !== this.peer) return;
       // The room id can stay reserved for a few seconds after a reload, or another tab holds it.
-      this.update({ status: err.type === 'unavailable-id' ? 'taken' : 'offline' });
+      if (err.type === 'unavailable-id') {
+        this.update({ status: 'taken' });
+      } else if (!this.mqtt?.isOnline) {
+        this.update({ status: 'offline' });
+      }
       if (['unavailable-id', 'network', 'server-error', 'socket-error', 'socket-closed'].includes(err.type)) {
         this.retry = setTimeout(() => void this.open(), 4000);
       }
     });
   }
 
-  private accept(conn: DataConnection) {
+  private accept(conn: PeerConnectionLike) {
     const id = conn.connectionId;
     conn.on('open', () => {
-      this.controller.connect({ id, send: (msg) => conn.open && conn.send(msg) });
+      this.controller.connect({ id, send: (msg) => conn.open && conn.send(msg), relayed: !!conn.relayed });
+      // A direct WebRTC link may still be going through a TURN relay; check once it settles.
+      const pc = (conn as { peerConnection?: RTCPeerConnection }).peerConnection;
+      if (!conn.relayed && pc) {
+        setTimeout(async () => {
+          if (conn.open && (await usesRelay(pc))) this.controller.setRelayed(id, true);
+        }, 1500);
+      }
     });
     conn.on('data', (data) => {
       const msg = data as { t?: string; build?: string };
@@ -142,8 +182,10 @@ class HostRuntime {
   /** Start over in a brand-new room (new code). The current game setup is kept. */
   newRoom() {
     this.stored.roomCode = newRoomCode();
+    this.stored.roomSecret = newRoomSecret();
     persist(this.stored);
-    this.update({ roomCode: this.stored.roomCode, status: 'starting' });
+    this.update({ roomCode: this.stored.roomCode, roomSecret: this.stored.roomSecret, status: 'starting' });
+    this.mqtt?.setRoom(this.stored.roomCode, this.stored.roomSecret);
     void this.open();
   }
 }

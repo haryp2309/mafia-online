@@ -1,6 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
-import type { ClientState, PrivateState, PublicState } from '../../../shared/types';
-import { usePlayer, type PlayerStatus } from '../net/playerRuntime';
+import { useEffect, useRef, useState } from "react";
+import type {
+  ClientState,
+  PrivateState,
+  PublicState,
+} from "../../../shared/types";
+import { usePlayer, type PlayerStatus } from "../net/playerRuntime";
 import {
   AutoAdvanceNote,
   Avatar,
@@ -15,23 +19,37 @@ import {
   TEAM_LABEL,
   Toast,
   VoteResultView,
-} from '../ui';
-import { ThemePicker } from '../ThemePicker';
-import { send, useWakeLock } from '../useGame';
-import { NightScreen } from './Night';
+} from "../ui";
+import { ThemePicker } from "../ThemePicker";
+import { send, useWakeLock } from "../useGame";
+import { NightScreen } from "./Night";
 
 export function PlayerApp({ room }: { room: string }) {
-  const { state, status, error, relayed, clearError, leave } = usePlayer(room);
+  const {
+    state,
+    status,
+    error,
+    relayed,
+    relayMode,
+    needsQr,
+    forcedRelay,
+    clearError,
+    leave,
+  } = usePlayer(room);
   useWakeLock();
   usePhaseBuzz(state?.public.phase);
-  const night = state?.public.phase === 'NIGHT';
+  const night = state?.public.phase === "NIGHT";
 
   return (
-    <div className={`app phone ${night ? 'is-night' : ''}`}>
+    <div className={`app phone ${night ? "is-night" : ""}`}>
       {night && <NightSky />}
       <StatusBanner status={status} hasState={!!state} />
-      {relayed && <RelayWarning />}
-      {!state ? (
+      {relayed && status === "connected" && (
+        <RelayWarning mode={relayMode} forced={forcedRelay} />
+      )}
+      {needsQr && status !== "connected" ? (
+        <ScanQr room={room} forced={forcedRelay} />
+      ) : !state ? (
         <Knocking status={status} room={room} />
       ) : state.you ? (
         <Playing state={state} leave={leave} />
@@ -47,9 +65,11 @@ function Knocking({ status, room }: { status: PlayerStatus; room: string }) {
   return (
     <div className="center">
       <div className="big-emoji wobble">🚪</div>
-      <h1 className="title">{status === 'host-offline' ? 'Knock knock…' : 'Finding the hideout…'}</h1>
+      <h1 className="title">
+        {status === "host-offline" ? "Knock knock…" : "Finding the hideout…"}
+      </h1>
       <p className="lead">
-        {status === 'host-offline'
+        {status === "host-offline"
           ? `Nobody's home in room ${room} yet. Is the host screen open? We'll keep knocking.`
           : `Connecting to room ${room}…`}
       </p>
@@ -57,34 +77,125 @@ function Knocking({ status, room }: { status: PlayerStatus; room: string }) {
   );
 }
 
-function StatusBanner({ status, hasState }: { status: PlayerStatus; hasState: boolean }) {
-  if (!hasState || status === 'connected') return null;
+/**
+ * The phone can't reach the host directly and has no relay key, because the code was typed
+ * instead of scanned. The key only travels inside the QR code, so ask for that.
+ */
+function ScanQr({ room, forced }: { room: string; forced: boolean }) {
+  return (
+    <div className="center">
+      <div className="big-emoji wobble">📷</div>
+      <h1 className="title">Scan the QR code to join</h1>
+      <p className="lead">
+        {forced
+          ? "Relay mode needs the secret key that only the QR code carries."
+          : `Your network won't let this phone reach the host of room ${room} directly.`}
+      </p>
+      <p>
+        Point your camera at the <b>QR code on the host screen</b> instead of
+        typing the room code. The QR code carries a secret key, so the game can
+        switch to an encrypted backup connection that works on almost any
+        network.
+      </p>
+      <p className="small">
+        Still trying a direct connection in the background…
+      </p>
+    </div>
+  );
+}
+
+function StatusBanner({
+  status,
+  hasState,
+}: {
+  status: PlayerStatus;
+  hasState: boolean;
+}) {
+  if (!hasState || status === "connected") return null;
   return <div className="banner warn">📡 Lost the host. Reconnecting…</div>;
 }
 
-/** Shown when this phone can only reach the host through a third-party relay server. */
-function RelayWarning() {
-  const [hidden, setHidden] = useState(false);
-  if (hidden) return null;
+/**
+ * Shown while this phone reaches the host through a third-party relay. Says so plainly, and
+ * how to get a direct connection back.
+ */
+function RelayWarning({
+  mode,
+  forced,
+}: {
+  mode: "turn" | "mqtt" | null;
+  forced: boolean;
+}) {
+  const [open, setOpen] = useState(false);
+  const via =
+    mode === "turn"
+      ? "a third-party relay (TURN) server"
+      : "free third-party public servers (an MQTT relay)";
   return (
-    <div className="banner relay" role="status">
-      <b>🛰️ Connected through a third-party relay.</b> Your network won't allow a direct connection, so game messages go
-      through a free public relay service (they stay encrypted). For a faster, more private game, join the same Wi‑Fi as
-      the host.
-      <button className="link" onClick={() => setHidden(true)}>
-        Got it
-      </button>
+    <div className={`banner relay ${open ? "expanded" : ""}`} role="status">
+      <div className="relay-summary">
+        <span>
+          🛰️{" "}
+          <b>
+            {forced
+              ? "Relay mode is on."
+              : "Connected through a third-party service."}
+          </b>{" "}
+          {forced
+            ? `Game messages go through ${via} because the link asked for it.`
+            : `Your network blocks a direct connection, so game messages go through ${via}.`}{" "}
+          They stay end-to-end encrypted. Expect a little delay.
+        </span>
+        <button
+          type="button"
+          className="link relay-toggle"
+          aria-expanded={open}
+          onClick={() => setOpen((v) => !v)}
+        >
+          {open ? "Hide ▲" : "How to fix ▼"}
+        </button>
+      </div>
+      {open && (
+        <div className="relay-details">
+          <p>For a faster, private, direct connection:</p>
+          <ul>
+            {forced && (
+              <li>
+                <b>Open the link without</b> <code>?relay</code>.
+              </li>
+            )}
+            <li>
+              <b>Join the same Wi‑Fi</b> as the host screen (instead of mobile
+              data).
+            </li>
+            <li>
+              <b>Turn off VPNs</b>, iCloud Private Relay, or strict firewall and
+              ad-blocker apps.
+            </li>
+            <li>
+              <b>Avoid guest, school or office Wi‑Fi</b> that stops devices
+              talking to each other.
+            </li>
+          </ul>
+          <p className="small">
+            The game switches back to a direct connection by itself as soon as
+            one works.
+          </p>
+        </div>
+      )}
     </div>
   );
 }
 
 function Claim({ pub }: { pub: PublicState }) {
-  if (pub.phase === 'SETUP') {
+  if (pub.phase === "SETUP") {
     return (
       <div className="center">
         <div className="big-emoji wobble">🕶️</div>
         <h1 className="title">Almost there…</h1>
-        <p className="lead">The host is still setting up the game. Hang tight!</p>
+        <p className="lead">
+          The host is still setting up the game. Hang tight!
+        </p>
       </div>
     );
   }
@@ -94,7 +205,12 @@ function Claim({ pub }: { pub: PublicState }) {
       <p className="lead">Tap your own name. No peeking at others!</p>
       <div className="name-grid">
         {pub.players.map((p) => (
-          <button key={p.id} className="name-card" disabled={p.claimed} onClick={() => send('player:claim', p.id)}>
+          <button
+            key={p.id}
+            className="name-card"
+            disabled={p.claimed}
+            onClick={() => send("player:claim", p.id)}
+          >
             <Avatar name={p.name} size="lg" />
             <span>{p.name}</span>
             {p.claimed && <span className="taken">taken</span>}
@@ -121,17 +237,26 @@ function Playing({ state, leave }: { state: ClientState; leave: () => void }) {
             <div className="me-name">{you.name}</div>
           </div>
         </div>
-        {me && pub.phase !== 'ROLE_REVEAL' && <HoldToReveal me={me} compact />}
+        {me && pub.phase !== "ROLE_REVEAL" && <HoldToReveal me={me} compact />}
       </header>
 
-      {!alive && pub.phase !== 'GAME_OVER' && <div className="banner ghost-banner">👻 You're dead. Watch quietly, no hints!</div>}
+      {!alive && pub.phase !== "GAME_OVER" && (
+        <div className="banner ghost-banner">
+          👻 You're dead. Watch quietly, no hints!
+        </div>
+      )}
 
       <main className="phone-main">
         <PhaseView pub={pub} me={me} alive={alive} />
       </main>
 
       <footer className="phone-footer">
-        <button className="link small" onClick={() => confirm(`Stop playing as ${you.name} on this phone?`) && leave()}>
+        <button
+          className="link small"
+          onClick={() =>
+            confirm(`Stop playing as ${you.name} on this phone?`) && leave()
+          }
+        >
           Not {you.name}?
         </button>
         <ThemePicker compact />
@@ -140,48 +265,68 @@ function Playing({ state, leave }: { state: ClientState; leave: () => void }) {
   );
 }
 
-function PhaseView({ pub, me, alive }: { pub: PublicState; me: PrivateState | null; alive: boolean }) {
+function PhaseView({
+  pub,
+  me,
+  alive,
+}: {
+  pub: PublicState;
+  me: PrivateState | null;
+  alive: boolean;
+}) {
   switch (pub.phase) {
-    case 'CLAIMING':
+    case "CLAIMING":
       return (
         <div className="center">
           <div className="big-emoji bounce">🎟️</div>
           <h2 className="title">You're in!</h2>
-          <p className="lead">Waiting for everyone to join. Roles are dealt when the host starts the game.</p>
+          <p className="lead">
+            Waiting for everyone to join. Roles are dealt when the host starts
+            the game.
+          </p>
         </div>
       );
-    case 'ROLE_REVEAL':
+    case "ROLE_REVEAL":
       return me ? <RoleReveal me={me} /> : null;
-    case 'NIGHT':
+    case "NIGHT":
       if (me?.night) return <NightScreen pub={pub} me={me} night={me.night} />;
       return (
         <div className="center">
           <div className="big-emoji">🌙</div>
-          <p className="lead">{alive ? 'Waiting for the night to end…' : 'The night goes on without you…'}</p>
+          <p className="lead">
+            {alive
+              ? "Waiting for the night to end…"
+              : "The night goes on without you…"}
+          </p>
         </div>
       );
-    case 'MORNING':
+    case "MORNING":
       return (
         <>
           <MorningNews pub={pub} />
-          <AutoAdvanceNote at={pub.autoAdvanceAt} label={pub.winner ? 'The winner is revealed' : 'The day begins'} />
+          <AutoAdvanceNote
+            at={pub.autoAdvanceAt}
+            label={pub.winner ? "The winner is revealed" : "The day begins"}
+          />
           {me && <LatestInvestigation pub={pub} me={me} />}
           <DeadRoles pub={pub} me={me} />
         </>
       );
-    case 'DAY_DISCUSSION':
+    case "DAY_DISCUSSION":
       return (
         <>
           <MorningNews pub={pub} />
           <Countdown endsAt={pub.discussionEndsAt} />
           <p className="lead center-text">🗣️ Talk it out. Who is the mafia?</p>
-          {alive && me && pub.ready && <ReadyToVote me={me} ready={pub.ready} />}
+          {alive && me && pub.ready && (
+            <ReadyToVote me={me} ready={pub.ready} />
+          )}
           <DayStats pub={pub} />
           {me && <Notebook pub={pub} me={me} />}
           <DeadRoles pub={pub} me={me} />
         </>
       );
-    case 'DAY_VOTE':
+    case "DAY_VOTE":
       return alive ? (
         <Vote pub={pub} me={me} />
       ) : (
@@ -190,14 +335,17 @@ function PhaseView({ pub, me, alive }: { pub: PublicState; me: PrivateState | nu
           <p className="lead">The living are voting…</p>
         </div>
       );
-    case 'VOTE_RESULT':
+    case "VOTE_RESULT":
       return (
         <>
           <VoteResultView pub={pub} />
-          <AutoAdvanceNote at={pub.autoAdvanceAt} label={pub.winner ? 'The winner is revealed' : 'Night falls'} />
+          <AutoAdvanceNote
+            at={pub.autoAdvanceAt}
+            label={pub.winner ? "The winner is revealed" : "Night falls"}
+          />
         </>
       );
-    case 'GAME_OVER':
+    case "GAME_OVER":
       return <GameOverBanner pub={pub} />;
     default:
       return null;
@@ -207,12 +355,16 @@ function PhaseView({ pub, me, alive }: { pub: PublicState; me: PrivateState | nu
 function RoleReveal({ me }: { me: PrivateState }) {
   return (
     <div className="reveal">
-      <p className="lead center-text">🤫 Make sure nobody can see your screen.</p>
+      <p className="lead center-text">
+        🤫 Make sure nobody can see your screen.
+      </p>
       <HoldToReveal me={me} />
       {me.ackedRole ? (
-        <p className="auto-note">Waiting for everyone else… night falls by itself.</p>
+        <p className="auto-note">
+          Waiting for everyone else… night falls by itself.
+        </p>
       ) : (
-        <button className="btn big" onClick={() => send('player:ackRole')}>
+        <button className="btn big" onClick={() => send("player:ackRole")}>
           Got it!
         </button>
       )}
@@ -221,7 +373,13 @@ function RoleReveal({ me }: { me: PrivateState }) {
 }
 
 /** The role is only on screen while the finger is down, so a glance over the shoulder shows nothing. */
-function HoldToReveal({ me, compact }: { me: PrivateState; compact?: boolean }) {
+function HoldToReveal({
+  me,
+  compact,
+}: {
+  me: PrivateState;
+  compact?: boolean;
+}) {
   const [shown, setShown] = useState(false);
   const show = () => setShown(true);
   const hide = () => setShown(false);
@@ -265,7 +423,15 @@ function HoldToReveal({ me, compact }: { me: PrivateState; compact?: boolean }) 
 function RoleCard({ me }: { me: PrivateState }) {
   return (
     <div className={`role-card team-${me.role.team}`}>
-      <Stamp color={me.role.team === 'mafia' ? 'red' : me.role.team === 'town' ? 'teal' : 'purple'}>
+      <Stamp
+        color={
+          me.role.team === "mafia"
+            ? "red"
+            : me.role.team === "town"
+              ? "teal"
+              : "purple"
+        }
+      >
         {TEAM_LABEL[me.role.team]}
       </Stamp>
       <div className="role-emoji">{roleEmoji(me.role)}</div>
@@ -287,16 +453,26 @@ function RoleCard({ me }: { me: PrivateState }) {
   );
 }
 
-function LatestInvestigation({ pub, me }: { pub: PublicState; me: PrivateState }) {
+function LatestInvestigation({
+  pub,
+  me,
+}: {
+  pub: PublicState;
+  me: PrivateState;
+}) {
   const latest = me.investigations[me.investigations.length - 1];
   if (!latest || latest.night !== pub.morning?.night) return null;
   return (
-    <div className={`panel case-file ${latest.isMafia ? 'is-mafia' : 'not-mafia'}`}>
+    <div
+      className={`panel case-file ${latest.isMafia ? "is-mafia" : "not-mafia"}`}
+    >
       <div className="kicker">🕵️ Case file (secret)</div>
       <h2 className="headline">
         <Avatar name={playerName(pub, latest.targetId)} />
         <span>{playerName(pub, latest.targetId)} is</span>
-        <Stamp color={latest.isMafia ? 'red' : 'teal'}>{latest.isMafia ? 'MAFIA' : 'NOT MAFIA'}</Stamp>
+        <Stamp color={latest.isMafia ? "red" : "teal"}>
+          {latest.isMafia ? "MAFIA" : "NOT MAFIA"}
+        </Stamp>
       </h2>
     </div>
   );
@@ -312,7 +488,9 @@ export function Notebook({ pub, me }: { pub: PublicState; me: PrivateState }) {
           <span>
             Night {inv.night}: <b>{playerName(pub, inv.targetId)}</b>
           </span>
-          <b className={inv.isMafia ? 'bad' : 'good'}>{inv.isMafia ? 'Mafia' : 'Not mafia'}</b>
+          <b className={inv.isMafia ? "bad" : "good"}>
+            {inv.isMafia ? "Mafia" : "Not mafia"}
+          </b>
         </div>
       ))}
     </div>
@@ -326,7 +504,7 @@ function DeadRoles({ pub, me }: { pub: PublicState; me: PrivateState | null }) {
       <div className="kicker">👻 Everyone's role (only the dead see this)</div>
       {pub.players.map((p) => (
         <div key={p.id} className="row spread notebook-row">
-          <span className={p.alive ? '' : 'muted'}>{p.name}</span>
+          <span className={p.alive ? "" : "muted"}>{p.name}</span>
           <span>{me.allRoles![p.id]}</span>
         </div>
       ))}
@@ -334,19 +512,25 @@ function DeadRoles({ pub, me }: { pub: PublicState; me: PrivateState | null }) {
   );
 }
 
-function ReadyToVote({ me, ready }: { me: PrivateState; ready: { done: number; total: number } }) {
+function ReadyToVote({
+  me,
+  ready,
+}: {
+  me: PrivateState;
+  ready: { done: number; total: number };
+}) {
   return (
     <div className="ready-box">
       <button
-        className={`btn big ${me.readyToVote ? 'teal' : ''}`}
-        onClick={() => send('player:readyToVote', !me.readyToVote)}
+        className={`btn big ${me.readyToVote ? "teal" : ""}`}
+        onClick={() => send("player:readyToVote", !me.readyToVote)}
       >
-        {me.readyToVote ? '✔ Ready! (tap to undo)' : '✋ Ready to vote'}
+        {me.readyToVote ? "✔ Ready! (tap to undo)" : "✋ Ready to vote"}
       </button>
       <p className="small center-text">
         <b>
           {ready.done}/{ready.total}
-        </b>{' '}
+        </b>{" "}
         ready. The vote starts when everyone is.
       </p>
     </div>
@@ -359,21 +543,31 @@ function Vote({ pub, me }: { pub: PublicState; me: PrivateState | null }) {
   const myId = me?.playerId;
   return (
     <div className="vote">
-      <h2 className="title">{vote.isRevote ? 'Revote!' : 'Who should leave?'}</h2>
+      <h2 className="title">
+        {vote.isRevote ? "Revote!" : "Who should leave?"}
+      </h2>
       <p className="small center-text">
-        Change your mind any time until everyone has voted. <b>{vote.votedCount}</b>/{vote.voterCount} voted.
+        Change your mind any time until everyone has voted.{" "}
+        <b>{vote.votedCount}</b>/{vote.voterCount} voted.
       </p>
       <div className="target-list">
         {vote.candidates
           .filter((id) => id !== myId)
           .map((id) => (
-            <button key={id} className={`target ${myVote === id ? 'selected' : ''}`} onClick={() => send('player:vote', id)}>
+            <button
+              key={id}
+              className={`target ${myVote === id ? "selected" : ""}`}
+              onClick={() => send("player:vote", id)}
+            >
               <Avatar name={playerName(pub, id)} />
               <span className="grow">{playerName(pub, id)}</span>
               {myVote === id && <span className="pick-mark">👉</span>}
             </button>
           ))}
-        <button className={`target skip ${myVote === 'skip' ? 'selected' : ''}`} onClick={() => send('player:vote', 'skip')}>
+        <button
+          className={`target skip ${myVote === "skip" ? "selected" : ""}`}
+          onClick={() => send("player:vote", "skip")}
+        >
           <span className="avatar avatar-md skip-avatar">🤷</span>
           <span className="grow">Skip: vote for nobody</span>
         </button>
@@ -385,8 +579,10 @@ function Vote({ pub, me }: { pub: PublicState; me: PrivateState | null }) {
 function usePhaseBuzz(phase: string | undefined) {
   const prev = useRef(phase);
   useEffect(() => {
-    const canBuzz = 'vibrate' in navigator && navigator.userActivation?.hasBeenActive;
-    if (prev.current && phase && prev.current !== phase && canBuzz) navigator.vibrate(200);
+    const canBuzz =
+      "vibrate" in navigator && navigator.userActivation?.hasBeenActive;
+    if (prev.current && phase && prev.current !== phase && canBuzz)
+      navigator.vibrate(200);
     prev.current = phase;
   }, [phase]);
 }

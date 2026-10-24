@@ -8,6 +8,8 @@ export const routes = {
   home: BASE,
   host: `${BASE}?host`,
   join: (room: string) => `${BASE}?room=${room}`,
+  /** The QR link: the relay secret rides in the #fragment, which is never sent to any server. */
+  joinWithKey: (room: string, secret: string) => `${BASE}?room=${room}#k=${secret}`,
   bots: (room: string) => `${BASE}?bots&room=${room}`,
   nerd: `${BASE}?nerd`,
 };

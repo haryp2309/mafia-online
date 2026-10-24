@@ -18,7 +18,12 @@ import {
  * Everything any device may see. Roles appear only once they are public:
  * dead players when roles are revealed on death, and everyone at game over.
  */
-export function publicView(game: Game, connected: (id: string) => boolean, build = ''): PublicState {
+export function publicView(
+  game: Game,
+  connected: (id: string) => boolean,
+  build = '',
+  relayed: (id: string) => boolean = () => false,
+): PublicState {
   const over = game.phase === 'GAME_OVER';
   const inGame = !['SETUP', 'CLAIMING'].includes(game.phase);
   const alive = game.players.filter((p) => p.alive);
@@ -34,6 +39,7 @@ export function publicView(game: Game, connected: (id: string) => boolean, build
         alive: p.alive,
         claimed: !!p.token,
         connected: connected(p.id),
+        ...(relayed(p.id) ? { relayed: true } : {}),
         ...(reveal === 'role' && role ? { roleId: role.id } : {}),
         ...(reveal === 'team' && role ? { isMafia: role.team === 'mafia' } : {}),
       };
@@ -133,10 +139,11 @@ export function clientView(
   playerId: string | null,
   connected: (id: string) => boolean,
   build = '',
+  relayed?: (id: string) => boolean,
 ): ClientState {
   const you = game.players.find((p) => p.id === playerId);
   return {
-    public: publicView(game, connected, build),
+    public: publicView(game, connected, build, relayed),
     you: you ? { id: you.id, name: you.name } : null,
     me: you ? privateView(game, you.id) : null,
   };
