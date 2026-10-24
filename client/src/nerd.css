@@ -1,0 +1,282 @@
+/* "How it's built" page. Everything is scoped under .nerd and uses theme tokens only. */
+
+.nerd {
+  max-width: 760px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+.nerd a:not(.btn) {
+  color: var(--text);
+  text-decoration: underline;
+}
+
+.nerd code {
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 0.88em;
+  font-weight: 600;
+  background: var(--surface-strong);
+  color: var(--text);
+  border: 1px solid var(--text-muted);
+  border-radius: 6px;
+  padding: 0 0.3em;
+  overflow-wrap: anywhere;
+}
+
+.nerd .nerd-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.nerd .nerd-top {
+  margin-bottom: 1rem;
+}
+
+/* ---------- hero ---------- */
+
+.nerd .nerd-hero .title {
+  margin: 0 0 0.5rem;
+}
+.nerd .nerd-hero .lead {
+  margin: 0 0 1rem;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.nerd .nerd-diagram {
+  display: block;
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+  margin: 0 auto;
+  color: var(--text);
+}
+.nerd .nerd-diagram text {
+  fill: currentColor;
+  font-family: var(--font-body);
+  font-size: 11.5px;
+  font-weight: 700;
+}
+.nerd .nerd-diagram text.head {
+  font-size: 13px;
+  font-weight: 900;
+}
+.nerd .nerd-box rect {
+  fill: var(--surface-strong);
+  stroke: currentColor;
+  stroke-width: 2;
+}
+.nerd .nerd-box.strong rect {
+  stroke-width: 3.5;
+}
+.nerd .nerd-box.dashed rect {
+  stroke-dasharray: 6 4;
+}
+.nerd .wire line {
+  stroke: currentColor;
+  fill: none;
+}
+.nerd .wire.solid line {
+  stroke-width: 4;
+}
+.nerd .wire.dotted line {
+  stroke-width: 2;
+  stroke-dasharray: 2 5;
+  stroke-linecap: round;
+}
+.nerd .wire.dashed line {
+  stroke-width: 2.5;
+  stroke-dasharray: 7 5;
+}
+.nerd .nerd-svg-note {
+  font-style: italic;
+}
+
+.nerd .nerd-legend {
+  list-style: none;
+  padding: 0;
+  margin: 0.75rem 0 0;
+  display: grid;
+  gap: 0.3rem;
+}
+.nerd .nerd-legend li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.nerd .nerd-line {
+  flex: none;
+  width: 2.2rem;
+  border-top: 3px solid var(--text);
+}
+.nerd .nerd-line.solid {
+  border-top-width: 4px;
+}
+.nerd .nerd-line.dotted {
+  border-top-style: dotted;
+}
+.nerd .nerd-line.dashed {
+  border-top-style: dashed;
+}
+
+/* ---------- collapsible sections ---------- */
+
+.nerd .nerd-section {
+  padding: 0;
+}
+.nerd .nerd-section > summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 0.9rem 1.1rem;
+  font-family: var(--font-comic);
+  font-weight: 400;
+  font-size: 1.45rem;
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.nerd .nerd-section > summary::-webkit-details-marker {
+  display: none;
+}
+.nerd .nerd-section > summary::after {
+  content: '+';
+  margin-left: auto;
+  font-family: var(--font-body);
+  font-weight: 900;
+  font-size: 1.4rem;
+  line-height: 1;
+}
+.nerd .nerd-section[open] > summary::after {
+  content: '−';
+}
+.nerd .nerd-section > summary:focus-visible {
+  outline: 3px solid var(--text);
+  outline-offset: -6px;
+  border-radius: var(--radius);
+}
+.nerd .nerd-body {
+  padding: 0 1.1rem 1rem;
+}
+.nerd .nerd-body ul,
+.nerd .nerd-body ol {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+.nerd .nerd-body li + li {
+  margin-top: 0.5rem;
+}
+
+.nerd .nerd-phases {
+  display: inline;
+}
+.nerd .nerd-phases code {
+  display: inline-block;
+  margin: 0.1rem 0.15rem;
+}
+
+.nerd .nerd-steps li::marker {
+  font-weight: 900;
+}
+
+.nerd .nerd-code {
+  margin: 0.9rem 0 0.6rem;
+  padding: 0.8rem;
+  overflow-x: auto;
+  background: var(--surface-strong);
+  color: var(--text);
+  border: 2px solid var(--text);
+  border-radius: 10px;
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+.nerd .nerd-code code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  white-space: pre;
+  overflow-wrap: normal;
+}
+
+/* ---------- stack ---------- */
+
+.nerd .nerd-chips {
+  margin: 0 0 1rem;
+}
+.nerd .nerd-chips .tag {
+  white-space: normal;
+}
+.nerd .nerd-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.nerd .nerd-table caption {
+  text-align: left;
+  padding-bottom: 0.3rem;
+}
+.nerd .nerd-table th,
+.nerd .nerd-table td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.45rem 0.4rem 0.45rem 0;
+  border-top: 1px solid var(--text-muted);
+}
+.nerd .nerd-table th {
+  font-weight: 900;
+  width: 42%;
+}
+
+/* ---------- device checks ---------- */
+
+.nerd .nerd-checks {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.nerd .nerd-checks li {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+}
+.nerd .nerd-checks li + li {
+  margin-top: 0.6rem;
+}
+.nerd .nerd-mark {
+  flex: none;
+  font-size: 1.15rem;
+  line-height: 1.3;
+}
+.nerd .nerd-detail {
+  display: block;
+}
+
+/* ---------- footer ---------- */
+
+.nerd .nerd-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 1.5rem 0 1rem;
+}
+.nerd .nerd-footer .btn {
+  text-decoration: none;
+}
+
+@media (min-width: 640px) {
+  .nerd .nerd-hero {
+    padding: 1.4rem 1.6rem;
+  }
+  .nerd .nerd-checks {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem 1.2rem;
+  }
+  .nerd .nerd-checks li + li {
+    margin-top: 0;
+  }
+}

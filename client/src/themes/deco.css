@@ -1,0 +1,1197 @@
+/* fonts: Limelight:wght@400 | Josefin+Sans:wght@400;600;700 | Playfair+Display:ital,wght@0,400;0,700;1,400;1,700 */
+
+/* ============================================================
+   THEME "deco": Art Deco Speakeasy
+   Onyx, deep emerald and oxblood with polished gold and ivory by day;
+   midnight navy, brass and a stepped skyline by night.
+   Every rule is scoped to :root[data-theme='deco'].
+
+   Display font (Limelight) is used only for large type (>= ~1.6rem):
+   logo, titles, headlines, role names, room code, countdown, bursts.
+   Everything small uses Josefin Sans; the narrator uses Playfair italic.
+
+   WCAG contrast (relative-luminance formula, (L1+0.05)/(L2+0.05)):
+   DAY
+     ivory #f3ead3 on onyx #0c0b09 ............................ 16.41
+     ivory #f3ead3 on surface #10201b ......................... 14.08
+     ivory #f3ead3 on surface-strong #172c25 .................. 12.31
+     muted #c9bc9a on surface #10201b .......................... 8.95
+     muted #c9bc9a on surface-strong #172c25 ................... 7.83
+     muted #c9bc9a on body + gold rays (worst #1c180d) .......... 9.40
+     gold text #e0bf62 on onyx #0c0b09 ........................ 11.05
+     gold text #e0bf62 on surface #10201b ...................... 9.48
+     gold text #e0bf62 on surface-strong #172c25 ............... 8.29
+     red text #f0928a on surface #10201b ....................... 7.38
+     red text #f0928a on surface-strong #172c25 ................ 6.45
+     good text #8fd9b0 on surface #10201b ..................... 10.22
+     ink #0c0b09 on gold gradient: light #f1dc8f .............. 14.40
+                                   mid #d4af37 ................. 9.36
+                                   dark #b8912f ................ 6.68
+     ivory #f6eedb on oxblood #8f2633 / #7a1f2b ......... 7.29 / 8.83
+     ivory #f6eedb on emerald #14694f / #0f5a46 ......... 5.74 / 7.07
+     ivory #f6eedb on plum #5a3480 / #4b2a6b ............ 8.12 / 9.86
+     disabled #bdb49c on #2a2924 ............................... 7.06
+     stamp #f0928a on mafia card #2a0d12 ....................... 7.88
+     stamp #8fd9b0 on town card #0c2a21 ........................ 9.29
+     stamp #cdb3f5 on solo card #221430 ........................ 9.38
+     ivory #f3ead3 on mafia card #2a0d12 ...................... 15.04
+     gold #e0bf62 on solo card #221430 ......................... 9.74
+     ink #0c0b09 on champagne banner #e8d6a0 .................. 13.64
+     ivory #f6eedb on ghost banner #2b1d3d .................... 13.50
+     ivory #f3ead3 on input #0d1814 ........................... 15.13
+     placeholder #a9a088 on input #0d1814 ...................... 6.97
+     ivory #f6eedb on dead avatar #3d3a33 ...................... 9.81
+     game-over rays (worst #2b341f): ivory 10.86, muted 6.91,
+       red 5.69, good 7.88, solo #cdb3f5 7.04, gold 7.31
+   NIGHT
+     ivory #ece4cf on midnight #070b16 ........................ 15.50
+     ivory #ece4cf on surface #0e1528 ......................... 14.32
+     ivory #ece4cf on surface-strong #151e38 .................. 13.00
+     ivory #ece4cf on skyline #0f1730 ......................... 13.97
+     muted #b7b0a0 on surface / strong ................. 8.41 / 7.63
+     brass text #c9a65a on surface / strong ............ 7.86 / 7.13
+     brass text #c9a65a on midnight / skyline .......... 8.50 / 7.66
+     night title #d9bf7f on midnight / skyline ......... 10.96 / 9.88
+     red #f0a39b on surface / strong ................... 9.01 / 8.17
+     good #93d8b4 on surface ................................. 11.00
+     ink #0c0b09 on brass gradient: #cdb071 9.41, #a8874a 5.84,
+                                    darkest #9a7b40 4.95
+     disabled #aeb0bd on #1c2338 ............................... 7.23
+     ivory #ece4cf on input #0b1222 ........................... 14.74
+     placeholder #9a9585 on input #0b1222 ...................... 6.24
+   ============================================================ */
+
+:root[data-theme='deco'] {
+  --ink: #0c0b09;
+  --paper: #0c0b09;
+  --paper-2: #10201b;
+  --red: #8f2633;
+  --red-dark: #7a1f2b;
+  --gold: #d4af37;
+  --teal: #14694f;
+  --muted: #c9bc9a;
+  --night: #070b16;
+  --radius: 0px;
+  --shadow: 0 14px 34px rgba(0, 0, 0, 0.55);
+  --shadow-sm: 0 6px 16px rgba(0, 0, 0, 0.45);
+  --surface: #10201b;
+  --surface-strong: #172c25;
+  --text: #f3ead3;
+  --text-muted: #c9bc9a;
+  --text-red: #f0928a;
+  --text-good: #8fd9b0;
+  --kicker: #e0bf62;
+  --disabled-bg: #2a2924;
+  --disabled-text: #bdb49c;
+  --fill-mafia: #7a1f2b;
+  --fill-town: #0f5a46;
+  --fill-solo: #4b2a6b;
+  --font-comic: 'Limelight', 'Poiret One', 'Didot', 'Bodoni 72', Georgia, serif;
+  --font-body: 'Josefin Sans', 'Futura', 'Century Gothic', 'Avenir Next', system-ui, sans-serif;
+
+  /* deco-only tokens */
+  --font-label: 'Josefin Sans', 'Futura', 'Century Gothic', 'Avenir Next', system-ui, sans-serif;
+  --font-serif: 'Playfair Display', 'Didot', 'Bodoni 72', Georgia, serif;
+  --deco-ivory: #f6eedb;
+  --deco-gold-text: #e0bf62;
+  --deco-line: #c9a447;
+  --deco-line-soft: rgba(201, 164, 71, 0.35);
+  --deco-field: #0d1814;
+  --deco-btn: linear-gradient(180deg, #f1dc8f 0%, #d4af37 48%, #b8912f 100%);
+  --deco-btn-red: linear-gradient(180deg, #8f2633 0%, #7a1f2b 100%);
+  --deco-btn-teal: linear-gradient(180deg, #14694f 0%, #0f5a46 100%);
+  --deco-card-mafia: #2a0d12;
+  --deco-card-town: #0c2a21;
+  --deco-card-solo: #221430;
+  color-scheme: dark;
+}
+
+/* Stepped gold corner brackets, reused on panels. Declared on .app too so that
+   night's --deco-line (redefined on .app.is-night) is picked up. */
+:root[data-theme='deco'],
+:root[data-theme='deco'] .app {
+  --deco-corners:
+    linear-gradient(var(--deco-line), var(--deco-line)) left 6px top 6px / 20px 1px no-repeat,
+    linear-gradient(var(--deco-line), var(--deco-line)) left 6px top 6px / 1px 20px no-repeat,
+    linear-gradient(var(--deco-line), var(--deco-line)) left 10px top 10px / 9px 1px no-repeat,
+    linear-gradient(var(--deco-line), var(--deco-line)) left 10px top 10px / 1px 9px no-repeat,
+    linear-gradient(var(--deco-line), var(--deco-line)) right 6px top 6px / 20px 1px no-repeat,
+    linear-gradient(var(--deco-line), var(--deco-line)) right 6px top 6px / 1px 20px no-repeat,
+    linear-gradient(var(--deco-line), var(--deco-line)) right 10px top 10px / 9px 1px no-repeat,
+    linear-gradient(var(--deco-line), var(--deco-line)) right 10px top 10px / 1px 9px no-repeat,
+    linear-gradient(var(--deco-line), var(--deco-line)) left 6px bottom 6px / 20px 1px no-repeat,
+    linear-gradient(var(--deco-line), var(--deco-line)) left 6px bottom 6px / 1px 20px no-repeat,
+    linear-gradient(var(--deco-line), var(--deco-line)) left 10px bottom 10px / 9px 1px no-repeat,
+    linear-gradient(var(--deco-line), var(--deco-line)) left 10px bottom 10px / 1px 9px no-repeat,
+    linear-gradient(var(--deco-line), var(--deco-line)) right 6px bottom 6px / 20px 1px no-repeat,
+    linear-gradient(var(--deco-line), var(--deco-line)) right 6px bottom 6px / 1px 20px no-repeat,
+    linear-gradient(var(--deco-line), var(--deco-line)) right 10px bottom 10px / 9px 1px no-repeat,
+    linear-gradient(var(--deco-line), var(--deco-line)) right 10px bottom 10px / 1px 9px no-repeat;
+  /* A gold sunburst fan rising from the top centre. */
+  --deco-fan: repeating-conic-gradient(from 0deg at 50% 0%, rgba(212, 175, 55, 0.07) 0 4deg, transparent 4deg 10deg);
+}
+
+/* ---------- base ---------- */
+
+:root[data-theme='deco'] body {
+  font-family: var(--font-body);
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.01em;
+  background:
+    repeating-conic-gradient(from 0deg at 50% -8%, rgba(212, 175, 55, 0.05) 0 3deg, transparent 3deg 9deg),
+    radial-gradient(ellipse 90% 60% at 50% 0%, rgba(20, 60, 48, 0.55), transparent 70%),
+    #0c0b09;
+}
+
+:root[data-theme='deco'] input:not([type='range']):not([type='checkbox']),
+:root[data-theme='deco'] select,
+:root[data-theme='deco'] textarea {
+  color: var(--text);
+  background: var(--deco-field);
+  border: 1px solid var(--deco-line);
+  border-radius: 0;
+  box-shadow:
+    inset 0 0 0 3px var(--deco-field),
+    inset 0 0 0 4px var(--deco-line-soft);
+  padding: 0.65rem 0.85rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+}
+:root[data-theme='deco'] input::placeholder,
+:root[data-theme='deco'] textarea::placeholder {
+  color: #a9a088;
+  opacity: 1;
+}
+:root[data-theme='deco'] option {
+  background: var(--deco-field);
+  color: var(--text);
+}
+:root[data-theme='deco'] input:focus,
+:root[data-theme='deco'] select:focus,
+:root[data-theme='deco'] textarea:focus {
+  outline: 2px solid var(--deco-gold-text);
+  outline-offset: 3px;
+}
+:root[data-theme='deco'] input[type='range'],
+:root[data-theme='deco'] input[type='checkbox'] {
+  accent-color: var(--gold);
+}
+
+/* ---------- type ---------- */
+
+:root[data-theme='deco'] .logo {
+  font-family: var(--font-comic);
+  font-weight: 400;
+  font-size: clamp(3.4rem, 15vw, 6.4rem);
+  letter-spacing: 0.16em;
+  color: var(--deco-gold-text);
+  -webkit-text-stroke: 0;
+  text-shadow:
+    0 1px 0 #f7e7b0,
+    0 0 28px rgba(212, 175, 55, 0.28);
+  transform: none;
+  line-height: 1;
+  padding: 0.18em 0.1em 0.1em 0.26em;
+  border-top: 4px double var(--deco-line);
+  border-bottom: 4px double var(--deco-line);
+}
+:root[data-theme='deco'] .logo.small {
+  font-size: 1.7rem;
+  letter-spacing: 0.14em;
+  -webkit-text-stroke: 0;
+  text-shadow: none;
+  padding: 0.15em 0.05em 0.05em 0.19em;
+  border-top-width: 3px;
+  border-bottom-width: 3px;
+  color: var(--deco-gold-text);
+}
+:root[data-theme='deco'] .title {
+  font-family: var(--font-comic);
+  font-weight: 400;
+  font-size: clamp(1.75rem, 5.5vw, 2.4rem);
+  letter-spacing: 0.05em;
+  color: var(--text);
+}
+:root[data-theme='deco'] .small-title {
+  font-size: 1.6rem;
+}
+:root[data-theme='deco'] .kicker {
+  font-family: var(--font-label);
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--kicker);
+}
+:root[data-theme='deco'] .lead {
+  font-weight: 600;
+}
+:root[data-theme='deco'] .headline {
+  font-family: var(--font-comic);
+  font-weight: 400;
+  font-size: clamp(1.6rem, 4.6vw, 2.2rem);
+  letter-spacing: 0.03em;
+  line-height: 1.2;
+  color: var(--text);
+}
+:root[data-theme='deco'] .mega {
+  font-family: var(--font-comic);
+  font-weight: 400;
+  font-size: clamp(2.4rem, 8vw, 4.4rem);
+  letter-spacing: 0.06em;
+  line-height: 1.1;
+  color: var(--text-red);
+  -webkit-text-stroke: 0;
+  text-shadow: 0 2px 0 #000, 0 0 30px rgba(212, 175, 55, 0.25);
+  transform: none;
+}
+:root[data-theme='deco'] .winner-town .mega {
+  color: var(--text-good);
+}
+:root[data-theme='deco'] .winner-neutral .mega {
+  color: #cdb3f5;
+}
+:root[data-theme='deco'] .big-emoji,
+:root[data-theme='deco'] .narrator-face,
+:root[data-theme='deco'] .role-emoji {
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.6));
+}
+:root[data-theme='deco'] .link {
+  color: inherit;
+  text-decoration-color: var(--deco-line);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  font-weight: 700;
+}
+
+/* ---------- panels ---------- */
+
+:root[data-theme='deco'] .panel,
+:root[data-theme='deco'] .news {
+  color: var(--text);
+  background: var(--deco-corners), var(--surface);
+  border: 3px double var(--deco-line);
+  border-radius: 0;
+  box-shadow: var(--shadow);
+  padding: 1.2rem 1.3rem;
+}
+:root[data-theme='deco'] .news {
+  background: var(--deco-corners), var(--deco-fan), var(--surface);
+  padding-top: 1.4rem;
+  text-align: left;
+}
+:root[data-theme='deco'] .gameover {
+  text-align: center;
+  background:
+    var(--deco-corners),
+    repeating-conic-gradient(from 0deg at 50% 0%, rgba(212, 175, 55, 0.14) 0 5deg, transparent 5deg 10deg),
+    var(--surface);
+}
+:root[data-theme='deco'] .gameover .role-list {
+  text-align: left;
+}
+:root[data-theme='deco'] .case-file {
+  background: var(--deco-corners), var(--surface-strong);
+  color: var(--text);
+}
+:root[data-theme='deco'] .case-file.is-mafia {
+  border-color: var(--text-red);
+}
+
+/* ---------- buttons ---------- */
+
+:root[data-theme='deco'] .btn {
+  font-family: var(--font-label);
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  min-height: 2.9rem;
+  padding: 0.7em 1.3em 0.55em;
+  color: var(--ink);
+  background: var(--deco-btn);
+  border: 1px solid #f6e6a8;
+  border-radius: 0;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+  outline: 1px solid var(--deco-line);
+  outline-offset: 3px;
+  transition:
+    transform 0.12s,
+    filter 0.15s,
+    box-shadow 0.15s;
+}
+:root[data-theme='deco'] .btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+  box-shadow: 0 9px 20px rgba(0, 0, 0, 0.5);
+}
+:root[data-theme='deco'] .btn:active:not(:disabled) {
+  transform: translateY(1px);
+  filter: brightness(0.97);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.45);
+}
+:root[data-theme='deco'] .btn:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 3px;
+}
+:root[data-theme='deco'] .btn.big {
+  font-size: 1.2rem;
+  min-height: 3.6rem;
+  padding: 0.85em 1.4em 0.7em;
+}
+:root[data-theme='deco'] .btn.small {
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  min-height: 2.4rem;
+  padding: 0.6em 0.9em 0.45em;
+  outline-offset: 2px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+}
+:root[data-theme='deco'] .btn.red {
+  background: var(--deco-btn-red);
+  color: var(--deco-ivory);
+  border-color: #b0505c;
+}
+:root[data-theme='deco'] .btn.teal {
+  background: var(--deco-btn-teal);
+  color: var(--deco-ivory);
+  border-color: #3f8f77;
+}
+:root[data-theme='deco'] .btn.ghost {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--deco-line);
+  outline-color: var(--deco-line-soft);
+  box-shadow: none;
+}
+:root[data-theme='deco'] .btn.ghost:hover:not(:disabled) {
+  background: rgba(212, 175, 55, 0.08);
+  filter: none;
+  box-shadow: none;
+}
+:root[data-theme='deco'] .btn.danger {
+  color: var(--text-red);
+}
+:root[data-theme='deco'] .btn:disabled {
+  background: var(--disabled-bg);
+  color: var(--disabled-text);
+  border-color: #4a463c;
+  outline-color: #4a463c;
+  box-shadow: none;
+  filter: none;
+}
+
+/* ---------- avatars, tags, chips, stamps ---------- */
+
+:root[data-theme='deco'] .avatar {
+  font-family: var(--font-label);
+  font-weight: 700;
+  border: 2px solid var(--deco-line);
+  box-shadow:
+    0 0 0 2px var(--paper),
+    0 0 0 3px var(--deco-line-soft);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.55);
+  line-height: 1;
+  padding-top: 0.12em;
+}
+:root[data-theme='deco'] .avatar-sm {
+  border-width: 1px;
+  box-shadow: none;
+  font-size: 0.95rem;
+}
+:root[data-theme='deco'] .avatar-md {
+  font-size: 1.25rem;
+}
+:root[data-theme='deco'] .avatar-lg {
+  font-size: 1.6rem;
+}
+:root[data-theme='deco'] .avatar.is-dead {
+  background: #3d3a33;
+  color: var(--deco-ivory);
+  border-color: #8a7a55;
+}
+:root[data-theme='deco'] .skip-avatar {
+  background: var(--surface-strong);
+}
+
+:root[data-theme='deco'] .tag {
+  font-family: var(--font-label);
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.55rem 0.15rem;
+  color: var(--text);
+  background: var(--surface-strong);
+  border: 1px solid var(--deco-line);
+  border-radius: 0;
+}
+:root[data-theme='deco'] .tag.team-mafia {
+  background: var(--fill-mafia);
+  color: var(--deco-ivory);
+}
+:root[data-theme='deco'] .tag.team-town {
+  background: var(--fill-town);
+  color: var(--deco-ivory);
+}
+:root[data-theme='deco'] .tag.team-neutral {
+  background: var(--fill-solo);
+  color: var(--deco-ivory);
+}
+
+:root[data-theme='deco'] .chip {
+  color: var(--text);
+  background: var(--surface-strong);
+  border: 1px solid var(--deco-line);
+  border-radius: 0;
+  box-shadow: none;
+}
+:root[data-theme='deco'] .chip button {
+  color: var(--text-red);
+  min-width: 2rem;
+  min-height: 2rem;
+}
+
+:root[data-theme='deco'] .stamp {
+  font-family: var(--font-label);
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.5rem 0.2rem 0.72rem;
+  border: 3px double currentColor;
+  border-radius: 0;
+  background: rgba(0, 0, 0, 0.35);
+  transform: none;
+}
+:root[data-theme='deco'] .stamp-red {
+  color: var(--text-red);
+}
+:root[data-theme='deco'] .stamp-teal {
+  color: #8fd9b0;
+}
+:root[data-theme='deco'] .stamp-purple {
+  color: #cdb3f5;
+}
+
+/* Sixteen-ray sunburst medallion instead of a comic explosion. */
+:root[data-theme='deco'] .burst {
+  width: 12rem;
+  height: 7.5rem;
+  font-family: var(--font-comic);
+  font-weight: 400;
+  font-size: 1.55rem;
+  letter-spacing: 0.06em;
+  color: var(--deco-ivory);
+  -webkit-text-stroke: 0;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
+  padding-top: 0.15em;
+  clip-path: polygon(
+    50% 0%, 58% 9.8%, 69.1% 3.8%, 72.8% 15.9%, 85.4% 14.6%, 84.1% 27.2%, 96.2% 30.9%, 90.2% 42%, 100% 50%, 90.2% 58%,
+    96.2% 69.1%, 84.1% 72.8%, 85.4% 85.4%, 72.8% 84.1%, 69.1% 96.2%, 58% 90.2%, 50% 100%, 42% 90.2%, 30.9% 96.2%,
+    27.2% 84.1%, 14.6% 85.4%, 15.9% 72.8%, 3.8% 69.1%, 9.8% 58%, 0% 50%, 9.8% 42%, 3.8% 30.9%, 15.9% 27.2%,
+    14.6% 14.6%, 27.2% 15.9%, 30.9% 3.8%, 42% 9.8%
+  );
+  animation: deco-rise 0.5s ease-out both;
+}
+:root[data-theme='deco'] .burst-red {
+  background: radial-gradient(ellipse at center, #8f2633 0 55%, #7a1f2b 56%);
+}
+:root[data-theme='deco'] .burst-teal {
+  background: radial-gradient(ellipse at center, #14694f 0 55%, #0f5a46 56%);
+}
+:root[data-theme='deco'] .burst-purple {
+  background: radial-gradient(ellipse at center, #5a3480 0 55%, #4b2a6b 56%);
+}
+:root[data-theme='deco'] .burst-gold {
+  background: radial-gradient(ellipse at center, #f1dc8f 0 50%, #d4af37 51% 80%, #b8912f 81%);
+  color: var(--ink);
+  -webkit-text-stroke: 0;
+  text-shadow: none;
+}
+
+/* ---------- banners & toasts ---------- */
+
+:root[data-theme='deco'] .banner {
+  color: var(--ink);
+  border: 1px solid var(--deco-line);
+  border-radius: 0;
+  box-shadow: var(--shadow-sm);
+  outline: 1px solid var(--deco-line-soft);
+  outline-offset: 3px;
+  font-weight: 700;
+}
+:root[data-theme='deco'] .banner.warn {
+  background: var(--deco-btn);
+}
+:root[data-theme='deco'] .banner.relay {
+  background: #e8d6a0;
+}
+:root[data-theme='deco'] .ghost-banner {
+  background: #2b1d3d;
+  color: var(--deco-ivory);
+}
+:root[data-theme='deco'] .toast {
+  color: var(--text);
+  background: #0c0b09;
+  border: 3px double var(--deco-line);
+  border-radius: 0;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.7);
+  font-weight: 700;
+  animation: deco-toast 0.3s ease-out both;
+}
+
+/* ---------- progress & countdowns ---------- */
+
+:root[data-theme='deco'] .progress-bar {
+  height: 14px;
+  border: 1px solid var(--deco-line);
+  border-radius: 0;
+  background: #0c0b09;
+  box-shadow:
+    0 0 0 2px var(--paper),
+    0 0 0 3px var(--deco-line-soft);
+}
+:root[data-theme='deco'] .progress-bar span {
+  background:
+    repeating-linear-gradient(90deg, transparent 0 9px, rgba(12, 11, 9, 0.28) 9px 10px),
+    linear-gradient(180deg, #f1dc8f, #d4af37 55%, #b8912f);
+  background-size: auto;
+  border-right: 1px solid #f6e6a8;
+  animation: none;
+}
+:root[data-theme='deco'] .countdown {
+  font-family: var(--font-comic);
+  font-weight: 400;
+  font-size: 2.4rem;
+  letter-spacing: 0.08em;
+  color: var(--deco-gold-text);
+  background: #0c0b09;
+  border: 3px double var(--deco-line);
+  border-radius: 0;
+  padding: 0.15rem 0.9rem 0;
+  box-shadow: var(--shadow-sm);
+}
+:root[data-theme='deco'] .countdown.done {
+  background: var(--fill-mafia);
+  color: var(--deco-ivory);
+}
+:root[data-theme='deco'] .auto-note {
+  font-weight: 700;
+  color: var(--text-muted);
+}
+:root[data-theme='deco'] .auto-note b {
+  color: var(--kicker);
+}
+
+/* ---------- news, results, lists ---------- */
+
+:root[data-theme='deco'] .bar {
+  border: 1px solid var(--deco-line);
+  border-radius: 0;
+  background: #0c0b09;
+}
+:root[data-theme='deco'] .bar span {
+  background: linear-gradient(180deg, #f1dc8f, #d4af37 55%, #b8912f);
+}
+:root[data-theme='deco'] .num {
+  font-family: var(--font-label);
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+:root[data-theme='deco'] .role-list li {
+  color: var(--text);
+  background: var(--surface-strong);
+  border: 1px solid var(--deco-line-soft);
+  border-radius: 0;
+}
+:root[data-theme='deco'] .player-list li,
+:root[data-theme='deco'] .role-row,
+:root[data-theme='deco'] .notebook-row {
+  border-bottom: 1px solid var(--deco-line-soft);
+}
+:root[data-theme='deco'] .role-row {
+  border-bottom: none;
+  border-top: 1px solid var(--deco-line-soft);
+}
+:root[data-theme='deco'] .role-row:first-child {
+  border-top: none;
+}
+:root[data-theme='deco'] .player-list li:last-child {
+  border-bottom: none;
+}
+:root[data-theme='deco'] .conn,
+:root[data-theme='deco'] .status-pill .dot {
+  border: 1px solid #0c0b09;
+  box-shadow: 0 0 0 1px var(--deco-line);
+}
+
+:root[data-theme='deco'] .confetti span {
+  border: none;
+  width: 6px;
+  height: 15px;
+  background: linear-gradient(180deg, #f1dc8f, #b8912f) !important;
+}
+:root[data-theme='deco'] .confetti span:nth-child(4n + 2) {
+  background: #f6eedb !important;
+}
+:root[data-theme='deco'] .confetti span:nth-child(4n + 3) {
+  width: 8px;
+  height: 8px;
+  rotate: 45deg;
+  background: #d4af37 !important;
+}
+:root[data-theme='deco'] .confetti span:nth-child(5n) {
+  background: #2f8a6c !important;
+}
+
+/* ---------- landing ---------- */
+
+:root[data-theme='deco'] .landing-hero {
+  position: relative;
+}
+:root[data-theme='deco'] .landing-hero::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -2.5rem;
+  width: min(560px, 100vw);
+  height: 100%;
+  transform: translateX(-50%);
+  z-index: -1;
+  pointer-events: none;
+  background: repeating-conic-gradient(from 0deg at 50% 62%, rgba(212, 175, 55, 0.1) 0 4deg, transparent 4deg 11deg);
+  -webkit-mask-image: radial-gradient(closest-side at 50% 62%, #000 30%, transparent);
+  mask-image: radial-gradient(closest-side at 50% 62%, #000 30%, transparent);
+}
+:root[data-theme='deco'] .tagline {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.15rem;
+  color: var(--text);
+}
+:root[data-theme='deco'] .code-input {
+  font-family: var(--font-comic);
+  font-weight: 400;
+  font-size: 2.4rem;
+  letter-spacing: 0.4em;
+  color: var(--deco-gold-text);
+  padding: 0.45rem 0 0.25rem 0.4em;
+}
+:root[data-theme='deco'] .or {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  font-family: var(--font-comic);
+  font-size: 1.6rem;
+  color: var(--deco-gold-text);
+}
+:root[data-theme='deco'] .or::before,
+:root[data-theme='deco'] .or::after {
+  content: '';
+  flex: 1;
+  border-top: 3px double var(--deco-line);
+}
+:root[data-theme='deco'] .fine-print {
+  color: var(--text-muted);
+}
+:root[data-theme='deco'] .nerd-link {
+  color: var(--text);
+  font-weight: 700;
+  text-decoration-color: var(--deco-line);
+  text-underline-offset: 4px;
+}
+
+/* ---------- host ---------- */
+
+:root[data-theme='deco'] .status-pill {
+  color: var(--text);
+  background: var(--surface-strong);
+  border: 1px solid var(--deco-line);
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0.35rem 0.8rem 0.25rem;
+}
+:root[data-theme='deco'] .status-pill b {
+  font-family: var(--font-label);
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.22em;
+  color: var(--deco-gold-text);
+}
+:root[data-theme='deco'] .narrator-bubble p {
+  color: var(--text);
+  background: var(--surface-strong);
+  border: 1px solid var(--deco-line);
+  border-radius: 0;
+  box-shadow:
+    inset 0 0 0 4px var(--surface-strong),
+    inset 0 0 0 5px var(--deco-line-soft),
+    var(--shadow-sm);
+  padding: 0.95rem 1.15rem;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.25rem;
+}
+:root[data-theme='deco'] .narrator-bubble p::before {
+  border-right-color: var(--deco-line);
+}
+:root[data-theme='deco'] .night-title {
+  font-family: var(--font-comic);
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  color: #d9bf7f;
+  text-shadow: 0 0 26px rgba(201, 166, 90, 0.35);
+}
+
+/* ---------- lobby ---------- */
+
+:root[data-theme='deco'] .wanted {
+  color: var(--text);
+  transform: none;
+  background:
+    var(--deco-corners),
+    repeating-conic-gradient(from 0deg at 50% 0%, rgba(212, 175, 55, 0.08) 0 4deg, transparent 4deg 10deg),
+    var(--surface);
+}
+:root[data-theme='deco'] .wanted-title {
+  font-family: var(--font-comic);
+  font-weight: 400;
+  font-size: clamp(1.8rem, 4vw, 2.4rem);
+  letter-spacing: 0.12em;
+  color: var(--deco-gold-text);
+  -webkit-text-stroke: 0;
+  text-shadow: 0 0 22px rgba(212, 175, 55, 0.25);
+}
+:root[data-theme='deco'] .qr {
+  border: 3px double var(--deco-line);
+  border-radius: 0;
+  padding: 6px;
+  background: #fbf3e4;
+  box-shadow:
+    0 0 0 4px var(--surface),
+    0 0 0 5px var(--deco-line-soft),
+    var(--shadow);
+}
+:root[data-theme='deco'] .room-code {
+  font-family: var(--font-comic);
+  font-weight: 400;
+  color: var(--deco-gold-text);
+  background: #0c0b09;
+  border: 4px double var(--deco-line);
+  border-radius: 0;
+  padding: 0.08em 0.3em 0 0.55em;
+  box-shadow: var(--shadow);
+  outline: 1px solid var(--deco-line-soft);
+  outline-offset: 4px;
+}
+
+/* ---------- setup ---------- */
+
+:root[data-theme='deco'] .stepper button {
+  color: var(--ink);
+  width: 2.75rem;
+  height: 2.75rem;
+  font-family: var(--font-label);
+  font-weight: 700;
+  font-size: 1.4rem;
+  padding-top: 0.12em;
+  background: var(--deco-btn);
+  border: 1px solid #f6e6a8;
+  border-radius: 0;
+  box-shadow: 0 0 0 2px var(--surface), 0 0 0 3px var(--deco-line-soft);
+}
+:root[data-theme='deco'] .stepper button:active {
+  transform: translateY(1px);
+  box-shadow: 0 0 0 2px var(--surface), 0 0 0 3px var(--deco-line);
+}
+:root[data-theme='deco'] .stepper button:disabled {
+  background: var(--disabled-bg);
+  color: var(--disabled-text);
+  border-color: #4a463c;
+}
+:root[data-theme='deco'] .stepper span {
+  font-family: var(--font-label);
+  font-weight: 700;
+  font-size: 1.45rem;
+}
+:root[data-theme='deco'] .sticky-actions {
+  background: linear-gradient(transparent, var(--paper) 35%);
+}
+
+/* ---------- phone ---------- */
+
+:root[data-theme='deco'] .me-name {
+  font-family: var(--font-comic);
+  font-weight: 400;
+  font-size: 1.7rem;
+  letter-spacing: 0.06em;
+}
+
+:root[data-theme='deco'] .name-card,
+:root[data-theme='deco'] .target {
+  color: var(--text);
+  background: var(--surface);
+  border: 3px double var(--deco-line);
+  border-radius: 0;
+  box-shadow: var(--shadow-sm);
+  font-family: var(--font-label);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  transition:
+    transform 0.12s,
+    background 0.15s,
+    box-shadow 0.15s;
+}
+:root[data-theme='deco'] .name-card {
+  font-size: 1.3rem;
+  min-height: 3.5rem;
+}
+:root[data-theme='deco'] .name-card:nth-child(odd),
+:root[data-theme='deco'] .name-card:nth-child(even) {
+  transform: none;
+}
+:root[data-theme='deco'] .name-card:hover:not(:disabled),
+:root[data-theme='deco'] .target:hover {
+  background: var(--surface-strong);
+}
+:root[data-theme='deco'] .name-card:active:not(:disabled),
+:root[data-theme='deco'] .target:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+:root[data-theme='deco'] .name-card:disabled {
+  opacity: 1;
+  color: var(--disabled-text);
+  background: var(--disabled-bg);
+  border-color: #4a463c;
+  box-shadow: none;
+}
+:root[data-theme='deco'] .taken {
+  font-family: var(--font-label);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--gold);
+  border-radius: 0;
+  padding: 0.1rem 0.4rem 0;
+  transform: none;
+}
+
+:root[data-theme='deco'] .target {
+  font-size: 1.25rem;
+  min-height: 3.6rem;
+  padding: 0.6rem 0.85rem;
+}
+:root[data-theme='deco'] .target.skip {
+  font-size: 1.05rem;
+}
+:root[data-theme='deco'] .target.selected,
+:root[data-theme='deco'] .target.selected:hover {
+  color: var(--ink);
+  background: var(--deco-btn);
+  border-color: #fff4cc;
+  box-shadow:
+    0 0 0 2px var(--paper),
+    0 0 0 3px var(--deco-line),
+    0 10px 24px rgba(0, 0, 0, 0.55);
+  transform: scale(1.01);
+}
+:root[data-theme='deco'] .group-picks {
+  font-family: var(--font-label);
+  font-weight: 700;
+  font-size: 0.78rem;
+  color: var(--deco-ivory);
+  background: var(--fill-mafia);
+  border: 1px solid var(--deco-line);
+  border-radius: 0;
+  padding: 0.15rem 0.45rem 0.05rem;
+}
+:root[data-theme='deco'] .group-status {
+  color: var(--text);
+  background: var(--surface-strong);
+  border: 1px solid var(--deco-line);
+  border-radius: 0;
+  padding: 0.35rem 0.8rem 0.25rem;
+  font-weight: 700;
+}
+:root[data-theme='deco'] .group-status.good {
+  background: var(--fill-town);
+  color: var(--deco-ivory);
+}
+:root[data-theme='deco'] .locked {
+  color: var(--text);
+  background: var(--surface-strong);
+  border: 3px double var(--deco-line);
+  border-radius: 0;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Role card: a tall deco playing card with an inner gold frame and a fan of rays. */
+:root[data-theme='deco'] .role-card {
+  color: var(--text);
+  border: 3px double var(--deco-line);
+  border-radius: 0;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.65);
+  outline: 1px solid var(--deco-line-soft);
+  outline-offset: -11px;
+  padding: 1.8rem 1.5rem;
+  background: var(--deco-fan), var(--surface);
+}
+:root[data-theme='deco'] .role-card.team-mafia {
+  background:
+    repeating-conic-gradient(from 0deg at 50% 0%, rgba(212, 175, 55, 0.09) 0 4deg, transparent 4deg 10deg),
+    var(--deco-card-mafia);
+}
+:root[data-theme='deco'] .role-card.team-town {
+  background:
+    repeating-conic-gradient(from 0deg at 50% 0%, rgba(212, 175, 55, 0.09) 0 4deg, transparent 4deg 10deg),
+    var(--deco-card-town);
+}
+:root[data-theme='deco'] .role-card.team-neutral {
+  background:
+    repeating-conic-gradient(from 0deg at 50% 0%, rgba(212, 175, 55, 0.09) 0 4deg, transparent 4deg 10deg),
+    var(--deco-card-solo);
+}
+:root[data-theme='deco'] .role-card .stamp {
+  top: 1.2rem;
+  right: 1.2rem;
+}
+:root[data-theme='deco'] .role-name {
+  font-family: var(--font-comic);
+  font-weight: 400;
+  font-size: 2.7rem;
+  letter-spacing: 0.06em;
+  color: var(--deco-gold-text);
+  text-shadow: 0 2px 0 #000;
+}
+:root[data-theme='deco'] .role-emoji {
+  animation: none;
+}
+:root[data-theme='deco'] .teammates {
+  border-top: 3px double var(--deco-line);
+}
+:root[data-theme='deco'] .envelope {
+  background:
+    linear-gradient(155deg, transparent 49.6%, var(--deco-line) 49.8% 50.2%, transparent 50.4%) top / 100% 55% no-repeat,
+    linear-gradient(25deg, transparent 49.6%, var(--deco-line) 49.8% 50.2%, transparent 50.4%) top / 100% 55% no-repeat,
+    repeating-conic-gradient(from 0deg at 50% 55%, rgba(212, 175, 55, 0.07) 0 4deg, transparent 4deg 10deg),
+    #0c0b09;
+}
+:root[data-theme='deco'] .envelope b {
+  font-family: var(--font-comic);
+  font-weight: 400;
+  font-size: 2rem;
+  letter-spacing: 0.14em;
+  color: var(--deco-gold-text);
+  background: #0c0b09;
+  padding: 0.1em 0.3em 0 0.44em;
+}
+:root[data-theme='deco'] .envelope span {
+  color: var(--text);
+  background: #0c0b09;
+  padding: 0.15rem 0.5rem;
+}
+:root[data-theme='deco'] .peek-overlay {
+  background: rgba(5, 5, 4, 0.88);
+}
+
+/* ---------- theme picker ---------- */
+
+:root[data-theme='deco'] .theme-option {
+  color: var(--text);
+  background: var(--surface);
+  border: 3px double var(--deco-line);
+  border-radius: 0;
+  box-shadow: var(--shadow-sm);
+}
+:root[data-theme='deco'] .theme-option b {
+  font-family: var(--font-label);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+:root[data-theme='deco'] .theme-option.selected {
+  color: var(--ink);
+  background: var(--deco-btn);
+  border-color: #fff4cc;
+}
+:root[data-theme='deco'] .theme-picker.compact select {
+  min-height: 2.5rem;
+}
+
+/* ============================================================
+   NIGHT: midnight navy-black, gold dimmed to brass, stepped skyline.
+   ============================================================ */
+
+:root[data-theme='deco'] .is-night {
+  --paper: #070b16;
+  --night: #070b16;
+  --surface: #0e1528;
+  --surface-strong: #151e38;
+  --text: #ece4cf;
+  --text-muted: #b7b0a0;
+  --text-red: #f0a39b;
+  --text-good: #93d8b4;
+  --kicker: #c9a65a;
+  --disabled-bg: #1c2338;
+  --disabled-text: #aeb0bd;
+  --gold: #b8954a;
+  --shadow: 0 14px 34px rgba(0, 0, 0, 0.65);
+  --shadow-sm: 0 6px 16px rgba(0, 0, 0, 0.55);
+  --deco-gold-text: #c9a65a;
+  --deco-line: #a8874a;
+  --deco-line-soft: rgba(168, 135, 74, 0.35);
+  --deco-field: #0b1222;
+  --deco-btn: linear-gradient(180deg, #cdb071 0%, #a8874a 55%, #9a7b40 100%);
+  --deco-fan: repeating-conic-gradient(from 0deg at 50% 0%, rgba(168, 135, 74, 0.06) 0 4deg, transparent 4deg 10deg);
+  color: var(--text);
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(30, 44, 86, 0.6), transparent 70%),
+    #070b16;
+}
+:root[data-theme='deco'] body:has(.is-night) {
+  background: #070b16;
+}
+:root[data-theme='deco'] .is-night .logo.small {
+  color: var(--deco-gold-text);
+}
+:root[data-theme='deco'] .is-night .btn {
+  border-color: #dcc58f;
+}
+:root[data-theme='deco'] .is-night .btn.ghost,
+:root[data-theme='deco'] .is-night .btn.red,
+:root[data-theme='deco'] .is-night .btn.teal {
+  border-color: var(--deco-line);
+}
+:root[data-theme='deco'] .is-night .btn:disabled {
+  border-color: #343c58;
+  outline-color: #343c58;
+}
+:root[data-theme='deco'] .is-night .avatar.is-dead {
+  background: #2a2f44;
+  border-color: #6e6650;
+}
+:root[data-theme='deco'] .is-night .target.selected,
+:root[data-theme='deco'] .is-night .theme-option.selected {
+  border-color: #e6d3a2;
+}
+:root[data-theme='deco'] .is-night .stepper button,
+:root[data-theme='deco'] .is-night .target.selected {
+  border-color: #e6d3a2;
+}
+:root[data-theme='deco'] .is-night .name-card:disabled {
+  border-color: #343c58;
+}
+:root[data-theme='deco'] .is-night .countdown,
+:root[data-theme='deco'] .is-night .room-code,
+:root[data-theme='deco'] .is-night .toast,
+:root[data-theme='deco'] .is-night .progress-bar,
+:root[data-theme='deco'] .is-night .bar {
+  background: #070b16;
+}
+:root[data-theme='deco'] .is-night .stamp {
+  background: rgba(0, 0, 0, 0.35);
+}
+
+/* The sky: a dim brass starburst medallion, diamond stars and a stepped skyline. */
+:root[data-theme='deco'] .night-sky::before,
+:root[data-theme='deco'] .night-sky::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: min(26vh, 230px);
+  clip-path: polygon(
+    0% 100%, 0% 55%, 4% 55%, 4% 40%, 7% 40%, 7% 30%, 8.5% 16%, 10% 30%, 10% 40%, 13% 40%, 13% 60%, 17% 60%,
+    17% 35%, 19% 35%, 19% 25%, 21% 25%, 21% 10%, 22% 0%, 23% 10%, 23% 25%, 25% 25%, 25% 35%, 27% 35%, 27% 65%,
+    31% 65%, 31% 45%, 35% 45%, 35% 70%, 40% 70%, 40% 38%, 42% 38%, 42% 28%, 45% 28%, 45% 38%, 47% 38%, 47% 75%,
+    52% 75%, 52% 50%, 55% 50%, 55% 32%, 57% 32%, 57% 20%, 58.5% 6%, 60% 20%, 60% 32%, 62% 32%, 62% 50%, 65% 50%,
+    65% 68%, 70% 68%, 70% 42%, 74% 42%, 74% 60%, 78% 60%, 78% 30%, 80% 30%, 80% 22%, 83% 22%, 83% 30%, 85% 30%,
+    85% 55%, 89% 55%, 89% 38%, 92% 38%, 92% 26%, 93% 14%, 94% 26%, 94% 38%, 97% 38%, 97% 62%, 100% 62%, 100% 100%
+  );
+}
+/* Brass rim: the same silhouette, nudged up 2px, peeking out above the fill. */
+:root[data-theme='deco'] .night-sky::before {
+  bottom: 2px;
+  background: rgba(168, 135, 74, 0.55);
+}
+:root[data-theme='deco'] .night-sky::after {
+  background:
+    radial-gradient(rgba(201, 166, 90, 0.2) 1px, transparent 1.6px) 0 0 / 12px 16px,
+    #0f1730;
+}
+:root[data-theme='deco'] .moon {
+  top: 7vh;
+  right: 7vw;
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, rgba(201, 166, 90, 0.28) 0 26%, transparent 27% 31%, rgba(168, 135, 74, 0.45) 31% 32.5%, transparent 33.5%),
+    repeating-conic-gradient(rgba(168, 135, 74, 0.22) 0 3deg, transparent 3deg 15deg);
+  -webkit-mask-image: radial-gradient(circle, #000 55%, transparent 71%);
+  mask-image: radial-gradient(circle, #000 55%, transparent 71%);
+  box-shadow: none;
+  opacity: 0.85;
+}
+:root[data-theme='deco'] .star {
+  border-radius: 0;
+  rotate: 45deg;
+  background: #c9a65a;
+  animation-duration: 4s;
+}
+
+/* ---------- motion ---------- */
+
+@keyframes deco-rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes deco-toast {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 8px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+/* ---------- small screens ---------- */
+
+@media (max-width: 420px) {
+  :root[data-theme='deco'] .logo {
+    letter-spacing: 0.1em;
+    padding-left: 0.2em;
+  }
+  :root[data-theme='deco'] .btn {
+    letter-spacing: 0.1em;
+  }
+  :root[data-theme='deco'] .code-input {
+    font-size: 2rem;
+    letter-spacing: 0.3em;
+  }
+  :root[data-theme='deco'] .burst {
+    width: 11rem;
+    height: 7rem;
+    font-size: 1.4rem;
+  }
+}
+@media (max-width: 330px) {
+  :root[data-theme='deco'] .role-name {
+    font-size: 2.2rem;
+  }
+}

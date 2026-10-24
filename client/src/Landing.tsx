@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { normaliseRoomCode } from '../../shared/protocol';
 import { routes } from './routes';
+import { ThemePicker } from './ThemePicker';
 
 /** Front door: join a room with its code, or start hosting a game on this device. */
 export function Landing() {
@@ -55,6 +56,10 @@ export function Landing() {
       <p className="small center-text fine-print">
         The host screen (a laptop or TV everyone can see) runs the whole game. Keep it open while you play.
       </p>
+      <ThemePicker />
+      <a className="nerd-link" href={routes.nerd}>
+        🤓 How it's built (for the nerds)
+      </a>
     </div>
   );
 }

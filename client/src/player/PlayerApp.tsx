@@ -16,6 +16,7 @@ import {
   Toast,
   VoteResultView,
 } from '../ui';
+import { ThemePicker } from '../ThemePicker';
 import { send, useWakeLock } from '../useGame';
 import { NightScreen } from './Night';
 
@@ -133,6 +134,7 @@ function Playing({ state, leave }: { state: ClientState; leave: () => void }) {
         <button className="link small" onClick={() => confirm(`Stop playing as ${you.name} on this phone?`) && leave()}>
           Not {you.name}?
         </button>
+        <ThemePicker compact />
       </footer>
     </>
   );

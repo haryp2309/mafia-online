@@ -1,0 +1,1192 @@
+/* fonts: Fredoka:wght@500;600;700 | Nunito:wght@600;700;800;900 */
+/* ============================================================
+   Theme "cozy": Cozy Board Game.
+   Day: a light maple table with cream paper and punched-cardboard
+   cards, chunky game-token buttons. Night: the same table in dark
+   walnut, lit by one warm lamp. Every rule is scoped to
+   :root[data-theme='cozy'].
+
+   WCAG contrast (relative-luminance formula). "Wood" values are the
+   worst case: all grain layers stacked at their maximum alpha.
+     Day maple worst (darkest) point          #d3b486
+     Night walnut worst (lightest, lamp glow)  #6b4727
+   DAY
+     text      #3a2416 on surface #fff8ea ........ 13.76
+     text      #3a2416 on darkest wood #d3b486 ...  7.37
+     muted     #5a3d28 on surface #fff8ea ........  9.31
+     muted     #5a3d28 on darkest wood ...........  4.99
+     kicker/red #861a33 on surface #fff8ea .......  8.99
+     kicker/red #861a33 on darkest wood ..........  4.82
+     kicker    #861a33 on kraft #f1d9a8 ..........  6.89
+     good      #1f4d29 on surface #fff8ea ........  9.23
+     good      #1f4d29 on darkest wood ...........  4.95
+     disabled  #5e4a3a on #e8dcc6 ................  6.15
+     button    #3a2416 on gold token #f4b942 .....  8.22
+     selected  #3a2416 on #f6c95c ................  9.30
+     white     #ffffff on berry #b02a45 ..........  6.44
+     white     #ffffff on forest #1f6f5c .........  6.02
+     white     #ffffff on plum #6d3a7a ...........  8.28
+     white     #ffffff on dead avatar #5b4a3e ....  8.42
+     stamp     #8e1c36 on mafia card #f6dfe2 .....  6.99
+     stamp     #1a5f4e on town card #d9eee5 ......  6.20
+     stamp     #5f2f6c on solo card #ecdff0 ......  7.76
+     stamp     #1a5f4e on surface #fff8ea ........  7.12
+     envelope  #8e1c36 on kraft #e9cf9f ..........  5.86
+     mega      #8e1c36 / #1a5f4e / #5f2f6c on
+               darkest game-over ray #fce9c2 .....  7.42 / 6.30 / 8.33
+     logo      #9c1f3a on its cream outline #fff3df  7.17
+     room code #3a2416 on tile #f8e6c2 ...........  11.84
+     group ok  #3a2416 on #a8dfb2 ................  9.60
+     banners   #3a2416 on #ffe9b3 / #efe2f3 ......  12.16 / 11.67
+   NIGHT
+     text      #fff3df on card #4a3322 ...........  10.70
+     text      #fff3df on lightest walnut #6b4727   7.49
+     muted     #ecd6b6 on card #4a3322 ...........  8.31
+     muted     #ecd6b6 on strong card #5b4030 ....  6.69
+     muted     #ecd6b6 on lightest walnut ........  5.81
+     red       #ffb3bb on strong card #5b4030 ....  5.59
+     red       #ffb3bb on lightest walnut ........  4.86
+     good      #a6e3ae on card #4a3322 ...........  7.95
+     kicker    #ffcf6b on lightest walnut ........  5.63
+     title     #ffe2b0 on lightest walnut ........  6.56
+     disabled  #f0dfc6 on #64503e ................  5.83
+     (buttons, tags, selected cards, role cards keep their day
+      fills and text, so their day ratios hold at night.)
+   ============================================================ */
+
+/* ---------- tokens: day ---------- */
+
+:root[data-theme='cozy'] {
+  --ink: #3a2416;
+  --paper: #fbf1dc;
+  --paper-2: #f1d9a8;
+  --red: #b02a45;
+  --red-dark: #8e1c36;
+  --gold: #f4b942;
+  --teal: #1f6f5c;
+  --blue: #3a6ea5;
+  --purple: #6d3a7a;
+  --muted: #5a3d28;
+  --surface: #fff8ea;
+  --surface-strong: #fffdf6;
+  --text: #3a2416;
+  --text-muted: #5a3d28;
+  --text-red: #861a33;
+  --text-good: #1f4d29;
+  --kicker: #861a33;
+  --disabled-bg: #e8dcc6;
+  --disabled-text: #5e4a3a;
+  --fill-mafia: #b02a45;
+  --fill-town: #1f6f5c;
+  --fill-solo: #6d3a7a;
+  /* Cozy extras. */
+  --line: #c9a677; /* card outline, a printed edge */
+  --line-strong: #8a6440; /* inputs and things that must stand out (3:1+) */
+  --edge: #b88e58; /* the cardboard thickness under a card */
+  --drop: rgba(70, 38, 14, 0.26);
+  --focus: #861a33;
+  --wood: #ecd2a4;
+  --radius: 18px;
+  --shadow: 0 4px 0 var(--edge), 0 10px 20px var(--drop);
+  --shadow-sm: 0 3px 0 var(--edge), 0 5px 10px var(--drop);
+  --font-comic: 'Fredoka', 'Baloo 2', 'Varela Round', 'Trebuchet MS', system-ui, sans-serif;
+  --font-body: 'Nunito', 'Varela Round', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+/* ---------- the table ---------- */
+
+:root[data-theme='cozy'] body {
+  color: var(--text);
+  /* Maple planks: a soft sheen, fine grain and wide bands. Text is checked
+     against the darkest point where the grain and bands overlap. */
+  background:
+    repeating-linear-gradient(91deg, rgba(255, 244, 220, 0) 0 38px, rgba(255, 244, 220, 0.3) 62px, rgba(255, 244, 220, 0) 96px),
+    repeating-linear-gradient(
+      89deg,
+      rgba(130, 80, 35, 0) 0 3px,
+      rgba(130, 80, 35, 0.14) 4px,
+      rgba(130, 80, 35, 0) 6px,
+      rgba(130, 80, 35, 0) 13px,
+      rgba(130, 80, 35, 0.08) 14px,
+      rgba(130, 80, 35, 0) 17px
+    ),
+    repeating-linear-gradient(92deg, rgba(120, 70, 30, 0) 0 70px, rgba(120, 70, 30, 0.1) 110px, rgba(120, 70, 30, 0) 160px),
+    var(--wood);
+}
+
+:root[data-theme='cozy'] .app {
+  color: var(--text);
+}
+
+:root[data-theme='cozy'] .muted {
+  color: var(--text-muted);
+}
+
+/* ---------- type ---------- */
+
+:root[data-theme='cozy'] .logo,
+:root[data-theme='cozy'] .title,
+:root[data-theme='cozy'] .kicker,
+:root[data-theme='cozy'] .headline,
+:root[data-theme='cozy'] .mega,
+:root[data-theme='cozy'] .btn,
+:root[data-theme='cozy'] .burst,
+:root[data-theme='cozy'] .stamp,
+:root[data-theme='cozy'] .countdown,
+:root[data-theme='cozy'] .num,
+:root[data-theme='cozy'] .code-input,
+:root[data-theme='cozy'] .or,
+:root[data-theme='cozy'] .status-pill b,
+:root[data-theme='cozy'] .stepper button,
+:root[data-theme='cozy'] .stepper span,
+:root[data-theme='cozy'] .me-name,
+:root[data-theme='cozy'] .name-card,
+:root[data-theme='cozy'] .envelope b,
+:root[data-theme='cozy'] .role-name,
+:root[data-theme='cozy'] .target,
+:root[data-theme='cozy'] .night-title,
+:root[data-theme='cozy'] .wanted-title,
+:root[data-theme='cozy'] .room-code,
+:root[data-theme='cozy'] .avatar {
+  font-family: var(--font-comic);
+  font-weight: 600;
+}
+
+:root[data-theme='cozy'] .logo {
+  font-weight: 700;
+  font-size: clamp(4rem, 17vw, 7rem);
+  letter-spacing: 0.02em;
+  color: #9c1f3a;
+  -webkit-text-stroke: 0;
+  /* A die-cut sticker: cream outline, then the brown cardboard thickness. */
+  text-shadow:
+    -3px -3px 0 #fff3df,
+    3px -3px 0 #fff3df,
+    -3px 3px 0 #fff3df,
+    3px 3px 0 #fff3df,
+    0 -4px 0 #fff3df,
+    0 4px 0 #fff3df,
+    -4px 0 0 #fff3df,
+    4px 0 0 #fff3df,
+    0 9px 0 #7a4422,
+    0 14px 18px rgba(60, 30, 10, 0.35);
+  transform: rotate(-2deg);
+}
+:root[data-theme='cozy'] .logo.small {
+  font-size: 2.1rem;
+  color: #9c1f3a;
+  -webkit-text-stroke: 0;
+  text-shadow:
+    -2px -2px 0 #fff3df,
+    2px -2px 0 #fff3df,
+    -2px 2px 0 #fff3df,
+    2px 2px 0 #fff3df,
+    0 -2px 0 #fff3df,
+    0 2px 0 #fff3df,
+    -2px 0 0 #fff3df,
+    2px 0 0 #fff3df,
+    0 5px 0 #7a4422;
+}
+
+:root[data-theme='cozy'] .title {
+  font-size: clamp(1.8rem, 5.5vw, 2.4rem);
+  letter-spacing: 0.005em;
+}
+:root[data-theme='cozy'] .small-title {
+  font-size: 1.5rem;
+}
+:root[data-theme='cozy'] .kicker {
+  font-size: 0.95rem;
+  letter-spacing: 0.07em;
+  color: var(--kicker);
+}
+:root[data-theme='cozy'] .headline {
+  font-size: clamp(1.6rem, 4.6vw, 2.2rem);
+  letter-spacing: 0;
+}
+:root[data-theme='cozy'] .mega {
+  font-weight: 700;
+  font-size: clamp(2.5rem, 8.5vw, 4.4rem);
+  letter-spacing: 0.01em;
+  line-height: 1.05;
+  color: #8e1c36;
+  -webkit-text-stroke: 0;
+  text-shadow: 0 4px 0 rgba(122, 68, 34, 0.22);
+  transform: rotate(-1.5deg);
+}
+:root[data-theme='cozy'] .winner-town .mega {
+  color: #1a5f4e;
+}
+:root[data-theme='cozy'] .winner-neutral .mega {
+  color: #5f2f6c;
+}
+:root[data-theme='cozy'] .big-emoji,
+:root[data-theme='cozy'] .narrator-face {
+  filter: drop-shadow(0 4px 3px rgba(60, 30, 10, 0.3));
+}
+:root[data-theme='cozy'] .link {
+  font-weight: 800;
+  text-decoration-color: currentColor;
+}
+
+/* ---------- inputs ---------- */
+
+:root[data-theme='cozy'] input,
+:root[data-theme='cozy'] select,
+:root[data-theme='cozy'] textarea {
+  color: #3a2416;
+  background: #fffdf6;
+  border: 2px solid var(--line-strong);
+  border-radius: 14px;
+  box-shadow: inset 0 3px 0 rgba(122, 68, 34, 0.1);
+}
+:root[data-theme='cozy'] input:focus,
+:root[data-theme='cozy'] select:focus,
+:root[data-theme='cozy'] textarea:focus,
+:root[data-theme='cozy'] button:focus-visible,
+:root[data-theme='cozy'] a:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+:root[data-theme='cozy'] input[type='range'] {
+  border: none;
+  box-shadow: none;
+  background: transparent;
+  accent-color: var(--fill-mafia);
+}
+:root[data-theme='cozy'] input[type='checkbox'] {
+  accent-color: var(--fill-town);
+  box-shadow: none;
+}
+:root[data-theme='cozy'] .code-input {
+  font-size: 2.5rem;
+  letter-spacing: 0.35em;
+  padding: 0.35rem 0 0.35rem 0.35em;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0) 60%),
+    #f8e6c2;
+  border-width: 3px;
+  border-radius: 16px;
+  box-shadow:
+    inset 0 3px 0 rgba(122, 68, 34, 0.12),
+    0 3px 0 var(--edge);
+}
+:root[data-theme='cozy'] .code-input::placeholder {
+  color: #7a5a40;
+  opacity: 1;
+}
+
+/* ---------- cards (panels, news) ---------- */
+
+:root[data-theme='cozy'] .panel,
+:root[data-theme='cozy'] .news {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 40px),
+    var(--surface);
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow:
+    inset 0 0 0 4px rgba(255, 255, 255, 0.35),
+    var(--shadow);
+  padding: 1.05rem 1.15rem;
+}
+:root[data-theme='cozy'] .news {
+  padding-bottom: 1.15rem;
+}
+
+/* ---------- buttons: chunky game tokens ---------- */
+
+:root[data-theme='cozy'] .btn {
+  --btn-edge: #b07a22;
+  min-height: 3rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.01em;
+  line-height: 1.15;
+  background: var(--gold);
+  color: #3a2416;
+  border: 2px solid #8a5a1c;
+  border-radius: 16px;
+  padding: 0.55rem 1.15rem;
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.4),
+    0 5px 0 var(--btn-edge),
+    0 9px 14px var(--drop);
+  transition:
+    transform 0.08s,
+    box-shadow 0.08s,
+    background 0.15s;
+}
+:root[data-theme='cozy'] .btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.4),
+    0 6px 0 var(--btn-edge),
+    0 11px 16px var(--drop);
+}
+:root[data-theme='cozy'] .btn:active:not(:disabled) {
+  transform: translateY(4px);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.3),
+    0 1px 0 var(--btn-edge),
+    0 2px 4px var(--drop);
+}
+:root[data-theme='cozy'] .btn.big {
+  min-height: 3.6rem;
+  font-size: 1.5rem;
+  padding: 0.7rem 1.4rem;
+  border-radius: 20px;
+}
+:root[data-theme='cozy'] .btn.small {
+  min-height: 2.6rem;
+  font-size: 1rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 13px;
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.4),
+    0 3px 0 var(--btn-edge),
+    0 5px 8px var(--drop);
+}
+:root[data-theme='cozy'] .btn.small:active:not(:disabled) {
+  transform: translateY(2px);
+}
+:root[data-theme='cozy'] .btn.red {
+  --btn-edge: #6e1528;
+  background: var(--fill-mafia);
+  border-color: #6e1528;
+  color: #fff;
+}
+:root[data-theme='cozy'] .btn.teal {
+  --btn-edge: #0f4339;
+  background: var(--fill-town);
+  border-color: #0f4339;
+  color: #fff;
+}
+:root[data-theme='cozy'] .btn.red,
+:root[data-theme='cozy'] .btn.teal {
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.2),
+    0 5px 0 var(--btn-edge),
+    0 9px 14px var(--drop);
+}
+:root[data-theme='cozy'] .btn.ghost {
+  --btn-edge: var(--edge);
+  background: var(--surface);
+  border-color: var(--line);
+  color: var(--text);
+}
+:root[data-theme='cozy'] .btn.danger {
+  color: var(--text-red);
+}
+:root[data-theme='cozy'] .btn:disabled,
+:root[data-theme='cozy'] .btn.big:disabled {
+  background: var(--disabled-bg);
+  color: var(--disabled-text);
+  border-color: var(--line);
+  box-shadow: inset 0 2px 0 rgba(0, 0, 0, 0.06);
+  transform: translateY(4px);
+}
+
+/* ---------- stepper ---------- */
+
+:root[data-theme='cozy'] .stepper button {
+  width: 2.75rem;
+  height: 2.75rem;
+  color: #3a2416;
+  background: var(--gold);
+  border: 2px solid #8a5a1c;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  line-height: 1;
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.4),
+    0 4px 0 #b07a22;
+}
+:root[data-theme='cozy'] .stepper button:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #b07a22;
+}
+:root[data-theme='cozy'] .stepper span {
+  font-size: 1.6rem;
+}
+
+/* ---------- avatars: painted wooden tokens ---------- */
+
+:root[data-theme='cozy'] .avatar {
+  border: 2px solid rgba(40, 22, 10, 0.7);
+  border-radius: 50%;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
+  box-shadow:
+    inset 0 3px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.18),
+    0 3px 0 rgba(58, 36, 22, 0.55),
+    0 5px 8px var(--drop);
+}
+:root[data-theme='cozy'] .avatar-sm {
+  border-width: 2px;
+}
+:root[data-theme='cozy'] .avatar.is-dead {
+  background: #5b4a3e;
+  color: #fff;
+}
+:root[data-theme='cozy'] .skip-avatar {
+  background: var(--surface-strong);
+  text-shadow: none;
+}
+
+/* ---------- tags, chips ---------- */
+
+:root[data-theme='cozy'] .tag {
+  font-weight: 800;
+  color: var(--text);
+  background: var(--surface-strong);
+  border: 2px solid var(--line);
+  border-radius: 999px;
+  padding: 0.12rem 0.6rem;
+  box-shadow: 0 2px 0 var(--edge);
+}
+:root[data-theme='cozy'] .tag.team-mafia {
+  background: var(--fill-mafia);
+  border-color: #6e1528;
+  color: #fff;
+  box-shadow: 0 2px 0 #6e1528;
+}
+:root[data-theme='cozy'] .tag.team-town {
+  background: var(--fill-town);
+  border-color: #0f4339;
+  color: #fff;
+  box-shadow: 0 2px 0 #0f4339;
+}
+:root[data-theme='cozy'] .tag.team-neutral {
+  background: var(--fill-solo);
+  border-color: #46224f;
+  color: #fff;
+  box-shadow: 0 2px 0 #46224f;
+}
+:root[data-theme='cozy'] .chip {
+  color: var(--text);
+  background: var(--surface-strong);
+  border: 2px solid var(--line);
+  box-shadow: 0 2px 0 var(--edge);
+}
+:root[data-theme='cozy'] .chip button {
+  color: var(--text-red);
+  min-width: 2rem;
+  min-height: 2rem;
+}
+
+/* ---------- stamps ---------- */
+
+:root[data-theme='cozy'] .stamp {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 0.1rem 0.6rem;
+  border: 3px solid currentColor;
+  border-radius: 10px;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.5);
+  transform: rotate(-5deg);
+}
+:root[data-theme='cozy'] .stamp-red {
+  color: #8e1c36;
+}
+:root[data-theme='cozy'] .stamp-teal {
+  color: #1a5f4e;
+}
+:root[data-theme='cozy'] .stamp-purple {
+  color: #5f2f6c;
+}
+
+/* ---------- burst: a big round game token ---------- */
+
+:root[data-theme='cozy'] .burst {
+  width: auto;
+  min-width: 9rem;
+  height: auto;
+  min-height: 4.4rem;
+  padding: 0.4rem 1.4rem;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #fff;
+  -webkit-text-stroke: 0;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+  clip-path: none;
+  border: 3px solid rgba(40, 22, 10, 0.55);
+  border-radius: 999px;
+  box-shadow:
+    inset 0 0 0 4px rgba(255, 255, 255, 0.28),
+    inset 0 4px 0 rgba(255, 255, 255, 0.2),
+    0 6px 0 rgba(58, 36, 22, 0.55),
+    0 10px 16px var(--drop);
+}
+:root[data-theme='cozy'] .burst-red {
+  background: var(--fill-mafia);
+}
+:root[data-theme='cozy'] .burst-teal {
+  background: var(--fill-town);
+}
+:root[data-theme='cozy'] .burst-purple {
+  background: var(--fill-solo);
+}
+:root[data-theme='cozy'] .burst-gold {
+  background: var(--gold);
+  color: #3a2416;
+  -webkit-text-stroke: 0;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+/* ---------- banners & toasts ---------- */
+
+:root[data-theme='cozy'] .banner {
+  color: #3a2416;
+  border: 2px solid var(--line-strong);
+  border-radius: 14px;
+  box-shadow: 0 3px 0 rgba(58, 36, 22, 0.35), 0 6px 12px var(--drop);
+  font-weight: 800;
+}
+:root[data-theme='cozy'] .banner.warn {
+  background: var(--gold);
+  border-color: #8a5a1c;
+}
+:root[data-theme='cozy'] .banner.relay {
+  background: #ffe9b3;
+}
+:root[data-theme='cozy'] .ghost-banner {
+  background: #efe2f3;
+  border-color: #8a6a92;
+}
+:root[data-theme='cozy'] .toast {
+  color: var(--text);
+  background: var(--surface-strong);
+  border: 2px solid var(--line);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  font-weight: 800;
+}
+
+/* ---------- progress & countdowns ---------- */
+
+:root[data-theme='cozy'] .progress-bar {
+  height: 20px;
+  border: 2px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--surface-strong);
+  box-shadow:
+    inset 0 2px 0 rgba(122, 68, 34, 0.12),
+    0 2px 0 var(--edge);
+}
+:root[data-theme='cozy'] .progress-bar span {
+  background: repeating-linear-gradient(-45deg, #f4b942 0 10px, #f8cf6e 10px 20px);
+  background-size: 28px 28px;
+  border-right: 2px solid #8a5a1c;
+  border-radius: 999px;
+}
+:root[data-theme='cozy'] .progress-label {
+  color: var(--text);
+}
+:root[data-theme='cozy'] .countdown {
+  font-size: 2.4rem;
+  letter-spacing: 0.02em;
+  color: var(--text);
+  background: var(--surface-strong);
+  border: 2px solid var(--line);
+  border-radius: 16px;
+  box-shadow: var(--shadow-sm);
+}
+:root[data-theme='cozy'] .countdown.done {
+  background: var(--fill-mafia);
+  border-color: #6e1528;
+  color: #fff;
+}
+:root[data-theme='cozy'] .auto-note {
+  color: var(--text-muted);
+  font-weight: 800;
+}
+:root[data-theme='cozy'] .auto-note b {
+  color: var(--text-red);
+}
+:root[data-theme='cozy'] .bar {
+  border: 2px solid var(--line-strong);
+  background: var(--surface-strong);
+}
+:root[data-theme='cozy'] .bar span {
+  background: var(--fill-mafia);
+  border-radius: 999px;
+}
+:root[data-theme='cozy'] .ballot .arrow {
+  color: var(--text-muted);
+}
+
+/* ---------- game over ---------- */
+
+:root[data-theme='cozy'] .gameover {
+  --text: #3a2416;
+  --text-muted: #5a3d28;
+  --kicker: #861a33;
+  --surface-strong: #fffdf6;
+  color: #3a2416;
+  background:
+    repeating-conic-gradient(from 0deg at 50% 32%, rgba(244, 185, 66, 0.24) 0 9deg, rgba(244, 185, 66, 0) 9deg 18deg),
+    #fff8ea;
+}
+:root[data-theme='cozy'] .role-list li {
+  color: var(--text);
+  background: var(--surface-strong);
+  border: 2px solid var(--line);
+  border-radius: 14px;
+  box-shadow: 0 2px 0 var(--edge);
+}
+
+/* ---------- confetti: little wooden bits ---------- */
+
+:root[data-theme='cozy'] .confetti span {
+  width: 11px;
+  height: 11px;
+  border: 1.5px solid rgba(40, 22, 10, 0.6);
+  border-radius: 3px;
+}
+:root[data-theme='cozy'] .confetti span:nth-child(3n) {
+  border-radius: 50%;
+}
+:root[data-theme='cozy'] .confetti span:nth-child(4n) {
+  width: 9px;
+  height: 15px;
+  border-radius: 5px 5px 3px 3px;
+}
+
+/* ---------- lists ---------- */
+
+:root[data-theme='cozy'] .player-list li {
+  border-bottom: 2px dashed rgba(122, 68, 34, 0.25);
+}
+:root[data-theme='cozy'] .player-list li:last-child {
+  border-bottom: none;
+}
+:root[data-theme='cozy'] .role-row {
+  border-top: 2px dashed rgba(122, 68, 34, 0.25);
+}
+:root[data-theme='cozy'] .role-row:first-child {
+  border-top: none;
+}
+:root[data-theme='cozy'] .notebook-row {
+  border-bottom: 2px dashed rgba(122, 68, 34, 0.22);
+}
+:root[data-theme='cozy'] .conn {
+  border: 2px solid rgba(40, 22, 10, 0.7);
+}
+:root[data-theme='cozy'] .conn.on {
+  background: #4cbf6b;
+}
+:root[data-theme='cozy'] .conn.off {
+  background: var(--fill-mafia);
+}
+
+/* ---------- landing ---------- */
+
+:root[data-theme='cozy'] .tagline {
+  color: var(--text);
+  font-weight: 800;
+}
+:root[data-theme='cozy'] .or {
+  font-size: 1.3rem;
+  color: var(--text);
+}
+:root[data-theme='cozy'] .cast span {
+  filter: drop-shadow(0 4px 3px rgba(60, 30, 10, 0.3));
+}
+
+/* ---------- host ---------- */
+
+:root[data-theme='cozy'] .status-pill {
+  color: var(--text);
+  background: var(--surface-strong);
+  border: 2px solid var(--line);
+  box-shadow: 0 3px 0 var(--edge);
+  min-height: 2.4rem;
+}
+:root[data-theme='cozy'] .status-pill b {
+  font-size: 1.1rem;
+  letter-spacing: 0.12em;
+}
+:root[data-theme='cozy'] .status-pill .dot {
+  border: 2px solid rgba(40, 22, 10, 0.7);
+}
+:root[data-theme='cozy'] .status-online .dot {
+  background: #4cbf6b;
+}
+:root[data-theme='cozy'] .status-offline .dot,
+:root[data-theme='cozy'] .status-taken .dot {
+  background: var(--fill-mafia);
+}
+:root[data-theme='cozy'] .narrator-bubble p {
+  color: var(--text);
+  background: var(--surface-strong);
+  border: 2px solid var(--line);
+  border-radius: 22px;
+  box-shadow: var(--shadow-sm);
+  font-family: var(--font-body);
+  font-style: italic;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+:root[data-theme='cozy'] .narrator-bubble p::before {
+  border-right-color: var(--line);
+}
+
+/* ---------- lobby ---------- */
+
+:root[data-theme='cozy'] .wanted {
+  --text: #3a2416;
+  --text-muted: #5a3d28;
+  --kicker: #861a33;
+  color: #3a2416;
+  /* A kraft-board game box lid. */
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0) 60px),
+    var(--paper-2);
+  border-color: #b8925e;
+  transform: rotate(-0.8deg);
+}
+:root[data-theme='cozy'] .wanted-title {
+  font-weight: 700;
+  font-size: 2.3rem;
+  letter-spacing: 0.03em;
+  color: #861a33;
+  -webkit-text-stroke: 0;
+  text-shadow: 0 3px 0 rgba(255, 255, 255, 0.6);
+}
+:root[data-theme='cozy'] .qr {
+  border: 10px solid #fbf3e4;
+  outline: 2px solid #b8925e;
+  border-radius: 16px;
+  background: #fbf3e4;
+  box-shadow: 0 5px 0 var(--edge), 0 12px 20px var(--drop);
+}
+:root[data-theme='cozy'] .room-code {
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: #3a2416;
+  /* A big wooden letter tile. */
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 55%),
+    #f8e6c2;
+  border: 2px solid #b8925e;
+  border-radius: 16px;
+  box-shadow:
+    inset 0 -3px 0 rgba(122, 68, 34, 0.12),
+    0 6px 0 #a87d48,
+    0 12px 18px var(--drop);
+}
+
+/* ---------- setup ---------- */
+
+:root[data-theme='cozy'] .sticky-actions {
+  background: linear-gradient(rgba(226, 193, 142, 0), rgba(226, 193, 142, 0.97) 35%);
+}
+
+/* ---------- phone ---------- */
+
+:root[data-theme='cozy'] .me-name {
+  font-size: 1.6rem;
+  letter-spacing: 0;
+}
+:root[data-theme='cozy'] .name-card {
+  color: var(--text);
+  min-height: 5.5rem;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 30px),
+    var(--surface);
+  border: 2px solid var(--line);
+  border-radius: 18px;
+  font-size: 1.35rem;
+  letter-spacing: 0;
+  box-shadow: var(--shadow-sm);
+}
+:root[data-theme='cozy'] .name-card:active:not(:disabled) {
+  transform: translateY(3px);
+  box-shadow: 0 0 0 var(--edge);
+}
+:root[data-theme='cozy'] .name-card:disabled {
+  /* Keep text readable instead of fading it out. */
+  opacity: 1;
+  background: var(--disabled-bg);
+  color: var(--disabled-text);
+  box-shadow: none;
+  transform: translateY(3px);
+}
+:root[data-theme='cozy'] .taken {
+  background: #3a2416;
+  color: #fff3df;
+  font-weight: 800;
+}
+
+/* Role cards: thick punched cardboard with a white printed frame.
+   They keep day colours at night (lit by the lamp), so tokens reset here. */
+:root[data-theme='cozy'] .role-card {
+  --text: #3a2416;
+  --text-muted: #5a3d28;
+  --text-red: #861a33;
+  --text-good: #1f4d29;
+  --kicker: #861a33;
+  --surface: #fff8ea;
+  --surface-strong: #fffdf6;
+  --line: #c9a677;
+  --edge: #b88e58;
+  color: #3a2416;
+  border: 8px solid #fffaf0;
+  border-radius: 22px;
+  box-shadow:
+    0 0 0 2px #c9a677,
+    0 7px 0 1px #a87d48,
+    0 16px 28px rgba(40, 20, 6, 0.35);
+  background: var(--surface);
+}
+:root[data-theme='cozy'] .role-card.team-mafia {
+  background:
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.35) 0 6px, rgba(255, 255, 255, 0) 6px 14px),
+    #f6dfe2;
+}
+:root[data-theme='cozy'] .role-card.team-town {
+  background:
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.35) 0 6px, rgba(255, 255, 255, 0) 6px 14px),
+    #d9eee5;
+}
+:root[data-theme='cozy'] .role-card.team-neutral {
+  background:
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.35) 0 6px, rgba(255, 255, 255, 0) 6px 14px),
+    #ecdff0;
+}
+:root[data-theme='cozy'] .role-emoji {
+  filter: drop-shadow(0 5px 4px rgba(60, 30, 10, 0.3));
+}
+:root[data-theme='cozy'] .role-name {
+  font-weight: 700;
+  font-size: 2.8rem;
+  letter-spacing: 0;
+}
+:root[data-theme='cozy'] .teammates {
+  border-top: 2px dashed rgba(122, 68, 34, 0.45);
+}
+:root[data-theme='cozy'] .envelope {
+  color: #3a2416;
+  /* Kraft envelope with folded flaps. */
+  background:
+    linear-gradient(155deg, transparent 49.4%, rgba(122, 68, 34, 0.3) 50%, transparent 50.6%),
+    linear-gradient(25deg, transparent 49.4%, rgba(122, 68, 34, 0.3) 50%, transparent 50.6%),
+    #e9cf9f;
+}
+:root[data-theme='cozy'] .envelope b {
+  font-weight: 700;
+  font-size: 2.1rem;
+  letter-spacing: 0.06em;
+  color: #8e1c36;
+}
+:root[data-theme='cozy'] .peek-overlay {
+  background: rgba(28, 18, 11, 0.82);
+}
+
+/* Targets: player cards you pick from the table. */
+:root[data-theme='cozy'] .target {
+  color: var(--text);
+  min-height: 3.6rem;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0) 24px),
+    var(--surface);
+  border: 2px solid var(--line);
+  border-radius: 18px;
+  font-size: 1.35rem;
+  letter-spacing: 0;
+  box-shadow: var(--shadow-sm);
+}
+:root[data-theme='cozy'] .target:active {
+  transform: translateY(3px);
+  box-shadow: 0 0 0 var(--edge);
+}
+:root[data-theme='cozy'] .target.selected {
+  color: #3a2416;
+  background: #f6c95c;
+  border-color: #8a5a1c;
+  box-shadow:
+    inset 0 0 0 3px rgba(255, 255, 255, 0.45),
+    0 4px 0 #b07a22,
+    0 10px 16px var(--drop);
+  transform: translateY(-2px) rotate(-0.6deg);
+}
+:root[data-theme='cozy'] .target.skip {
+  font-size: 1.15rem;
+}
+:root[data-theme='cozy'] .group-picks {
+  background: var(--fill-mafia);
+  color: #fff;
+  border: 2px solid #6e1528;
+  font-weight: 800;
+}
+:root[data-theme='cozy'] .group-status {
+  color: var(--text);
+  background: var(--surface-strong);
+  border: 2px solid var(--line);
+  box-shadow: 0 2px 0 var(--edge);
+  font-weight: 800;
+}
+:root[data-theme='cozy'] .group-status.good {
+  background: #a8dfb2;
+  border-color: #3e7a4a;
+  color: #3a2416;
+}
+:root[data-theme='cozy'] .locked {
+  color: var(--text);
+  background: var(--surface-strong);
+  border: 2px solid var(--line);
+  border-radius: 16px;
+  box-shadow: var(--shadow-sm);
+}
+:root[data-theme='cozy'] .case-file {
+  --text: #3a2416;
+  --text-muted: #5a3d28;
+  --text-red: #861a33;
+  --text-good: #1f4d29;
+  --kicker: #861a33;
+  color: #3a2416;
+  background:
+    repeating-linear-gradient(180deg, rgba(0, 0, 0, 0) 0 27px, rgba(58, 110, 165, 0.12) 27px 29px),
+    #fff8ea;
+}
+:root[data-theme='cozy'] .case-file.is-mafia {
+  border-color: #b02a45;
+}
+
+/* ---------- theme picker ---------- */
+
+:root[data-theme='cozy'] .theme-option {
+  color: var(--text);
+  background: var(--surface);
+  border: 2px solid var(--line);
+  border-radius: 16px;
+  box-shadow: var(--shadow-sm);
+}
+:root[data-theme='cozy'] .theme-option .small {
+  color: var(--text-muted);
+}
+:root[data-theme='cozy'] .theme-option.selected {
+  color: #3a2416;
+  background: #f6c95c;
+  border-color: #8a5a1c;
+  box-shadow:
+    inset 0 0 0 3px rgba(255, 255, 255, 0.45),
+    0 3px 0 #b07a22;
+}
+:root[data-theme='cozy'] .theme-option.selected .small {
+  color: #3a2416;
+}
+:root[data-theme='cozy'] .theme-picker.compact select {
+  min-height: 2.4rem;
+}
+:root[data-theme='cozy'] .nerd-link {
+  color: var(--text);
+}
+
+/* ============================================================
+   NIGHT: the same table in a dark room, one warm lamp overhead.
+   ============================================================ */
+
+:root[data-theme='cozy'] .is-night {
+  --ink: #3a2416;
+  --surface: #4a3322;
+  --surface-strong: #5b4030;
+  --text: #fff3df;
+  --text-muted: #ecd6b6;
+  --text-red: #ffb3bb;
+  --text-good: #a6e3ae;
+  --kicker: #ffcf6b;
+  --disabled-bg: #64503e;
+  --disabled-text: #f0dfc6;
+  --line: #2a1a0f;
+  --line-strong: #c9a677;
+  --edge: #160d07;
+  --drop: rgba(0, 0, 0, 0.45);
+  --focus: #ffcf6b;
+  --shadow: 0 4px 0 #160d07, 0 12px 22px rgba(0, 0, 0, 0.45);
+  --shadow-sm: 0 3px 0 #160d07, 0 6px 12px rgba(0, 0, 0, 0.4);
+  color: var(--text);
+  /* Walnut: vignette, dark grain, warm streaks. The lamp glow lives on .moon. */
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(0, 0, 0, 0) 45%, rgba(0, 0, 0, 0.45) 100%),
+    repeating-linear-gradient(
+      89deg,
+      rgba(0, 0, 0, 0) 0 3px,
+      rgba(0, 0, 0, 0.35) 4px,
+      rgba(0, 0, 0, 0) 6px,
+      rgba(0, 0, 0, 0) 17px
+    ),
+    repeating-linear-gradient(92deg, rgba(122, 78, 44, 0) 0 70px, rgba(122, 78, 44, 0.22) 110px, rgba(122, 78, 44, 0) 160px),
+    #2b1b11;
+}
+:root[data-theme='cozy'] body:has(.is-night) {
+  background: #1f140c;
+}
+
+/* The lamp: a warm pool of light at the top of the table. */
+:root[data-theme='cozy'] .moon {
+  top: -30vmin;
+  left: 50%;
+  right: auto;
+  width: 120vmin;
+  height: 100vmin;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 176, 90, 0.24) 0%,
+    rgba(255, 176, 90, 0.14) 35%,
+    rgba(255, 176, 90, 0) 70%
+  );
+  box-shadow: none;
+}
+/* Stars become a few specks of dust drifting in the lamplight. */
+:root[data-theme='cozy'] .star {
+  background: rgba(255, 210, 150, 0.4);
+  animation-duration: 4.5s;
+}
+:root[data-theme='cozy'] .star:nth-child(3n) {
+  display: none;
+}
+
+:root[data-theme='cozy'] .night-title {
+  font-weight: 700;
+  font-size: clamp(3.2rem, 9vw, 5.5rem);
+  letter-spacing: 0.04em;
+  color: #ffe2b0;
+  text-shadow:
+    0 4px 0 #160d07,
+    0 0 28px rgba(255, 170, 80, 0.45);
+}
+
+/* Night overrides that must beat the base `.is-night ...` rules. */
+:root[data-theme='cozy'] .is-night .panel,
+:root[data-theme='cozy'] .is-night .news,
+:root[data-theme='cozy'] .is-night .locked,
+:root[data-theme='cozy'] .is-night .target,
+:root[data-theme='cozy'] .is-night .name-card,
+:root[data-theme='cozy'] .is-night .theme-option,
+:root[data-theme='cozy'] .is-night .countdown,
+:root[data-theme='cozy'] .is-night .narrator-bubble p {
+  border-color: var(--line);
+  box-shadow: var(--shadow-sm);
+}
+:root[data-theme='cozy'] .is-night .panel,
+:root[data-theme='cozy'] .is-night .news {
+  /* Lamp-lit cardboard: a touch brighter at the top edge. */
+  background:
+    linear-gradient(180deg, rgba(255, 200, 140, 0.08), rgba(255, 200, 140, 0) 50px),
+    var(--surface);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 220, 170, 0.12),
+    var(--shadow);
+}
+:root[data-theme='cozy'] .is-night .target,
+:root[data-theme='cozy'] .is-night .name-card {
+  background:
+    linear-gradient(180deg, rgba(255, 200, 140, 0.08), rgba(255, 200, 140, 0) 24px),
+    var(--surface);
+}
+:root[data-theme='cozy'] .is-night .target.selected {
+  color: #3a2416;
+  background: #f6c95c;
+  border-color: #8a5a1c;
+  box-shadow:
+    inset 0 0 0 3px rgba(255, 255, 255, 0.45),
+    0 4px 0 #6e4a14,
+    0 0 22px rgba(255, 190, 90, 0.35);
+}
+:root[data-theme='cozy'] .is-night .btn.ghost {
+  --btn-edge: #160d07;
+  background: var(--surface);
+  border-color: #2a1a0f;
+  color: var(--text);
+}
+:root[data-theme='cozy'] .is-night .btn.ghost.danger {
+  color: var(--text-red);
+}
+:root[data-theme='cozy'] .is-night .btn {
+  --drop: rgba(0, 0, 0, 0.5);
+}
+:root[data-theme='cozy'] .is-night .btn:disabled {
+  background: var(--disabled-bg);
+  color: var(--disabled-text);
+  border-color: #2a1a0f;
+}
+:root[data-theme='cozy'] .is-night .avatar {
+  border-color: rgba(10, 5, 2, 0.8);
+  box-shadow:
+    inset 0 3px 0 rgba(255, 255, 255, 0.25),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.2),
+    0 3px 0 #160d07,
+    0 5px 10px rgba(0, 0, 0, 0.45);
+}
+/* At night the sticker logo glows lamp-gold with a dark wood outline (gold on walnut ≈ 8:1). */
+:root[data-theme='cozy'] .is-night .logo.small {
+  color: #ffcf6b;
+  text-shadow:
+    -2px -2px 0 #2a1a0e,
+    2px -2px 0 #2a1a0e,
+    -2px 2px 0 #2a1a0e,
+    2px 2px 0 #2a1a0e,
+    0 4px 0 #160d07;
+}
+:root[data-theme='cozy'] .is-night .sticky-actions {
+  background: linear-gradient(rgba(31, 20, 12, 0), rgba(31, 20, 12, 0.97) 35%);
+}
+:root[data-theme='cozy'] .is-night .player-list li,
+:root[data-theme='cozy'] .is-night .notebook-row {
+  border-bottom-color: rgba(255, 225, 180, 0.18);
+}
+:root[data-theme='cozy'] .is-night .role-row {
+  border-top-color: rgba(255, 225, 180, 0.18);
+}
+:root[data-theme='cozy'] .is-night .tag:not(.team-mafia):not(.team-town):not(.team-neutral),
+:root[data-theme='cozy'] .is-night .chip,
+:root[data-theme='cozy'] .is-night .status-pill,
+:root[data-theme='cozy'] .is-night .group-status:not(.good),
+:root[data-theme='cozy'] .is-night .role-list li {
+  border-color: var(--line);
+  box-shadow: 0 2px 0 #160d07;
+}
+/* Role cards, case files and the selected gold stay paper-light at night. */
+:root[data-theme='cozy'] .is-night .case-file {
+  background:
+    repeating-linear-gradient(180deg, rgba(0, 0, 0, 0) 0 27px, rgba(58, 110, 165, 0.12) 27px 29px),
+    #fff8ea;
+  border-color: #c9a677;
+}
+:root[data-theme='cozy'] .is-night .case-file.is-mafia {
+  border-color: #b02a45;
+}
+:root[data-theme='cozy'] .is-night .role-card .chip {
+  border-color: #c9a677;
+  box-shadow: 0 2px 0 #b88e58;
+}
+:root[data-theme='cozy'] .is-night .progress-bar,
+:root[data-theme='cozy'] .is-night .bar {
+  border-color: #c9a677;
+  box-shadow: 0 2px 0 #160d07;
+}
+:root[data-theme='cozy'] .is-night input,
+:root[data-theme='cozy'] .is-night select,
+:root[data-theme='cozy'] .is-night textarea {
+  color: #3a2416;
+  background: #fff8ea;
+  border-color: #c9a677;
+}
+
+/* ---------- small screens ---------- */
+
+@media (max-width: 800px) {
+  :root[data-theme='cozy'] .wanted {
+    transform: none;
+  }
+}
+@media (max-width: 330px) {
+  :root[data-theme='cozy'] .role-name {
+    font-size: 2.3rem;
+  }
+}

@@ -1,0 +1,1220 @@
+/* fonts: Inter:wght@400;500;600;700;800 */
+/* ============================================================
+   THEME "minimal": Clean Minimal
+   Calm, airy product design. Light-grey canvas, white cards,
+   1px hairlines, soft layered shadows, one crimson accent.
+   Night is a true dark mode. Every selector is scoped to
+   :root[data-theme='minimal'].
+
+   WCAG 2.x contrast (relative-luminance formula), text on what is behind it:
+   DAY
+     text      #16181d on bg #f3f4f6 ........ 16.14
+     text      #16181d on card #ffffff ...... 17.76
+     muted     #565c69 on bg #f3f4f6 ........  6.10
+     muted     #565c69 on card #ffffff ......  6.71
+     muted     #565c69 on chip #f7f8fa ......  6.31
+     muted     #565c69 on mafia tint #fdecef   5.88  (town tint 5.90, solo tint 5.72)
+     kicker    #be123c on bg #f3f4f6 ........  5.71
+     kicker    #be123c on card #ffffff ......  6.29
+     white     on accent button #be123c .....  6.29  (hover #9f1239: 8.02)
+     white     on mafia fill #b4162f ........  6.78
+     white     on town fill #0f766e .........  5.47
+     white     on solo fill #6d28d9 .........  7.10
+     text-red  #b4162f on card #ffffff ......  6.78
+     text-good #047857 on bg #f3f4f6 ........  4.98  (on card 5.48)
+     disabled  #4b5160 on #e4e6eb ...........  6.36
+     mafia tag #9f1239 on tint #fdecef ......  7.03
+     town tag  #0f5e57 on tint #e3f4f1 ......  6.70
+     solo tag  #5b21b6 on tint #f0eafd ......  7.65
+     text      #16181d on selected #fdf0f2 .. 16.00
+     gold badge #7a4a00 on #fbf0cf ..........  6.58
+     text      #16181d on warn #fdf4dc ...... 16.19
+     white     on dead avatar #4b5160 .......  7.94
+     white     on "taken" #16181d ........... 17.76
+     input border #8a909c on #ffffff (non-text, 3:1 needed) 3.21
+   NIGHT
+     text      #f2f3f5 on bg #0e0f13 ........ 17.25
+     text      #f2f3f5 on card #17181e ...... 15.95
+     text      #f2f3f5 on strong #20222a .... 14.29
+     muted     #a9aebb on card #17181e ......  7.98  (on strong 7.15)
+     kicker    #ff7d92 on card #17181e ......  7.25  (on strong 6.50, on bg 7.84)
+     text-red  #ff8597 on card #17181e ......  7.64
+     text-good #4ade9b on card #17181e ...... 10.30
+     white     on accent button #e11d48 .....  4.70
+     white     on mafia/town/solo fills .....  6.78 / 5.47 / 7.10
+     disabled  #c4c8d2 on #2b2e37 ...........  8.10
+     mafia tag #ff9aaa on tint #2a161b ......  8.51
+     town tag  #5eead4 on tint #0f2724 ...... 10.63
+     solo tag  #c4b5fd on tint #211a36 ......  8.99
+     muted     #a9aebb on mafia tint #2a161b   7.70  (solo tint 7.47)
+     text      #f2f3f5 on selected #2a161d .. 15.37
+     gold badge #fcd877 on #33290f .......... 10.40
+     text      #f2f3f5 on warn #2b2412 ...... 13.87
+     input border #6b7080 on #17181e (non-text) 3.59
+   Avatar fills/letters come from ui.tsx and are already >= 4.5:1.
+   ============================================================ */
+
+/* ---------- tokens: day ---------- */
+
+:root[data-theme='minimal'] {
+  --ink: #16181d;
+  --paper: #f3f4f6;
+  --paper-2: #f7f8fa;
+  --red: #be123c;
+  --red-dark: #9f1239;
+  --gold: #f2b01e;
+  --teal: #0f766e;
+  --muted: #565c69;
+  --night: #0e0f13;
+  --night-2: #121319;
+  --night-card: #17181e;
+
+  --surface: #ffffff;
+  --surface-strong: #f7f8fa;
+  --text: #16181d;
+  --text-muted: #565c69;
+  --text-red: #b4162f;
+  --text-good: #047857;
+  --kicker: #be123c;
+  --disabled-bg: #e4e6eb;
+  --disabled-text: #4b5160;
+  --fill-mafia: #b4162f;
+  --fill-town: #0f766e;
+  --fill-solo: #6d28d9;
+
+  --radius: 16px;
+  --shadow: 0 1px 2px rgba(16, 18, 24, 0.04), 0 4px 12px rgba(16, 18, 24, 0.05), 0 16px 32px rgba(16, 18, 24, 0.05);
+  --shadow-sm: 0 1px 2px rgba(16, 18, 24, 0.06), 0 2px 6px rgba(16, 18, 24, 0.04);
+  --font-comic: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+
+  /* theme-only tokens */
+  --mn-bg: #f3f4f6;
+  --mn-line: #e4e6eb;
+  --mn-line-strong: #d3d6dd;
+  --mn-input-border: #8a909c;
+  --mn-input-bg: #ffffff;
+  --mn-accent: #be123c;
+  --mn-accent-hover: #9f1239;
+  --mn-accent-text: #be123c;
+  --mn-ring: rgba(190, 18, 60, 0.22);
+  --mn-select-bg: #fdf0f2;
+  --mn-track: #e8eaee;
+  --mn-tint-mafia: #fdecef;
+  --mn-tint-town: #e3f4f1;
+  --mn-tint-solo: #f0eafd;
+  --mn-on-mafia: #9f1239;
+  --mn-on-town: #0f5e57;
+  --mn-on-solo: #5b21b6;
+  --mn-gold-bg: #fbf0cf;
+  --mn-gold-text: #7a4a00;
+  --mn-gold-line: #ecd48c;
+  --mn-warn-bg: #fdf4dc;
+  --mn-warn-line: #f0dca2;
+  --mn-info-bg: #f0eafd;
+  --mn-info-line: #ddd0f8;
+  --mn-elev-hover: 0 1px 2px rgba(16, 18, 24, 0.06), 0 6px 16px rgba(16, 18, 24, 0.08);
+}
+
+/* ---------- tokens: night ---------- */
+
+:root[data-theme='minimal'] .is-night {
+  --surface: #17181e;
+  --surface-strong: #20222a;
+  --text: #f2f3f5;
+  --text-muted: #a9aebb;
+  --text-red: #ff8597;
+  --text-good: #4ade9b;
+  --kicker: #ff7d92;
+  --disabled-bg: #2b2e37;
+  --disabled-text: #c4c8d2;
+  --gold: #fcd877;
+  --shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 8px 24px rgba(0, 0, 0, 0.45);
+  --shadow-sm: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 2px 8px rgba(0, 0, 0, 0.35);
+
+  --mn-bg: #0e0f13;
+  --mn-line: #272a33;
+  --mn-line-strong: #343844;
+  --mn-input-border: #6b7080;
+  --mn-input-bg: #121318;
+  --mn-accent: #e11d48;
+  --mn-accent-hover: #be123c;
+  --mn-accent-text: #ff7d92;
+  --mn-ring: rgba(255, 125, 146, 0.3);
+  --mn-select-bg: #2a161d;
+  --mn-track: #2b2e37;
+  --mn-tint-mafia: #2a161b;
+  --mn-tint-town: #0f2724;
+  --mn-tint-solo: #211a36;
+  --mn-on-mafia: #ff9aaa;
+  --mn-on-town: #5eead4;
+  --mn-on-solo: #c4b5fd;
+  --mn-gold-bg: #33290f;
+  --mn-gold-text: #fcd877;
+  --mn-gold-line: #5a4a1c;
+  --mn-warn-bg: #2b2412;
+  --mn-warn-line: #4a3e1e;
+  --mn-info-bg: #211a36;
+  --mn-info-line: #3a2f5c;
+  --mn-elev-hover: 0 1px 0 rgba(255, 255, 255, 0.05) inset, 0 8px 20px rgba(0, 0, 0, 0.5);
+  color-scheme: dark;
+  background: var(--mn-bg);
+}
+:root[data-theme='minimal'] body:has(.is-night) {
+  background: #0e0f13;
+}
+
+/* ---------- base ---------- */
+
+:root[data-theme='minimal'] body {
+  font-family: var(--font-body);
+  font-weight: 400;
+  color: var(--ink);
+  background: var(--mn-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'cv11', 'ss01';
+}
+:root[data-theme='minimal'] .app {
+  color: var(--text);
+  background: var(--mn-bg);
+  padding: 20px 16px;
+}
+:root[data-theme='minimal'] h1,
+:root[data-theme='minimal'] h2,
+:root[data-theme='minimal'] h3 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+:root[data-theme='minimal'] b,
+:root[data-theme='minimal'] strong {
+  font-weight: 600;
+}
+
+:root[data-theme='minimal'] input,
+:root[data-theme='minimal'] select,
+:root[data-theme='minimal'] textarea {
+  color: var(--text);
+  background: var(--mn-input-bg);
+  border: 1px solid var(--mn-input-border);
+  border-radius: 10px;
+  padding: 0.65rem 0.8rem;
+  min-height: 44px;
+  box-shadow: none;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+:root[data-theme='minimal'] input:focus,
+:root[data-theme='minimal'] select:focus,
+:root[data-theme='minimal'] textarea:focus {
+  outline: none;
+  border-color: var(--mn-accent);
+  box-shadow: 0 0 0 3px var(--mn-ring);
+}
+:root[data-theme='minimal'] input[type='range'] {
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  min-height: 0;
+  background: transparent;
+  accent-color: var(--mn-accent);
+}
+:root[data-theme='minimal'] input[type='checkbox'] {
+  min-height: 0;
+  padding: 0;
+  accent-color: var(--mn-accent);
+}
+:root[data-theme='minimal'] :focus-visible {
+  outline: 2px solid var(--mn-accent);
+  outline-offset: 2px;
+}
+
+/* ---------- type ---------- */
+
+:root[data-theme='minimal'] .logo {
+  font-family: var(--font-comic);
+  font-weight: 800;
+  font-size: clamp(3.4rem, 15vw, 6rem);
+  letter-spacing: -0.05em;
+  line-height: 1;
+  color: var(--text);
+  -webkit-text-stroke: 0;
+  text-shadow: none;
+  transform: none;
+}
+:root[data-theme='minimal'] .logo::after {
+  content: '.';
+  color: var(--mn-accent-text);
+}
+:root[data-theme='minimal'] .logo.small {
+  font-size: 1.6rem;
+  letter-spacing: -0.04em;
+  -webkit-text-stroke: 0;
+  text-shadow: none;
+}
+:root[data-theme='minimal'] .is-night .logo.small {
+  color: var(--text);
+}
+:root[data-theme='minimal'] .title {
+  font-family: var(--font-comic);
+  font-weight: 700;
+  font-size: clamp(1.6rem, 5vw, 2.2rem);
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  -webkit-text-stroke: 0;
+  text-shadow: none;
+}
+:root[data-theme='minimal'] .small-title {
+  font-size: 1.35rem;
+}
+:root[data-theme='minimal'] .kicker {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--kicker);
+  margin-bottom: 0.45rem;
+}
+:root[data-theme='minimal'] .lead {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+:root[data-theme='minimal'] .tagline {
+  font-weight: 500;
+  color: var(--text-muted);
+}
+:root[data-theme='minimal'] .headline {
+  font-family: var(--font-comic);
+  font-weight: 700;
+  font-size: clamp(1.45rem, 4.2vw, 2rem);
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+}
+:root[data-theme='minimal'] .headline .reveal {
+  color: var(--text-red);
+}
+:root[data-theme='minimal'] .mega {
+  font-family: var(--font-comic);
+  font-weight: 800;
+  font-size: clamp(2.3rem, 8vw, 4.2rem);
+  letter-spacing: -0.045em;
+  line-height: 1.05;
+  color: var(--mn-on-mafia);
+  -webkit-text-stroke: 0;
+  text-shadow: none;
+  transform: none;
+}
+:root[data-theme='minimal'] .winner-town .mega {
+  color: var(--mn-on-town);
+}
+:root[data-theme='minimal'] .winner-neutral .mega {
+  color: var(--mn-on-solo);
+}
+:root[data-theme='minimal'] .big-emoji,
+:root[data-theme='minimal'] .narrator-face {
+  filter: none;
+}
+:root[data-theme='minimal'] .wobble,
+:root[data-theme='minimal'] .bounce {
+  animation: minimal-float 3s ease-in-out infinite;
+}
+:root[data-theme='minimal'] .link {
+  font-weight: 600;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+:root[data-theme='minimal'] .nerd-link {
+  font-weight: 500;
+  color: var(--text-muted);
+}
+:root[data-theme='minimal'] .log {
+  font-weight: 400;
+}
+
+/* ---------- panels ---------- */
+
+:root[data-theme='minimal'] .panel,
+:root[data-theme='minimal'] .news {
+  background: var(--surface);
+  border: 1px solid var(--mn-line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.25rem 1.35rem;
+  margin-bottom: 1rem;
+}
+:root[data-theme='minimal'] .is-night .panel,
+:root[data-theme='minimal'] .is-night .news {
+  border-color: var(--mn-line);
+  box-shadow: var(--shadow);
+}
+
+/* ---------- buttons ---------- */
+
+:root[data-theme='minimal'] .btn {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: -0.005em;
+  line-height: 1.2;
+  min-height: 44px;
+  padding: 0.65rem 1.15rem;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  background: var(--mn-accent);
+  color: #ffffff;
+  box-shadow: var(--shadow-sm);
+  transition:
+    background 0.15s,
+    box-shadow 0.15s,
+    transform 0.08s,
+    border-color 0.15s;
+}
+:root[data-theme='minimal'] .btn:hover:not(:disabled) {
+  background: var(--mn-accent-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--mn-elev-hover);
+}
+:root[data-theme='minimal'] .btn:active:not(:disabled) {
+  transform: translateY(0) scale(0.985);
+  box-shadow: var(--shadow-sm);
+}
+:root[data-theme='minimal'] .btn.big {
+  font-size: 1.1rem;
+  min-height: 56px;
+  padding: 0.85rem 1.4rem;
+  border-radius: 14px;
+}
+:root[data-theme='minimal'] .btn.small {
+  font-size: 0.9rem;
+  min-height: 38px;
+  padding: 0.4rem 0.85rem;
+  border-radius: 10px;
+  box-shadow: var(--shadow-sm);
+}
+:root[data-theme='minimal'] .btn.red {
+  background: var(--fill-mafia);
+  color: #ffffff;
+}
+:root[data-theme='minimal'] .btn.red:hover:not(:disabled) {
+  background: #9f1239;
+}
+:root[data-theme='minimal'] .btn.teal {
+  background: var(--fill-town);
+  color: #ffffff;
+}
+:root[data-theme='minimal'] .btn.teal:hover:not(:disabled) {
+  background: #115e59;
+}
+:root[data-theme='minimal'] .btn.ghost,
+:root[data-theme='minimal'] .is-night .btn.ghost {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--mn-line-strong);
+  box-shadow: var(--shadow-sm);
+}
+:root[data-theme='minimal'] .btn.ghost:hover:not(:disabled) {
+  background: var(--surface-strong);
+  border-color: var(--mn-input-border);
+}
+:root[data-theme='minimal'] .btn.danger {
+  color: var(--text-red);
+}
+:root[data-theme='minimal'] .btn:disabled,
+:root[data-theme='minimal'] .btn.red:disabled,
+:root[data-theme='minimal'] .btn.teal:disabled,
+:root[data-theme='minimal'] .btn.ghost:disabled {
+  background: var(--disabled-bg);
+  color: var(--disabled-text);
+  border-color: transparent;
+  box-shadow: none;
+  transform: none;
+}
+
+/* ---------- avatars, tags, chips, stamps ---------- */
+
+:root[data-theme='minimal'] .avatar,
+:root[data-theme='minimal'] .is-night .avatar {
+  font-family: var(--font-body);
+  font-weight: 700;
+  border: 2px solid var(--surface);
+  text-shadow: none;
+  box-shadow:
+    0 0 0 1px var(--mn-line-strong),
+    0 1px 3px rgba(16, 18, 24, 0.12);
+}
+:root[data-theme='minimal'] .avatar-sm {
+  font-size: 0.85rem;
+  border-width: 1.5px;
+}
+:root[data-theme='minimal'] .avatar-md {
+  font-size: 1.1rem;
+}
+:root[data-theme='minimal'] .avatar-lg {
+  font-size: 1.45rem;
+}
+:root[data-theme='minimal'] .avatar.is-dead {
+  background: #4b5160;
+  color: #ffffff;
+  font-size: 0.85em;
+}
+:root[data-theme='minimal'] .skip-avatar {
+  background: var(--surface-strong);
+  color: var(--text);
+}
+
+:root[data-theme='minimal'] .tag {
+  font-weight: 600;
+  font-size: 0.78rem;
+  padding: 0.2rem 0.6rem;
+  border: 1px solid var(--mn-line);
+  background: var(--surface-strong);
+  color: var(--text);
+}
+:root[data-theme='minimal'] .tag.team-mafia {
+  background: var(--mn-tint-mafia);
+  color: var(--mn-on-mafia);
+  border-color: transparent;
+}
+:root[data-theme='minimal'] .tag.team-town {
+  background: var(--mn-tint-town);
+  color: var(--mn-on-town);
+  border-color: transparent;
+}
+:root[data-theme='minimal'] .tag.team-neutral {
+  background: var(--mn-tint-solo);
+  color: var(--mn-on-solo);
+  border-color: transparent;
+}
+
+:root[data-theme='minimal'] .chip {
+  background: var(--surface-strong);
+  border: 1px solid var(--mn-line);
+  box-shadow: none;
+  font-weight: 500;
+}
+:root[data-theme='minimal'] .chip button {
+  color: var(--text-red);
+  font-weight: 600;
+  min-width: 28px;
+  min-height: 28px;
+}
+
+:root[data-theme='minimal'] .stamp {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid currentColor;
+  border-radius: 6px;
+  transform: none;
+}
+:root[data-theme='minimal'] .stamp-red {
+  color: var(--mn-on-mafia);
+}
+:root[data-theme='minimal'] .stamp-teal {
+  color: var(--mn-on-town);
+}
+:root[data-theme='minimal'] .stamp-purple {
+  color: var(--mn-on-solo);
+}
+
+/* "BANG!" burst becomes a quiet pill badge with a small icon. */
+:root[data-theme='minimal'] .burst {
+  width: auto;
+  height: auto;
+  align-self: flex-start;
+  gap: 0.45rem;
+  padding: 0.35rem 0.85rem 0.35rem 0.7rem;
+  margin: 0.15rem 0 0.8rem;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  clip-path: none;
+  -webkit-text-stroke: 0;
+  text-shadow: none;
+  color: #ffffff;
+  animation: minimal-rise 0.35s ease-out both;
+}
+:root[data-theme='minimal'] .burst::before {
+  content: '';
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 30%, transparent);
+  flex: none;
+}
+:root[data-theme='minimal'] .burst-red {
+  background: var(--fill-mafia);
+}
+:root[data-theme='minimal'] .burst-teal {
+  background: var(--fill-town);
+}
+:root[data-theme='minimal'] .burst-purple {
+  background: var(--fill-solo);
+}
+:root[data-theme='minimal'] .burst-gold {
+  background: var(--mn-gold-bg);
+  color: var(--mn-gold-text);
+  box-shadow: inset 0 0 0 1px var(--mn-gold-line);
+  -webkit-text-stroke: 0;
+  text-shadow: none;
+}
+:root[data-theme='minimal'] .news > .burst {
+  display: inline-flex;
+}
+
+/* ---------- banners & toasts ---------- */
+
+:root[data-theme='minimal'] .banner {
+  color: var(--text);
+  border: 1px solid var(--mn-line);
+  border-radius: 12px;
+  box-shadow: none;
+  font-weight: 500;
+  padding: 0.7rem 0.95rem;
+}
+:root[data-theme='minimal'] .banner.warn,
+:root[data-theme='minimal'] .banner.relay {
+  background: var(--mn-warn-bg);
+  border-color: var(--mn-warn-line);
+}
+:root[data-theme='minimal'] .ghost-banner {
+  background: var(--mn-info-bg);
+  border-color: var(--mn-info-line);
+}
+:root[data-theme='minimal'] .toast {
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--mn-line);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  font-weight: 600;
+  padding: 0.75rem 1.1rem;
+  animation: minimal-toast 0.25s ease-out both;
+}
+
+/* ---------- progress & countdowns ---------- */
+
+:root[data-theme='minimal'] .progress-bar {
+  height: 8px;
+  border: none;
+  background: var(--mn-track);
+  box-shadow: none;
+}
+:root[data-theme='minimal'] .progress-bar span {
+  background: var(--mn-accent);
+  border-right: none;
+  border-radius: 999px;
+  animation: none;
+  transition: width 0.4s ease;
+}
+:root[data-theme='minimal'] .progress-label {
+  color: var(--text-muted);
+}
+:root[data-theme='minimal'] .progress-label b {
+  color: var(--text);
+}
+:root[data-theme='minimal'] .countdown {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 2.1rem;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--mn-line);
+  border-radius: 14px;
+  padding: 0.2rem 0.9rem;
+  box-shadow: var(--shadow-sm);
+}
+:root[data-theme='minimal'] .countdown.done {
+  background: var(--fill-mafia);
+  border-color: transparent;
+  color: #ffffff;
+}
+:root[data-theme='minimal'] .auto-note {
+  font-weight: 500;
+  color: var(--text-muted);
+}
+:root[data-theme='minimal'] .auto-note b {
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--text-red);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- news & results ---------- */
+
+:root[data-theme='minimal'] .ballot .arrow {
+  color: var(--text-muted);
+}
+:root[data-theme='minimal'] .bar {
+  height: 8px;
+  border: none;
+  background: var(--mn-track);
+}
+:root[data-theme='minimal'] .bar span {
+  background: var(--mn-accent);
+  border-radius: 999px;
+}
+:root[data-theme='minimal'] .num {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1.05rem;
+  font-variant-numeric: tabular-nums;
+}
+:root[data-theme='minimal'] .gameover,
+:root[data-theme='minimal'] .is-night .gameover {
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, color-mix(in srgb, var(--mn-accent) 7%, transparent), transparent 70%),
+    var(--surface);
+}
+:root[data-theme='minimal'] .gameover.winner-town {
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, color-mix(in srgb, var(--fill-town) 9%, transparent), transparent 70%),
+    var(--surface);
+}
+:root[data-theme='minimal'] .gameover.winner-neutral {
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, color-mix(in srgb, var(--fill-solo) 9%, transparent), transparent 70%),
+    var(--surface);
+}
+:root[data-theme='minimal'] .role-list li {
+  background: var(--surface-strong);
+  border: 1px solid var(--mn-line);
+  border-radius: 10px;
+  padding: 0.45rem 0.6rem;
+}
+
+/* ---------- confetti: muted, soft ---------- */
+
+:root[data-theme='minimal'] .confetti span {
+  width: 6px;
+  height: 10px;
+  border: none;
+  border-radius: 2px;
+  opacity: 0.55;
+  filter: saturate(0.55);
+}
+
+/* ---------- lists ---------- */
+
+:root[data-theme='minimal'] .player-list li {
+  border-bottom: 1px solid var(--mn-line);
+  padding: 0.55rem 0;
+}
+:root[data-theme='minimal'] .player-list li:last-child {
+  border-bottom: none;
+}
+:root[data-theme='minimal'] .conn {
+  width: 9px;
+  height: 9px;
+  border: none;
+}
+:root[data-theme='minimal'] .conn.on {
+  background: #22c55e;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.18);
+}
+:root[data-theme='minimal'] .conn.off {
+  background: var(--mn-accent);
+  box-shadow: 0 0 0 3px var(--mn-ring);
+}
+
+/* ---------- landing ---------- */
+
+:root[data-theme='minimal'] .landing {
+  padding-top: 3rem;
+}
+:root[data-theme='minimal'] .landing-hero {
+  margin-bottom: 2rem;
+}
+:root[data-theme='minimal'] .code-input {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 2.1rem;
+  letter-spacing: 0.35em;
+  font-variant-numeric: tabular-nums;
+  padding: 0.45rem 0 0.45rem 0.35em;
+  border-radius: 14px;
+}
+:root[data-theme='minimal'] .or {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* ---------- host ---------- */
+
+:root[data-theme='minimal'] .host-header {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--mn-line);
+  margin-bottom: 1.5rem;
+}
+:root[data-theme='minimal'] .host-grid {
+  gap: 1.5rem;
+}
+:root[data-theme='minimal'] .status-pill {
+  background: var(--surface);
+  border: 1px solid var(--mn-line);
+  box-shadow: none;
+  font-weight: 500;
+  color: var(--text);
+  min-height: 34px;
+}
+:root[data-theme='minimal'] .status-pill b {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.98rem;
+  letter-spacing: 0.12em;
+}
+:root[data-theme='minimal'] .status-pill .dot {
+  width: 8px;
+  height: 8px;
+  border: none;
+  background: #d39e12;
+}
+:root[data-theme='minimal'] .status-online .dot {
+  background: #22c55e;
+}
+:root[data-theme='minimal'] .status-offline .dot,
+:root[data-theme='minimal'] .status-taken .dot {
+  background: var(--mn-accent);
+}
+
+/* Narrator: a clean chat bubble, no tail. */
+:root[data-theme='minimal'] .narrator-bubble p {
+  color: var(--text);
+  background: var(--surface-strong);
+  border: 1px solid var(--mn-line);
+  border-radius: 4px 16px 16px 16px;
+  box-shadow: none;
+  font-family: var(--font-body);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1.15rem;
+  line-height: 1.55;
+  padding: 0.85rem 1.05rem;
+}
+:root[data-theme='minimal'] .narrator-bubble p::before {
+  display: none;
+}
+:root[data-theme='minimal'] .night-title {
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: clamp(3rem, 9vw, 5.2rem);
+  letter-spacing: -0.045em;
+  color: #f2f3f5;
+  text-shadow: none;
+}
+:root[data-theme='minimal'] .narration-panel {
+  animation: minimal-rise 0.25s ease-out both;
+}
+
+/* ---------- lobby ---------- */
+
+:root[data-theme='minimal'] .wanted {
+  color: var(--text);
+  background: var(--surface);
+  transform: none;
+}
+:root[data-theme='minimal'] .wanted-title {
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: 1.6rem;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  -webkit-text-stroke: 0;
+  text-shadow: none;
+}
+:root[data-theme='minimal'] .qr {
+  border: 1px solid var(--mn-line);
+  border-radius: 16px;
+  box-shadow: var(--shadow-sm);
+  background: #ffffff;
+  padding: 10px;
+}
+:root[data-theme='minimal'] .room-code {
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: clamp(2.6rem, 7vw, 4rem);
+  letter-spacing: 0.2em;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+  background: var(--surface-strong);
+  border: 1px solid var(--mn-line);
+  border-radius: 16px;
+  box-shadow: none;
+  padding: 0.1em 0.3em 0.1em 0.5em;
+}
+:root[data-theme='minimal'] .join-list li.joined {
+  animation: minimal-rise 0.3s ease-out both;
+}
+
+/* ---------- setup ---------- */
+
+:root[data-theme='minimal'] .role-row {
+  border-top: 1px solid var(--mn-line);
+}
+:root[data-theme='minimal'] .role-row:first-child {
+  border-top: none;
+}
+:root[data-theme='minimal'] .stepper button {
+  width: 2.75rem;
+  height: 2.75rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1.3rem;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--mn-line-strong);
+  border-radius: 10px;
+  box-shadow: var(--shadow-sm);
+}
+:root[data-theme='minimal'] .stepper button:hover:not(:disabled) {
+  background: var(--surface-strong);
+}
+:root[data-theme='minimal'] .stepper button:active {
+  transform: scale(0.96);
+  box-shadow: none;
+}
+:root[data-theme='minimal'] .stepper button:disabled {
+  background: var(--disabled-bg);
+  color: var(--disabled-text);
+  box-shadow: none;
+}
+:root[data-theme='minimal'] .stepper span {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1.3rem;
+  font-variant-numeric: tabular-nums;
+}
+:root[data-theme='minimal'] .role-edit label,
+:root[data-theme='minimal'] .settings label {
+  font-weight: 500;
+}
+:root[data-theme='minimal'] .sticky-actions {
+  background: linear-gradient(transparent, var(--mn-bg) 35%);
+}
+:root[data-theme='minimal'] .is-night .sticky-actions {
+  background: linear-gradient(transparent, var(--mn-bg) 35%);
+}
+
+/* ---------- phone ---------- */
+
+:root[data-theme='minimal'] .me-name {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1.3rem;
+  letter-spacing: -0.02em;
+}
+
+:root[data-theme='minimal'] .name-card,
+:root[data-theme='minimal'] .target,
+:root[data-theme='minimal'] .is-night .target {
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--mn-line);
+  box-shadow: var(--shadow-sm);
+  font-family: var(--font-body);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  transform: none;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    box-shadow 0.15s,
+    transform 0.08s;
+}
+:root[data-theme='minimal'] .name-card {
+  border-radius: 14px;
+  font-size: 1.1rem;
+  padding: 1rem 0.5rem;
+  min-height: 96px;
+  justify-content: center;
+}
+:root[data-theme='minimal'] .name-card:nth-child(odd),
+:root[data-theme='minimal'] .name-card:nth-child(even) {
+  transform: none;
+}
+:root[data-theme='minimal'] .name-card:hover:not(:disabled),
+:root[data-theme='minimal'] .target:hover {
+  border-color: var(--mn-line-strong);
+  box-shadow: var(--mn-elev-hover);
+}
+:root[data-theme='minimal'] .name-card:active:not(:disabled),
+:root[data-theme='minimal'] .target:active {
+  transform: scale(0.985);
+  box-shadow: var(--shadow-sm);
+}
+:root[data-theme='minimal'] .name-card:disabled {
+  opacity: 0.5;
+  box-shadow: none;
+}
+:root[data-theme='minimal'] .taken {
+  transform: none;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.68rem;
+  letter-spacing: 0.02em;
+  background: var(--text);
+  color: var(--surface);
+  padding: 0.05rem 0.5rem;
+}
+
+:root[data-theme='minimal'] .target {
+  min-height: 60px;
+  border-radius: 14px;
+  padding: 0.65rem 0.9rem;
+  font-size: 1.15rem;
+}
+:root[data-theme='minimal'] .target.skip {
+  font-size: 1rem;
+  color: var(--text-muted);
+}
+:root[data-theme='minimal'] .target.selected,
+:root[data-theme='minimal'] .is-night .target.selected {
+  color: var(--text);
+  background: var(--mn-select-bg);
+  border-color: var(--mn-accent);
+  box-shadow: 0 0 0 3px var(--mn-ring);
+  transform: none;
+}
+:root[data-theme='minimal'] .pick-mark {
+  animation: minimal-rise 0.2s ease-out both;
+}
+:root[data-theme='minimal'] .group-picks {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.75rem;
+  border: none;
+  background: var(--fill-mafia);
+  color: #ffffff;
+  padding: 0.1rem 0.5rem;
+}
+:root[data-theme='minimal'] .group-status {
+  font-weight: 600;
+  color: var(--text);
+  background: var(--surface-strong);
+  border: 1px solid var(--mn-line);
+  padding: 0.3rem 0.8rem;
+}
+:root[data-theme='minimal'] .group-status.good {
+  background: var(--mn-tint-town);
+  color: var(--mn-on-town);
+  border-color: transparent;
+}
+:root[data-theme='minimal'] .locked,
+:root[data-theme='minimal'] .is-night .locked {
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--mn-line);
+  border-radius: 14px;
+  box-shadow: var(--shadow-sm);
+}
+
+/* role card */
+:root[data-theme='minimal'] .role-card {
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--mn-line);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  padding: 1.6rem 1.4rem;
+  animation: minimal-rise 0.3s ease-out both;
+}
+:root[data-theme='minimal'] .role-card.team-mafia {
+  background: linear-gradient(180deg, var(--mn-tint-mafia), var(--surface) 85%);
+  border-color: color-mix(in srgb, var(--fill-mafia) 25%, var(--mn-line));
+}
+:root[data-theme='minimal'] .role-card.team-town {
+  background: linear-gradient(180deg, var(--mn-tint-town), var(--surface) 85%);
+  border-color: color-mix(in srgb, var(--fill-town) 25%, var(--mn-line));
+}
+:root[data-theme='minimal'] .role-card.team-neutral {
+  background: linear-gradient(180deg, var(--mn-tint-solo), var(--surface) 85%);
+  border-color: color-mix(in srgb, var(--fill-solo) 25%, var(--mn-line));
+}
+:root[data-theme='minimal'] .role-emoji {
+  font-size: 4.2rem;
+  filter: none;
+  animation: minimal-float 3.2s ease-in-out infinite;
+}
+:root[data-theme='minimal'] .role-name {
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: 2.5rem;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+}
+:root[data-theme='minimal'] .teammates {
+  border-top: 1px solid var(--mn-line);
+}
+:root[data-theme='minimal'] .envelope {
+  color: var(--text);
+  background:
+    repeating-linear-gradient(135deg, transparent 0 12px, color-mix(in srgb, var(--text) 3%, transparent) 12px 13px),
+    var(--surface);
+  animation: none;
+}
+:root[data-theme='minimal'] .envelope b {
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: 1.6rem;
+  letter-spacing: -0.02em;
+  color: var(--mn-accent-text);
+}
+:root[data-theme='minimal'] .peek-overlay {
+  background: rgba(14, 15, 19, 0.7);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+:root[data-theme='minimal'] .case-file {
+  color: var(--text);
+  background: var(--surface);
+  border-left: 3px solid var(--fill-town);
+}
+:root[data-theme='minimal'] .case-file.is-mafia {
+  border-color: var(--mn-line);
+  border-left-color: var(--fill-mafia);
+}
+:root[data-theme='minimal'] .notebook-row {
+  border-bottom: 1px solid var(--mn-line);
+}
+:root[data-theme='minimal'] .suspect-line {
+  font-weight: 600;
+}
+
+/* ---------- theme picker ---------- */
+
+:root[data-theme='minimal'] .theme-option {
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--mn-line);
+  border-radius: 14px;
+  box-shadow: var(--shadow-sm);
+  padding: 0.75rem 0.85rem;
+  min-height: 44px;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+:root[data-theme='minimal'] .theme-option:hover {
+  border-color: var(--mn-line-strong);
+}
+:root[data-theme='minimal'] .theme-option b {
+  font-weight: 600;
+}
+:root[data-theme='minimal'] .theme-option .small {
+  color: var(--text-muted);
+}
+:root[data-theme='minimal'] .theme-option.selected {
+  color: var(--text);
+  background: var(--mn-select-bg);
+  border-color: var(--mn-accent);
+  box-shadow: 0 0 0 3px var(--mn-ring);
+}
+:root[data-theme='minimal'] .theme-picker.compact select {
+  min-height: 34px;
+}
+
+/* ---------- night sky: a quiet starfield, thin crescent ---------- */
+
+:root[data-theme='minimal'] .night-sky {
+  background: radial-gradient(ellipse 70% 45% at 75% -5%, rgba(120, 130, 170, 0.1), transparent 70%);
+}
+:root[data-theme='minimal'] .moon {
+  top: 7vh;
+  right: 8vw;
+  width: 44px;
+  height: 44px;
+  background: transparent;
+  box-shadow: inset -9px 5px 0 0 #d9dce4;
+  opacity: 0.75;
+}
+:root[data-theme='minimal'] .star {
+  background: #c9ccd6;
+  opacity: 0.35;
+  animation: minimal-twinkle 4s ease-in-out infinite;
+}
+:root[data-theme='minimal'] .is-night .app,
+:root[data-theme='minimal'] .app.is-night {
+  background: transparent;
+}
+:root[data-theme='minimal'] .is-night .center .big-emoji {
+  filter: none;
+}
+
+/* ---------- motion (all subtle; base CSS disables for reduced motion) ---------- */
+
+@keyframes minimal-rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes minimal-toast {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 8px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+@keyframes minimal-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+@keyframes minimal-twinkle {
+  0%,
+  100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+/* ---------- small screens ---------- */
+
+@media (max-width: 800px) {
+  :root[data-theme='minimal'] .host-header {
+    margin-bottom: 1rem;
+  }
+}
+@media (max-width: 420px) {
+  :root[data-theme='minimal'] .panel,
+  :root[data-theme='minimal'] .news {
+    padding: 1rem 1.05rem;
+  }
+  :root[data-theme='minimal'] .role-card {
+    padding: 1.4rem 1.1rem;
+  }
+}
+@media (max-width: 330px) {
+  :root[data-theme='minimal'] .role-name {
+    font-size: 2.1rem;
+  }
+}

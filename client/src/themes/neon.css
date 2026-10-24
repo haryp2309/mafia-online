@@ -1,0 +1,1192 @@
+/* fonts: Monoton:wght@400 | Righteous:wght@400 | Quicksand:wght@500;700 */
+/* ============================================================
+   NEON CARNIVAL (data-theme="neon")
+   A glowing Las Vegas casino night: plum casino carpet by day,
+   a starry violet-black sky by night. Signs glow in hot pink,
+   electric cyan and gold; buttons are casino chips; name cards
+   are playing cards; vote targets are felt-table tiles; panels
+   wear marquee-light borders.
+
+   WCAG contrast (relative-luminance formula; glows ignored, the
+   base colour has to pass on its own). "worst" = lightest point
+   of the background pattern/glow behind the text.
+
+   DAY
+   Body text #fff7fc / page #1b1026 + glows (worst #473455)  10.56
+   Muted #d8c5e6 / page worst #473455                         6.90
+   Pink text #ff8cc6 / page worst #473455                     5.19
+   Text #fff7fc / panel #2a1838                              15.52
+   Muted #d8c5e6 / panel #2a1838                             10.15
+   Muted #d8c5e6 / surface-strong #3a2150                     8.62
+   Kicker cyan #6ff3ff / surface-strong #3a2150              10.53
+   Pink (--text-red) #ff8cc6 / surface-strong #3a2150         6.49
+   Good #6ff7c0 / surface-strong #3a2150                     10.40
+   Gold #ffd23f / surface-strong #3a2150                      9.61
+   Logo pink #ff6eb4 / page worst #473455 (large)             4.31
+   Ink #120a1a / gold #ffd23f (chip buttons, selected)       13.41
+   White / mafia fill #c2185b                                 5.87
+   White / town fill #00727c                                  5.68
+   White / solo fill #7b2fc4                                  6.89
+   Disabled #d4c6df / #3d2d4a                                 7.74
+   Danger pink #ff8cc6 / disabled #3d2d4a                     5.87
+   Text / ghost (neon sign) button #150b20                   18.14
+   Danger pink #ff8cc6 / ghost button #150b20                 8.92
+   Ink #120a1a / playing card #fff8ec                        18.35
+   Text / felt tile #0f3b2d                                  11.86
+   Gold #ffd23f / marquee black #120a1a (room code, timer)   13.41
+   Stamp pink #ff8cc6 / #120a1a                               9.06
+   Stamp cyan #6ff3ff / #120a1a                              14.70
+   Stamp violet #d2a8ff / #120a1a                             9.95
+   Text / role card mafia #2c0b20                            16.98
+   Text / role card town #06292d                             14.65
+   Text / role card solo #1f1036                             16.84
+   Kicker cyan / role card town #06292d                      11.70
+   Text / card-back envelope (pattern worst #7a2c58)          8.57
+   Gold / card-back envelope (pattern worst)                  6.24
+   Text / game-over rays (worst #483239)                     11.15
+   Mega pink #ff6eb4 / rays (large)                           4.55
+   Mega cyan #6ff3ff / rays (large)                           8.90
+   Mega violet #d2a8ff / rays (large)                         6.02
+   Ink / green status #6ff7c0                                14.52
+   Text / ghost banner #2b1745                               15.22
+   Placeholder #b3a2c2 / input #120a1a                        8.18
+   NIGHT
+   Text #fff7fc / page #0b0714 + violet glow (worst #46195a) 12.90
+   Muted #d4c6ea / page worst #46195a                         8.44
+   Muted #d4c6ea / surface-strong #24143a                    10.57
+   Gold kicker #ffd23f / surface-strong #24143a              11.76
+   Pink #ff9ccd / surface-strong #24143a                      8.81
+   Good #7cf9c8 / surface-strong #24143a                     13.14
+   Disabled #d4c6df / #2e2240                                 9.12
+   Text / night felt tile #0a2a20                            14.62
+   Night title cyan #6ff3ff / page worst #46195a             10.30
+   ============================================================ */
+
+:root[data-theme='neon'] {
+  --ink: #120a1a;
+  --paper: #1b1026;
+  --paper-2: #2a1838;
+  --page-bg: #1b1026;
+  --red: #ff4fa3;
+  --red-dark: #c2185b;
+  --gold: #ffd23f;
+  --teal: #29d3e0;
+  --blue: #4f8cff;
+  --purple: #a66bff;
+  --muted: #d8c5e6;
+  --night: #0b0714;
+  --night-2: #170e26;
+  --night-card: #24143a;
+
+  --neon-pink: #ff6eb4;
+  --neon-cyan: #6ff3ff;
+  --neon-violet: #d2a8ff;
+  --neon-green: #6ff7c0;
+  --marquee: #120a1a;
+  --felt: #0f3b2d;
+
+  --radius: 14px;
+  --shadow: 0 0 0 1px rgba(255, 110, 180, 0.35), 0 0 22px rgba(255, 110, 180, 0.28), 0 10px 26px rgba(0, 0, 0, 0.45);
+  --shadow-sm: 0 0 12px rgba(255, 110, 180, 0.3), 0 4px 12px rgba(0, 0, 0, 0.4);
+
+  --surface: #2a1838;
+  --surface-strong: #3a2150;
+  --text: #fff7fc;
+  --text-muted: #d8c5e6;
+  --text-red: #ff8cc6;
+  --text-good: #6ff7c0;
+  --kicker: #6ff3ff;
+  --disabled-bg: #3d2d4a;
+  --disabled-text: #d4c6df;
+
+  --fill-mafia: #c2185b;
+  --fill-town: #00727c;
+  --fill-solo: #7b2fc4;
+
+  --font-comic: 'Righteous', 'Trebuchet MS', 'Arial Rounded MT Bold', system-ui, sans-serif;
+  --font-body: 'Quicksand', 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-sign: 'Monoton', 'Righteous', 'Arial Black', Impact, sans-serif;
+  color-scheme: dark;
+}
+
+/* ---------- page ---------- */
+
+:root[data-theme='neon'] body {
+  font-family: var(--font-body);
+  font-weight: 700;
+  color: var(--text);
+  /* Casino carpet: faint diamond lattice under pink and cyan spotlights. */
+  background:
+    radial-gradient(ellipse 80% 50% at 12% -8%, rgba(255, 60, 160, 0.16), transparent 62%),
+    radial-gradient(ellipse 70% 45% at 100% 0%, rgba(40, 220, 255, 0.1), transparent 60%),
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.025) 0 2px, transparent 2px 30px),
+    repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.025) 0 2px, transparent 2px 30px),
+    var(--paper);
+}
+:root[data-theme='neon'] .app {
+  color: var(--text);
+}
+:root[data-theme='neon'] :focus-visible {
+  outline: 3px solid var(--neon-cyan);
+  outline-offset: 3px;
+}
+
+/* ---------- inputs ---------- */
+
+:root[data-theme='neon'] input:not([type='range']):not([type='checkbox']),
+:root[data-theme='neon'] select,
+:root[data-theme='neon'] textarea {
+  color: var(--text);
+  background: var(--marquee);
+  border: 2px solid rgba(111, 243, 255, 0.7);
+  border-radius: 12px;
+  box-shadow:
+    inset 0 0 12px rgba(111, 243, 255, 0.12),
+    0 0 10px rgba(111, 243, 255, 0.15);
+}
+:root[data-theme='neon'] input::placeholder,
+:root[data-theme='neon'] textarea::placeholder {
+  color: #b3a2c2;
+  opacity: 1;
+}
+:root[data-theme='neon'] input:focus,
+:root[data-theme='neon'] select:focus,
+:root[data-theme='neon'] textarea:focus {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+}
+:root[data-theme='neon'] option {
+  background: var(--paper);
+  color: var(--text);
+}
+:root[data-theme='neon'] input[type='range'],
+:root[data-theme='neon'] input[type='checkbox'] {
+  accent-color: var(--neon-pink);
+}
+:root[data-theme='neon'] .code-input {
+  font-family: var(--font-comic);
+  color: var(--gold);
+  border: 3px dashed var(--gold) !important;
+  box-shadow:
+    0 0 16px rgba(255, 210, 63, 0.35),
+    inset 0 0 14px rgba(255, 210, 63, 0.15) !important;
+  text-shadow: 0 0 10px rgba(255, 210, 63, 0.6);
+}
+
+/* ---------- type ---------- */
+
+:root[data-theme='neon'] .logo {
+  font-family: var(--font-sign);
+  font-weight: 400;
+  font-size: clamp(3rem, 14vw, 6.5rem);
+  letter-spacing: 0.02em;
+  line-height: 1.05;
+  color: var(--neon-pink);
+  -webkit-text-stroke: 0;
+  text-shadow:
+    0 0 4px rgba(255, 110, 180, 0.9),
+    0 0 14px rgba(255, 60, 160, 0.8),
+    0 0 34px rgba(255, 60, 160, 0.55);
+  transform: rotate(-3deg);
+  animation: neon-flicker 7s linear infinite;
+}
+:root[data-theme='neon'] .logo.small {
+  font-size: 1.9rem;
+  -webkit-text-stroke: 0;
+  text-shadow:
+    0 0 4px rgba(255, 110, 180, 0.9),
+    0 0 12px rgba(255, 60, 160, 0.6);
+  animation: none;
+}
+:root[data-theme='neon'] .is-night .logo.small {
+  color: var(--neon-cyan);
+  text-shadow:
+    0 0 4px rgba(111, 243, 255, 0.9),
+    0 0 12px rgba(40, 220, 255, 0.6);
+}
+:root[data-theme='neon'] .title,
+:root[data-theme='neon'] .headline,
+:root[data-theme='neon'] .me-name {
+  font-family: var(--font-comic);
+  font-weight: 400;
+  color: var(--text);
+  text-shadow:
+    0 0 2px rgba(255, 255, 255, 0.5),
+    0 0 14px rgba(255, 110, 180, 0.55);
+}
+:root[data-theme='neon'] .title {
+  letter-spacing: 0.02em;
+}
+:root[data-theme='neon'] .headline {
+  letter-spacing: 0.01em;
+}
+:root[data-theme='neon'] .kicker {
+  font-family: var(--font-comic);
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  color: var(--kicker);
+  text-shadow: 0 0 10px rgba(111, 243, 255, 0.45);
+}
+:root[data-theme='neon'] .is-night .kicker {
+  text-shadow: 0 0 10px rgba(255, 210, 63, 0.4);
+}
+:root[data-theme='neon'] .lead,
+:root[data-theme='neon'] .tagline {
+  font-weight: 700;
+}
+:root[data-theme='neon'] .headline .reveal {
+  color: var(--text-red);
+}
+:root[data-theme='neon'] .mega {
+  font-family: var(--font-comic);
+  font-weight: 400;
+  color: var(--neon-pink);
+  -webkit-text-stroke: 0;
+  text-shadow:
+    0 0 4px rgba(255, 110, 180, 0.9),
+    0 0 18px rgba(255, 60, 160, 0.7),
+    0 0 40px rgba(255, 60, 160, 0.45);
+  transform: rotate(-2deg);
+}
+:root[data-theme='neon'] .winner-town .mega {
+  color: var(--neon-cyan);
+  text-shadow:
+    0 0 4px rgba(111, 243, 255, 0.9),
+    0 0 18px rgba(40, 220, 255, 0.7),
+    0 0 40px rgba(40, 220, 255, 0.4);
+}
+:root[data-theme='neon'] .winner-neutral .mega {
+  color: var(--neon-violet);
+  text-shadow:
+    0 0 4px rgba(210, 168, 255, 0.9),
+    0 0 18px rgba(166, 107, 255, 0.7),
+    0 0 40px rgba(166, 107, 255, 0.4);
+}
+:root[data-theme='neon'] .big-emoji,
+:root[data-theme='neon'] .narrator-face {
+  filter: drop-shadow(0 0 12px rgba(255, 110, 180, 0.55));
+}
+:root[data-theme='neon'] .or {
+  font-family: var(--font-comic);
+  color: var(--text);
+  text-shadow: 0 0 12px rgba(210, 168, 255, 0.7);
+}
+:root[data-theme='neon'] .link {
+  text-decoration-color: currentColor;
+}
+
+/* ---------- panels: felt tables with neon trim ---------- */
+
+:root[data-theme='neon'] .panel {
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.04), transparent 70%),
+    var(--surface);
+  border: 2px solid rgba(255, 110, 180, 0.75);
+  border-radius: var(--radius);
+  box-shadow:
+    0 0 18px rgba(255, 110, 180, 0.22),
+    inset 0 0 22px rgba(255, 110, 180, 0.08),
+    0 10px 26px rgba(0, 0, 0, 0.4);
+}
+:root[data-theme='neon'] .news {
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255, 210, 63, 0.06), transparent 70%),
+    var(--surface);
+  border: 3px dashed var(--gold);
+  border-radius: var(--radius);
+  box-shadow:
+    0 0 22px rgba(255, 210, 63, 0.3),
+    inset 0 0 22px rgba(255, 210, 63, 0.08),
+    0 10px 26px rgba(0, 0, 0, 0.4);
+}
+:root[data-theme='neon'] .gameover {
+  background:
+    repeating-conic-gradient(from 0deg at 50% 40%, rgba(255, 210, 63, 0.14) 0 10deg, transparent 10deg 20deg),
+    var(--surface);
+}
+:root[data-theme='neon'] .case-file {
+  background: var(--surface);
+  color: var(--text);
+  border-color: var(--gold);
+}
+:root[data-theme='neon'] .case-file.is-mafia {
+  border-color: var(--neon-pink);
+}
+
+/* Lobby sign with marquee bulbs. */
+:root[data-theme='neon'] .wanted {
+  color: var(--text);
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255, 110, 180, 0.12), transparent 65%),
+    var(--surface);
+  border: 7px dotted var(--gold);
+  box-shadow:
+    0 0 26px rgba(255, 210, 63, 0.35),
+    inset 0 0 26px rgba(255, 210, 63, 0.1);
+  transform: none;
+}
+:root[data-theme='neon'] .wanted-title {
+  font-family: var(--font-comic);
+  letter-spacing: 0.08em;
+  color: var(--neon-pink);
+  -webkit-text-stroke: 0;
+  text-shadow:
+    0 0 4px rgba(255, 110, 180, 0.9),
+    0 0 16px rgba(255, 60, 160, 0.65);
+}
+:root[data-theme='neon'] .qr {
+  background: #ffffff;
+  padding: 10px;
+  border: 4px solid var(--neon-cyan);
+  border-radius: 14px;
+  box-shadow:
+    0 0 20px rgba(111, 243, 255, 0.45),
+    0 8px 20px rgba(0, 0, 0, 0.4);
+}
+:root[data-theme='neon'] .room-code {
+  font-family: var(--font-comic);
+  color: var(--gold);
+  background: var(--marquee);
+  border: 4px dashed var(--gold);
+  border-radius: 14px;
+  text-shadow:
+    0 0 6px rgba(255, 210, 63, 0.8),
+    0 0 20px rgba(255, 180, 40, 0.5);
+  box-shadow:
+    0 0 24px rgba(255, 210, 63, 0.35),
+    inset 0 0 18px rgba(255, 210, 63, 0.15);
+  animation: neon-pulse-gold 2.8s ease-in-out infinite;
+}
+
+/* ---------- buttons: casino chips and neon signs ---------- */
+
+:root[data-theme='neon'] .btn {
+  font-family: var(--font-comic);
+  font-weight: 400;
+  font-size: 1.2rem;
+  letter-spacing: 0.04em;
+  min-height: 2.9rem;
+  padding: 0.5rem 1.25rem;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.35), transparent 60%),
+    var(--gold);
+  border: 3px dashed rgba(18, 10, 26, 0.45);
+  border-radius: 999px;
+  box-shadow:
+    0 0 0 3px var(--gold),
+    0 4px 0 3px #8a5d00,
+    0 0 22px rgba(255, 210, 63, 0.45);
+  text-shadow: none;
+  transition:
+    transform 0.08s,
+    box-shadow 0.12s,
+    filter 0.12s;
+}
+:root[data-theme='neon'] .btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.07);
+  box-shadow:
+    0 0 0 3px var(--gold),
+    0 5px 0 3px #8a5d00,
+    0 0 30px rgba(255, 210, 63, 0.6);
+}
+:root[data-theme='neon'] .btn:active:not(:disabled) {
+  transform: translateY(3px);
+  box-shadow:
+    0 0 0 3px var(--gold),
+    0 1px 0 3px #8a5d00,
+    0 0 14px rgba(255, 210, 63, 0.4);
+}
+:root[data-theme='neon'] .btn.big {
+  font-size: 1.5rem;
+  min-height: 3.6rem;
+  padding: 0.7rem 1.5rem;
+}
+:root[data-theme='neon'] .btn.small {
+  font-size: 1rem;
+  min-height: 2.5rem;
+  padding: 0.3rem 0.95rem;
+  border-width: 2px;
+  box-shadow:
+    0 0 0 2px var(--gold),
+    0 3px 0 2px #8a5d00,
+    0 0 14px rgba(255, 210, 63, 0.35);
+}
+
+:root[data-theme='neon'] .btn.red {
+  color: #ffffff;
+  background:
+    radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.16), transparent 60%),
+    var(--fill-mafia);
+  border-color: rgba(255, 255, 255, 0.7);
+  box-shadow:
+    0 0 0 3px var(--fill-mafia),
+    0 4px 0 3px #5e0a2e,
+    0 0 24px rgba(255, 60, 160, 0.55);
+}
+:root[data-theme='neon'] .btn.red:hover:not(:disabled),
+:root[data-theme='neon'] .btn.red:active:not(:disabled) {
+  box-shadow:
+    0 0 0 3px var(--fill-mafia),
+    0 3px 0 3px #5e0a2e,
+    0 0 32px rgba(255, 60, 160, 0.7);
+}
+:root[data-theme='neon'] .btn.teal {
+  color: #ffffff;
+  background:
+    radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.16), transparent 60%),
+    var(--fill-town);
+  border-color: rgba(255, 255, 255, 0.7);
+  box-shadow:
+    0 0 0 3px var(--fill-town),
+    0 4px 0 3px #003a40,
+    0 0 24px rgba(40, 220, 255, 0.55);
+}
+:root[data-theme='neon'] .btn.teal:hover:not(:disabled),
+:root[data-theme='neon'] .btn.teal:active:not(:disabled) {
+  box-shadow:
+    0 0 0 3px var(--fill-town),
+    0 3px 0 3px #003a40,
+    0 0 32px rgba(40, 220, 255, 0.7);
+}
+/* Ghost = an unlit box with a cyan neon tube around it. */
+:root[data-theme='neon'] .btn.ghost {
+  color: var(--text);
+  background: #150b20;
+  border: 2px solid var(--neon-cyan);
+  box-shadow:
+    0 0 12px rgba(111, 243, 255, 0.45),
+    inset 0 0 12px rgba(111, 243, 255, 0.18);
+  text-shadow: 0 0 8px rgba(111, 243, 255, 0.6);
+}
+:root[data-theme='neon'] .btn.ghost:hover:not(:disabled),
+:root[data-theme='neon'] .btn.ghost:active:not(:disabled) {
+  box-shadow:
+    0 0 20px rgba(111, 243, 255, 0.65),
+    inset 0 0 16px rgba(111, 243, 255, 0.25);
+}
+:root[data-theme='neon'] .btn.danger {
+  color: var(--text-red);
+  border-color: var(--neon-pink);
+  box-shadow:
+    0 0 12px rgba(255, 110, 180, 0.45),
+    inset 0 0 12px rgba(255, 110, 180, 0.15);
+  text-shadow: 0 0 8px rgba(255, 110, 180, 0.5);
+}
+:root[data-theme='neon'] .btn.btn:disabled {
+  color: var(--disabled-text);
+  background: var(--disabled-bg);
+  border: 3px dashed rgba(255, 255, 255, 0.22);
+  box-shadow: none;
+  text-shadow: none;
+  filter: none;
+  transform: none;
+}
+:root[data-theme='neon'] .btn.danger.btn:disabled {
+  color: var(--text-red);
+}
+
+/* Stepper: little gold chips. */
+:root[data-theme='neon'] .stepper button {
+  color: var(--ink);
+  width: 2.75rem;
+  height: 2.75rem;
+  font-family: var(--font-comic);
+  font-size: 1.5rem;
+  background:
+    radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.35), transparent 60%),
+    var(--gold);
+  border: 2px dashed rgba(18, 10, 26, 0.5);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 3px var(--gold),
+    0 3px 0 3px #8a5d00,
+    0 0 14px rgba(255, 210, 63, 0.4);
+}
+:root[data-theme='neon'] .stepper button:active {
+  transform: translateY(3px);
+  box-shadow:
+    0 0 0 3px var(--gold),
+    0 0 0 3px #8a5d00;
+}
+:root[data-theme='neon'] .stepper span {
+  font-family: var(--font-comic);
+  color: var(--gold);
+  text-shadow: 0 0 10px rgba(255, 210, 63, 0.5);
+}
+
+/* ---------- name cards: playing cards ---------- */
+
+:root[data-theme='neon'] .name-card {
+  color: var(--ink);
+  background: #fff8ec;
+  border: 2px solid #ffffff;
+  border-radius: 12px;
+  font-family: var(--font-comic);
+  font-size: 1.4rem;
+  letter-spacing: 0.02em;
+  min-height: 7rem;
+  padding: 1rem 0.4rem 0.75rem;
+  justify-content: center;
+  box-shadow:
+    inset 0 0 0 5px #fff8ec,
+    inset 0 0 0 6px rgba(194, 24, 91, 0.4),
+    0 0 16px rgba(255, 110, 180, 0.35),
+    0 8px 18px rgba(0, 0, 0, 0.45);
+}
+:root[data-theme='neon'] .name-card::before {
+  content: '♦';
+  position: absolute;
+  top: 0.45rem;
+  left: 0.6rem;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--fill-mafia);
+}
+:root[data-theme='neon'] .name-card:nth-child(even)::before {
+  content: '♠';
+  color: var(--ink);
+}
+:root[data-theme='neon'] .name-card:active:not(:disabled) {
+  transform: translateY(3px);
+  box-shadow:
+    inset 0 0 0 5px #fff8ec,
+    inset 0 0 0 6px rgba(194, 24, 91, 0.4),
+    0 0 10px rgba(255, 110, 180, 0.3);
+}
+:root[data-theme='neon'] .name-card:disabled {
+  opacity: 1;
+  color: var(--disabled-text);
+  background: var(--disabled-bg);
+  border: 2px dashed rgba(255, 255, 255, 0.25);
+  box-shadow: none;
+}
+:root[data-theme='neon'] .name-card:disabled::before {
+  content: none;
+}
+:root[data-theme='neon'] .taken {
+  font-family: var(--font-body);
+  background: var(--fill-mafia);
+  color: #ffffff;
+  box-shadow: 0 0 8px rgba(255, 60, 160, 0.5);
+}
+
+/* ---------- targets: felt-table tiles ---------- */
+
+:root[data-theme='neon'] .target {
+  color: var(--text);
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.06), transparent 70%),
+    var(--felt);
+  border: 2px solid rgba(111, 247, 192, 0.6);
+  border-radius: 14px;
+  min-height: 3.6rem;
+  font-family: var(--font-comic);
+  font-size: 1.35rem;
+  letter-spacing: 0.02em;
+  box-shadow:
+    0 0 12px rgba(111, 247, 192, 0.2),
+    inset 0 0 16px rgba(0, 0, 0, 0.35),
+    0 6px 14px rgba(0, 0, 0, 0.35);
+}
+:root[data-theme='neon'] .target:active {
+  transform: translateY(2px);
+  box-shadow: inset 0 0 16px rgba(0, 0, 0, 0.35);
+}
+:root[data-theme='neon'] .target.selected {
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 50% 20%, rgba(255, 255, 255, 0.35), transparent 65%),
+    var(--gold);
+  border: 2px solid #ffffff;
+  transform: scale(1.02);
+  box-shadow:
+    0 0 0 3px rgba(255, 210, 63, 0.5),
+    0 0 26px rgba(255, 210, 63, 0.65),
+    0 6px 14px rgba(0, 0, 0, 0.35);
+}
+:root[data-theme='neon'] .target.skip {
+  font-size: 1.1rem;
+}
+:root[data-theme='neon'] .group-picks {
+  font-family: var(--font-body);
+  background: var(--fill-mafia);
+  color: #ffffff;
+  border: 1.5px solid rgba(255, 255, 255, 0.7);
+}
+
+/* ---------- role cards ---------- */
+
+:root[data-theme='neon'] .role-card {
+  color: var(--text);
+  background: var(--surface);
+  border: 3px solid var(--neon-violet);
+  border-radius: 18px;
+  outline: 2px dashed rgba(255, 255, 255, 0.28);
+  outline-offset: -12px;
+  box-shadow:
+    0 0 26px rgba(210, 168, 255, 0.45),
+    inset 0 0 30px rgba(210, 168, 255, 0.12),
+    0 14px 30px rgba(0, 0, 0, 0.5);
+}
+:root[data-theme='neon'] .role-card.team-mafia {
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255, 60, 160, 0.14), transparent 65%),
+    #2c0b20;
+  border-color: var(--neon-pink);
+  box-shadow:
+    0 0 28px rgba(255, 60, 160, 0.5),
+    inset 0 0 30px rgba(255, 60, 160, 0.12),
+    0 14px 30px rgba(0, 0, 0, 0.5);
+}
+:root[data-theme='neon'] .role-card.team-town {
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(40, 220, 255, 0.12), transparent 65%),
+    #06292d;
+  border-color: var(--neon-cyan);
+  box-shadow:
+    0 0 28px rgba(40, 220, 255, 0.45),
+    inset 0 0 30px rgba(40, 220, 255, 0.1),
+    0 14px 30px rgba(0, 0, 0, 0.5);
+}
+:root[data-theme='neon'] .role-card.team-neutral {
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(166, 107, 255, 0.16), transparent 65%),
+    #1f1036;
+  border-color: var(--neon-violet);
+}
+:root[data-theme='neon'] .role-card .stamp {
+  top: 1.2rem;
+  right: 1.2rem;
+}
+:root[data-theme='neon'] .role-name {
+  font-family: var(--font-comic);
+  letter-spacing: 0.02em;
+  color: var(--text);
+  text-shadow:
+    0 0 4px rgba(255, 255, 255, 0.6),
+    0 0 18px rgba(255, 110, 180, 0.6);
+}
+:root[data-theme='neon'] .team-town .role-name {
+  text-shadow:
+    0 0 4px rgba(255, 255, 255, 0.6),
+    0 0 18px rgba(40, 220, 255, 0.6);
+}
+:root[data-theme='neon'] .team-neutral .role-name {
+  text-shadow:
+    0 0 4px rgba(255, 255, 255, 0.6),
+    0 0 18px rgba(166, 107, 255, 0.7);
+}
+:root[data-theme='neon'] .role-emoji {
+  filter: drop-shadow(0 0 14px rgba(255, 255, 255, 0.35));
+}
+:root[data-theme='neon'] .teammates {
+  border-top: 2px dashed rgba(255, 255, 255, 0.35);
+}
+/* Card back: a pink diamond lattice. */
+:root[data-theme='neon'] .envelope {
+  color: var(--text);
+  background:
+    repeating-linear-gradient(45deg, rgba(255, 110, 180, 0.18) 0 2px, transparent 2px 16px),
+    repeating-linear-gradient(-45deg, rgba(255, 110, 180, 0.18) 0 2px, transparent 2px 16px),
+    #3a0d2b;
+  border-color: var(--neon-pink);
+  box-shadow:
+    0 0 26px rgba(255, 60, 160, 0.45),
+    0 14px 30px rgba(0, 0, 0, 0.5);
+}
+:root[data-theme='neon'] .envelope b {
+  font-family: var(--font-comic);
+  color: var(--gold);
+  text-shadow:
+    0 0 6px rgba(255, 210, 63, 0.8),
+    0 0 18px rgba(255, 180, 40, 0.5);
+}
+:root[data-theme='neon'] .peek-overlay {
+  background: rgba(11, 7, 20, 0.9);
+}
+
+/* ---------- avatars: casino chips ---------- */
+
+:root[data-theme='neon'] .avatar {
+  font-family: var(--font-comic);
+  border: 2px dashed rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 2px var(--ink),
+    0 0 10px rgba(255, 255, 255, 0.25);
+}
+:root[data-theme='neon'] .avatar-lg {
+  border-width: 3px;
+}
+:root[data-theme='neon'] .avatar.is-dead {
+  background: #4a4458;
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 0 2px var(--ink);
+}
+:root[data-theme='neon'] .skip-avatar {
+  background: var(--surface-strong);
+}
+
+/* ---------- tags, chips, stamps ---------- */
+
+:root[data-theme='neon'] .tag {
+  color: var(--text);
+  background: var(--surface-strong);
+  border: 1.5px solid rgba(111, 243, 255, 0.6);
+  font-weight: 700;
+}
+:root[data-theme='neon'] .tag.team-mafia {
+  color: #ffffff;
+  background: var(--fill-mafia);
+  border-color: var(--neon-pink);
+  box-shadow: 0 0 8px rgba(255, 60, 160, 0.5);
+}
+:root[data-theme='neon'] .tag.team-town {
+  color: #ffffff;
+  background: var(--fill-town);
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 8px rgba(40, 220, 255, 0.45);
+}
+:root[data-theme='neon'] .tag.team-neutral {
+  color: #ffffff;
+  background: var(--fill-solo);
+  border-color: var(--neon-violet);
+  box-shadow: 0 0 8px rgba(166, 107, 255, 0.5);
+}
+:root[data-theme='neon'] .chip {
+  color: var(--text);
+  background: var(--surface-strong);
+  border: 1.5px solid rgba(111, 243, 255, 0.6);
+  box-shadow: 0 0 8px rgba(111, 243, 255, 0.2);
+}
+:root[data-theme='neon'] .chip button {
+  color: var(--text-red);
+  min-width: 2rem;
+  min-height: 2rem;
+}
+:root[data-theme='neon'] .stamp {
+  font-family: var(--font-comic);
+  letter-spacing: 0.1em;
+  background: var(--marquee);
+  border: 2px solid currentColor;
+  border-radius: 8px;
+  padding: 0.15rem 0.6rem;
+  box-shadow:
+    0 0 10px currentColor,
+    inset 0 0 6px currentColor;
+  text-shadow: 0 0 8px currentColor;
+  transform: rotate(-5deg);
+}
+:root[data-theme='neon'] .stamp-red {
+  color: #ff8cc6;
+}
+:root[data-theme='neon'] .stamp-teal {
+  color: var(--neon-cyan);
+}
+:root[data-theme='neon'] .stamp-purple {
+  color: var(--neon-violet);
+}
+
+/* ---------- burst: neon starburst ---------- */
+
+:root[data-theme='neon'] .burst {
+  width: auto;
+  min-width: 10.5rem;
+  padding: 0 2.8rem;
+  height: 7.5rem;
+  font-family: var(--font-comic);
+  font-size: 1.85rem;
+  letter-spacing: 0.04em;
+  color: #ffffff;
+  -webkit-text-stroke: 0;
+  text-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.35),
+    0 0 10px rgba(255, 255, 255, 0.5);
+  clip-path: polygon(
+    50% 0%, 57% 15%, 69% 4%, 70% 20%, 85% 15%, 80% 30%, 96% 31%, 85% 43%, 100% 50%, 85% 57%, 96% 69%, 80% 70%,
+    85% 85%, 70% 80%, 69% 96%, 57% 85%, 50% 100%, 43% 85%, 31% 96%, 30% 80%, 15% 85%, 20% 70%, 4% 69%, 15% 57%,
+    0% 50%, 15% 43%, 4% 31%, 20% 30%, 15% 15%, 30% 20%, 31% 4%, 43% 15%
+  );
+}
+/* Each burst: solid fill where the word sits, a glowing tube colour at the tips. */
+:root[data-theme='neon'] .burst-red {
+  background: radial-gradient(ellipse at center, var(--fill-mafia) 0 56%, #ff4fa3 66%, #ffc2e0 100%);
+}
+:root[data-theme='neon'] .burst-teal {
+  background: radial-gradient(ellipse at center, var(--fill-town) 0 56%, #18c6d6 66%, #c4fbff 100%);
+}
+:root[data-theme='neon'] .burst-purple {
+  background: radial-gradient(ellipse at center, var(--fill-solo) 0 56%, #a66bff 66%, #ecdcff 100%);
+}
+:root[data-theme='neon'] .burst-gold {
+  color: var(--ink);
+  -webkit-text-stroke: 0;
+  text-shadow: none;
+  background: radial-gradient(ellipse at center, var(--gold) 0 56%, #ffe48a 70%, #fff6d2 100%);
+}
+
+/* ---------- banners & toasts ---------- */
+
+:root[data-theme='neon'] .banner {
+  color: var(--text);
+  background: var(--surface-strong);
+  border: 2px solid rgba(111, 243, 255, 0.7);
+  border-radius: 12px;
+  box-shadow: 0 0 14px rgba(111, 243, 255, 0.25);
+  font-weight: 700;
+}
+:root[data-theme='neon'] .banner.warn {
+  color: var(--ink);
+  background: var(--gold);
+  border: 2px dashed rgba(18, 10, 26, 0.45);
+  box-shadow:
+    0 0 0 2px var(--gold),
+    0 0 20px rgba(255, 210, 63, 0.5);
+}
+:root[data-theme='neon'] .banner.relay {
+  color: var(--text);
+  background: var(--surface-strong);
+  border: 2px dashed var(--neon-cyan);
+}
+:root[data-theme='neon'] .banner.ghost-banner {
+  color: var(--text);
+  background: #2b1745;
+  border: 2px solid var(--neon-violet);
+  box-shadow: 0 0 14px rgba(166, 107, 255, 0.4);
+}
+:root[data-theme='neon'] .toast {
+  color: var(--text);
+  background: var(--surface-strong);
+  border: 2px solid var(--neon-pink);
+  border-radius: 18px;
+  box-shadow:
+    0 0 22px rgba(255, 60, 160, 0.5),
+    0 10px 26px rgba(0, 0, 0, 0.5);
+}
+
+/* ---------- progress & countdowns ---------- */
+
+:root[data-theme='neon'] .progress-bar {
+  background: var(--marquee);
+  border: 2px solid rgba(111, 243, 255, 0.7);
+  box-shadow:
+    0 0 10px rgba(111, 243, 255, 0.3),
+    inset 0 0 8px rgba(0, 0, 0, 0.5);
+}
+:root[data-theme='neon'] .progress-bar span {
+  background: repeating-linear-gradient(-45deg, #ff4fa3 0 10px, #ff8cc6 10px 20px);
+  background-size: 28px 28px;
+  border-right: 0;
+  box-shadow: 0 0 12px rgba(255, 60, 160, 0.7);
+}
+:root[data-theme='neon'] .progress-label b {
+  color: var(--gold);
+}
+:root[data-theme='neon'] .countdown {
+  font-family: var(--font-comic);
+  color: var(--gold);
+  background: var(--marquee);
+  border: 3px dashed var(--gold);
+  border-radius: 14px;
+  text-shadow:
+    0 0 6px rgba(255, 210, 63, 0.8),
+    0 0 18px rgba(255, 180, 40, 0.5);
+  box-shadow:
+    0 0 20px rgba(255, 210, 63, 0.35),
+    inset 0 0 14px rgba(255, 210, 63, 0.12);
+}
+:root[data-theme='neon'] .countdown.done {
+  color: #ffffff;
+  background: var(--fill-mafia);
+  border: 3px solid var(--neon-pink);
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 26px rgba(255, 60, 160, 0.65);
+}
+:root[data-theme='neon'] .auto-note {
+  color: var(--text-muted);
+}
+:root[data-theme='neon'] .auto-note b {
+  font-family: var(--font-comic);
+  font-weight: 400;
+  color: var(--gold);
+  text-shadow: 0 0 10px rgba(255, 210, 63, 0.6);
+}
+
+/* ---------- lists, bars, pills ---------- */
+
+:root[data-theme='neon'] .player-list li,
+:root[data-theme='neon'] .notebook-row {
+  border-bottom: 1.5px dashed rgba(255, 255, 255, 0.16);
+}
+:root[data-theme='neon'] .role-row {
+  border-top: 1.5px dashed rgba(255, 255, 255, 0.16);
+}
+:root[data-theme='neon'] .player-list li:last-child {
+  border-bottom: none;
+}
+:root[data-theme='neon'] .role-row:first-child {
+  border-top: none;
+}
+:root[data-theme='neon'] .role-list li {
+  color: var(--text);
+  background: var(--surface-strong);
+  border: 1.5px solid rgba(255, 255, 255, 0.18);
+}
+:root[data-theme='neon'] .conn {
+  border: 2px solid rgba(255, 255, 255, 0.6);
+}
+:root[data-theme='neon'] .conn.on {
+  background: var(--neon-green);
+  box-shadow: 0 0 8px rgba(111, 247, 192, 0.8);
+}
+:root[data-theme='neon'] .conn.off {
+  background: #ff4fa3;
+  box-shadow: 0 0 8px rgba(255, 60, 160, 0.8);
+}
+:root[data-theme='neon'] .bar {
+  background: var(--marquee);
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+}
+:root[data-theme='neon'] .bar span {
+  background: #ff4fa3;
+  box-shadow: 0 0 10px rgba(255, 60, 160, 0.7);
+}
+:root[data-theme='neon'] .num {
+  font-family: var(--font-comic);
+  color: var(--gold);
+}
+:root[data-theme='neon'] .status-pill {
+  color: var(--text);
+  background: var(--surface-strong);
+  border: 2px solid rgba(111, 243, 255, 0.6);
+  box-shadow: 0 0 12px rgba(111, 243, 255, 0.25);
+}
+:root[data-theme='neon'] .status-pill b {
+  font-family: var(--font-comic);
+  color: var(--gold);
+}
+:root[data-theme='neon'] .status-pill .dot {
+  border: none;
+  background: var(--gold);
+  box-shadow: 0 0 8px rgba(255, 210, 63, 0.9);
+}
+:root[data-theme='neon'] .status-online .dot {
+  background: var(--neon-green);
+  box-shadow: 0 0 8px rgba(111, 247, 192, 0.9);
+}
+:root[data-theme='neon'] .status-offline .dot,
+:root[data-theme='neon'] .status-taken .dot {
+  background: #ff4fa3;
+  box-shadow: 0 0 8px rgba(255, 60, 160, 0.9);
+}
+:root[data-theme='neon'] .group-status {
+  color: var(--text);
+  background: var(--surface-strong);
+  border: 2px solid rgba(111, 243, 255, 0.6);
+}
+:root[data-theme='neon'] .group-status.good {
+  color: var(--ink);
+  background: var(--neon-green);
+  border-color: #ffffff;
+  box-shadow: 0 0 14px rgba(111, 247, 192, 0.6);
+}
+:root[data-theme='neon'] .locked {
+  color: var(--text);
+  background: var(--surface-strong);
+  border: 2px dashed var(--gold);
+  box-shadow: 0 0 14px rgba(255, 210, 63, 0.3);
+}
+:root[data-theme='neon'] .sticky-actions {
+  background: linear-gradient(transparent, var(--page-bg) 35%);
+}
+
+/* ---------- host narrator ---------- */
+
+:root[data-theme='neon'] .narrator-bubble p {
+  color: var(--text);
+  background: var(--surface-strong);
+  border: 2px solid var(--neon-cyan);
+  border-radius: 20px;
+  box-shadow:
+    0 0 16px rgba(111, 243, 255, 0.35),
+    inset 0 0 14px rgba(111, 243, 255, 0.1);
+  font-family: var(--font-body);
+  font-style: normal;
+  font-weight: 700;
+}
+:root[data-theme='neon'] .narrator-bubble p::before {
+  border-right-color: var(--neon-cyan);
+}
+
+/* ---------- theme picker ---------- */
+
+:root[data-theme='neon'] .theme-option {
+  color: var(--text);
+  background: var(--surface);
+  border: 2px solid rgba(255, 110, 180, 0.6);
+  border-radius: 14px;
+  min-height: 3rem;
+  box-shadow: 0 0 12px rgba(255, 110, 180, 0.2);
+}
+:root[data-theme='neon'] .theme-option b {
+  font-family: var(--font-comic);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+:root[data-theme='neon'] .theme-option.selected {
+  color: var(--ink);
+  background: var(--gold);
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 20px rgba(255, 210, 63, 0.55);
+}
+
+/* ---------- confetti: glowing sparkles ---------- */
+
+:root[data-theme='neon'] .confetti span {
+  width: 9px;
+  height: 9px;
+  border: none;
+  border-radius: 2px;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+  filter: saturate(1.4) brightness(1.15);
+}
+
+/* ---------- night: the strip after midnight ---------- */
+
+:root[data-theme='neon'] .is-night {
+  --page-bg: #0b0714;
+  --surface: #170e26;
+  --surface-strong: #24143a;
+  --text: #fff7fc;
+  --text-muted: #d4c6ea;
+  --text-red: #ff9ccd;
+  --text-good: #7cf9c8;
+  --kicker: #ffd23f;
+  --disabled-bg: #2e2240;
+  --disabled-text: #d4c6df;
+  --felt: #0a2a20;
+  background:
+    radial-gradient(ellipse 90% 55% at 50% -15%, rgba(123, 47, 196, 0.35), transparent 62%),
+    radial-gradient(ellipse 60% 40% at 100% 100%, rgba(255, 60, 160, 0.1), transparent 60%),
+    #0b0714;
+}
+:root[data-theme='neon'] body:has(.is-night) {
+  background: #0b0714;
+}
+:root[data-theme='neon'] .is-night .panel,
+:root[data-theme='neon'] .is-night .locked {
+  border-color: rgba(166, 107, 255, 0.75);
+  box-shadow:
+    0 0 18px rgba(166, 107, 255, 0.25),
+    inset 0 0 22px rgba(166, 107, 255, 0.08),
+    0 10px 26px rgba(0, 0, 0, 0.5);
+}
+:root[data-theme='neon'] .is-night .locked {
+  border-color: var(--gold);
+}
+:root[data-theme='neon'] .is-night .avatar {
+  box-shadow:
+    0 0 0 2px #000000,
+    0 0 10px rgba(255, 255, 255, 0.2);
+}
+:root[data-theme='neon'] .is-night .target {
+  border-color: rgba(111, 247, 192, 0.5);
+}
+:root[data-theme='neon'] .is-night .target.selected {
+  border-color: #ffffff;
+}
+:root[data-theme='neon'] .is-night .btn.ghost {
+  border-color: var(--neon-cyan);
+}
+:root[data-theme='neon'] .is-night .btn.ghost.danger {
+  border-color: var(--neon-pink);
+}
+:root[data-theme='neon'] .is-night .btn.btn:disabled {
+  border-color: rgba(255, 255, 255, 0.22);
+}
+:root[data-theme='neon'] .night-title {
+  font-family: var(--font-sign);
+  font-weight: 400;
+  font-size: clamp(3rem, 10vw, 5.5rem);
+  letter-spacing: 0.04em;
+  color: var(--neon-cyan);
+  text-shadow:
+    0 0 4px rgba(111, 243, 255, 0.9),
+    0 0 18px rgba(40, 220, 255, 0.7),
+    0 0 40px rgba(40, 220, 255, 0.4);
+  animation: neon-flicker 9s linear infinite;
+}
+
+/* Sky: a gold neon crescent and coloured sparkles instead of plain stars. */
+:root[data-theme='neon'] .moon {
+  width: 80px;
+  height: 80px;
+  background: transparent;
+  box-shadow: inset -16px 8px 0 0 var(--gold);
+  filter: drop-shadow(0 0 10px rgba(255, 210, 63, 0.75));
+}
+:root[data-theme='neon'] .star {
+  background: #ffffff;
+  box-shadow: 0 0 6px 1px rgba(255, 255, 255, 0.7);
+  animation-duration: 3.4s;
+}
+:root[data-theme='neon'] .star:nth-child(3n) {
+  background: var(--neon-cyan);
+  box-shadow: 0 0 6px 1px rgba(111, 243, 255, 0.8);
+}
+:root[data-theme='neon'] .star:nth-child(3n + 1) {
+  background: var(--neon-pink);
+  box-shadow: 0 0 6px 1px rgba(255, 110, 180, 0.8);
+}
+
+/* ---------- small screens ---------- */
+
+@media (max-width: 400px) {
+  :root[data-theme='neon'] .btn.big {
+    font-size: 1.3rem;
+    padding: 0.65rem 1rem;
+  }
+  :root[data-theme='neon'] .name-card {
+    font-size: 1.25rem;
+  }
+  :root[data-theme='neon'] .burst {
+    width: auto;
+    min-width: 9.5rem;
+    padding: 0 2.4rem;
+    height: 7rem;
+    font-size: 1.6rem;
+  }
+}
+
+/* ---------- animations (all subtle; base CSS stops them for reduced motion) ---------- */
+
+@keyframes neon-flicker {
+  0%,
+  91%,
+  93%,
+  96%,
+  100% {
+    opacity: 1;
+  }
+  92%,
+  95% {
+    opacity: 0.82;
+  }
+}
+@keyframes neon-pulse-gold {
+  0%,
+  100% {
+    box-shadow:
+      0 0 18px rgba(255, 210, 63, 0.3),
+      inset 0 0 14px rgba(255, 210, 63, 0.12);
+  }
+  50% {
+    box-shadow:
+      0 0 30px rgba(255, 210, 63, 0.5),
+      inset 0 0 20px rgba(255, 210, 63, 0.2);
+  }
+}

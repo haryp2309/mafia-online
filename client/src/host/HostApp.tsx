@@ -20,6 +20,8 @@ import {
 } from '../ui';
 import { send, useWakeLock } from '../useGame';
 import { unlockAudioOnGesture } from './audio';
+import { routes } from '../routes';
+import { ThemePicker } from '../ThemePicker';
 import { Lobby } from './Lobby';
 import { narrationFor, useNarration } from './narration';
 import { Setup } from './Setup';
@@ -91,6 +93,7 @@ export function HostApp() {
           <button className="btn small ghost" onClick={() => setPanel((p) => !p)} aria-expanded={panel}>
             {narrate ? '🎙️ Narrator' : '🔇 Narrator off'}
           </button>
+          <ThemePicker compact />
         </div>
       </header>
       {panel && <NarrationPanel narrate={narrate} setNarrate={setNarrate} pub={pub} onClose={() => setPanel(false)} />}
@@ -296,6 +299,9 @@ function InGame({ pub }: { pub: PublicState }) {
         >
           Reset game
         </button>
+        <a className="nerd-link" href={routes.nerd} target="_blank" rel="noreferrer">
+          🤓 How it's built
+        </a>
       </aside>
     </div>
   );
