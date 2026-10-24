@@ -38,7 +38,20 @@ export function deathReveal(pub: PublicState, id: string | null | undefined): st
 
 // ---------- little comic building blocks ----------
 
-const AVATAR_COLORS = ['#e2303f', '#ffc531', '#22b5a5', '#3d6fd9', '#8d5bd6', '#f57b2b', '#e05aa0', '#5bb84a'];
+/** Bright party colours for confetti. */
+const CONFETTI_COLORS = ['#e2303f', '#ffc531', '#22b5a5', '#3d6fd9', '#8d5bd6', '#f57b2b', '#e05aa0', '#5bb84a'];
+
+/** Avatar fills, each with a letter colour that reads at 4.5:1 or better. */
+const AVATAR_COLORS: { bg: string; fg: string }[] = [
+  { bg: '#c0283a', fg: '#ffffff' },
+  { bg: '#ffc531', fg: '#17121f' },
+  { bg: '#0e7c70', fg: '#ffffff' },
+  { bg: '#2f5fc4', fg: '#ffffff' },
+  { bg: '#6f42c1', fg: '#ffffff' },
+  { bg: '#f57b2b', fg: '#17121f' },
+  { bg: '#a3245e', fg: '#ffffff' },
+  { bg: '#7ed957', fg: '#17121f' },
+];
 
 function hash(s: string): number {
   let h = 0;
@@ -48,11 +61,20 @@ function hash(s: string): number {
 
 /** A round comic face with the player's initial, colour picked from their name. */
 export function Avatar({ name, dead, size = 'md' }: { name: string; dead?: boolean; size?: 'sm' | 'md' | 'lg' }) {
-  const color = AVATAR_COLORS[hash(name) % AVATAR_COLORS.length];
+  if (dead) {
+    // One look for every dead player: a slate disc with a white cross.
+    return (
+      <span className={`avatar avatar-${size} is-dead`} aria-hidden>
+        ✖
+      </span>
+    );
+  }
+  const { bg, fg } = AVATAR_COLORS[hash(name) % AVATAR_COLORS.length];
+  // Light letters get an ink outline; dark letters on light fills don't need one.
+  const textShadow = fg === '#ffffff' ? undefined : 'none';
   return (
-    <span className={`avatar avatar-${size} ${dead ? 'is-dead' : ''}`} style={{ background: color }} aria-hidden>
+    <span className={`avatar avatar-${size}`} style={{ background: bg, color: fg, textShadow }} aria-hidden>
       {name.slice(0, 1).toUpperCase()}
-      {dead && <span className="avatar-x">✖</span>}
     </span>
   );
 }
@@ -95,7 +117,7 @@ export function Confetti() {
         left: `${(i * 17) % 100}%`,
         delay: `${(i % 12) * 0.18}s`,
         duration: `${2.6 + (i % 5) * 0.4}s`,
-        color: AVATAR_COLORS[i % AVATAR_COLORS.length],
+        color: CONFETTI_COLORS[i % CONFETTI_COLORS.length],
         rotate: `${(i * 47) % 360}deg`,
       })),
     [],

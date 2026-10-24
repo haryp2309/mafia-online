@@ -20,6 +20,20 @@
   --radius: 16px;
   --shadow: 5px 5px 0 var(--ink);
   --shadow-sm: 3px 3px 0 var(--ink);
+  /* Day/night tokens: components use these, .is-night redefines them. */
+  --surface: #fffaf0;
+  --surface-strong: #ffffff;
+  --text: var(--ink);
+  --text-muted: #5c5466;
+  --text-red: #b81d2b;
+  --text-good: #0f7a52;
+  --kicker: #b81d2b;
+  --disabled-bg: #e6dccb;
+  --disabled-text: #5f5868;
+  /* Fills that carry white text (all at least 4.5:1). */
+  --fill-mafia: #b81d2b;
+  --fill-town: #0e7c70;
+  --fill-solo: #6f42c1;
   --font-comic: 'Bangers', 'Impact', 'Arial Black', sans-serif;
   --font-body: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif;
   color-scheme: light;
@@ -70,6 +84,7 @@ input,
 select,
 textarea {
   width: 100%;
+  color: var(--ink);
   background: #fff;
   border: 3px solid var(--ink);
   border-radius: 12px;
@@ -98,6 +113,7 @@ input[type='checkbox'] {
 /* ---------- layout ---------- */
 
 .app {
+  color: var(--text);
   position: relative;
   min-height: 100vh;
   min-height: 100dvh;
@@ -133,13 +149,13 @@ input[type='checkbox'] {
   font-size: 0.88rem;
 }
 .muted {
-  color: var(--muted);
+  color: var(--text-muted);
 }
 .good {
-  color: #138a5e;
+  color: var(--text-good);
 }
 .bad {
-  color: var(--red);
+  color: var(--text-red);
 }
 
 /* ---------- type ---------- */
@@ -176,7 +192,7 @@ input[type='checkbox'] {
   font-size: 1.05rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--red-dark);
+  color: var(--kicker);
   margin-bottom: 0.35rem;
 }
 .lead {
@@ -194,14 +210,14 @@ input[type='checkbox'] {
   flex-wrap: wrap;
 }
 .headline .reveal {
-  color: var(--red);
+  color: var(--text-red);
 }
 .mega {
   font-family: var(--font-comic);
   font-weight: 400;
   font-size: clamp(2.6rem, 9vw, 4.8rem);
   letter-spacing: 0.04em;
-  color: var(--gold);
+  color: var(--fill-mafia);
   -webkit-text-stroke: 2px var(--ink);
   text-shadow: 5px 5px 0 var(--ink);
   transform: rotate(-2deg);
@@ -216,7 +232,7 @@ input[type='checkbox'] {
 /* ---------- panels ---------- */
 
 .panel {
-  background: #fffaf0;
+  background: var(--surface);
   border: 3px solid var(--ink);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
@@ -272,8 +288,8 @@ button:disabled {
   box-shadow: 0 0 0 var(--ink);
 }
 .btn:disabled {
-  background: #e6dccb;
-  color: #8c8496;
+  background: var(--disabled-bg);
+  color: var(--disabled-text);
   box-shadow: none;
 }
 .btn.big {
@@ -287,18 +303,19 @@ button:disabled {
   box-shadow: 2px 2px 0 var(--ink);
 }
 .btn.red {
-  background: var(--red);
+  background: var(--fill-mafia);
   color: #fff;
 }
 .btn.teal {
-  background: var(--teal);
+  background: var(--fill-town);
   color: #fff;
 }
 .btn.ghost {
-  background: #fffaf0;
+  background: var(--surface);
+  color: var(--text);
 }
 .btn.danger {
-  color: var(--red-dark);
+  color: var(--text-red);
 }
 .link {
   background: none;
@@ -344,21 +361,11 @@ button:disabled {
   font-size: 1.8rem;
 }
 .avatar.is-dead {
-  filter: grayscale(1);
-  opacity: 0.85;
-}
-.avatar-x {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--red);
-  font-size: 1.6em;
-  text-shadow: 2px 2px 0 var(--ink);
+  background: #4a4458;
+  color: #fff;
 }
 .skip-avatar {
-  background: #fffaf0;
+  background: var(--surface);
   text-shadow: none;
   font-size: 1.3rem;
 }
@@ -372,19 +379,22 @@ button:disabled {
   padding: 0.12rem 0.55rem;
   border: 2px solid var(--ink);
   border-radius: 999px;
-  background: #fff;
+  background: var(--surface-strong);
   white-space: nowrap;
 }
+.tag {
+  color: var(--text);
+}
 .tag.team-mafia {
-  background: var(--red);
+  background: var(--fill-mafia);
   color: #fff;
 }
 .tag.team-town {
-  background: var(--teal);
+  background: var(--fill-town);
   color: #fff;
 }
 .tag.team-neutral {
-  background: var(--purple);
+  background: var(--fill-solo);
   color: #fff;
 }
 
@@ -398,7 +408,7 @@ button:disabled {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  background: #fff;
+  background: var(--surface-strong);
   border: 2px solid var(--ink);
   border-radius: 999px;
   padding: 0.2rem 0.3rem 0.2rem 0.7rem;
@@ -410,7 +420,7 @@ button:disabled {
   padding: 0 0.4rem;
   font-size: 1.2rem;
   font-weight: 900;
-  color: var(--red);
+  color: var(--text-red);
 }
 
 .stamp {
@@ -423,16 +433,15 @@ button:disabled {
   border: 3px solid currentColor;
   border-radius: 6px;
   transform: rotate(-6deg);
-  opacity: 0.9;
 }
 .stamp-red {
-  color: var(--red);
+  color: var(--fill-mafia);
 }
 .stamp-teal {
-  color: var(--teal);
+  color: var(--fill-town);
 }
 .stamp-purple {
-  color: var(--purple);
+  color: var(--fill-solo);
 }
 
 /* Comic explosion bubble. */
@@ -456,7 +465,7 @@ button:disabled {
   animation: pop 0.45s cubic-bezier(0.2, 1.6, 0.4, 1) both;
 }
 .burst-red {
-  background: var(--red);
+  background: var(--fill-mafia);
 }
 .burst-gold {
   background: var(--gold);
@@ -465,15 +474,16 @@ button:disabled {
   text-shadow: 2px 2px 0 #fff;
 }
 .burst-teal {
-  background: var(--teal);
+  background: var(--fill-town);
 }
 .burst-purple {
-  background: var(--purple);
+  background: var(--fill-solo);
 }
 
 /* ---------- banners & toasts ---------- */
 
 .banner {
+  color: var(--ink);
   border: 3px solid var(--ink);
   border-radius: 12px;
   padding: 0.6rem 0.9rem;
@@ -501,7 +511,7 @@ button:disabled {
   transform: translateX(-50%);
   z-index: 60;
   max-width: calc(100% - 32px);
-  background: #fff;
+  background: var(--surface-strong);
   border: 3px solid var(--ink);
   border-radius: 18px;
   box-shadow: var(--shadow);
@@ -519,7 +529,7 @@ button:disabled {
   height: 18px;
   border: 3px solid var(--ink);
   border-radius: 999px;
-  background: #fff;
+  background: var(--surface-strong);
   overflow: hidden;
   box-shadow: 2px 2px 0 var(--ink);
 }
@@ -542,7 +552,7 @@ button:disabled {
   font-size: 2.6rem;
   letter-spacing: 0.05em;
   font-variant-numeric: tabular-nums;
-  background: #fff;
+  background: var(--surface-strong);
   border: 3px solid var(--ink);
   border-radius: 14px;
   padding: 0.1rem 0.8rem;
@@ -550,7 +560,7 @@ button:disabled {
   margin-bottom: 0.8rem;
 }
 .countdown.done {
-  background: var(--red);
+  background: var(--fill-mafia);
   color: #fff;
   animation: shake 0.5s 2;
 }
@@ -558,12 +568,12 @@ button:disabled {
   font-weight: 900;
   font-size: 1rem;
   margin: 0.3rem 0 0.8rem;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 .auto-note b {
   display: inline-block;
   min-width: 1.4ch;
-  color: var(--red);
+  color: var(--text-red);
   font-size: 1.3rem;
 }
 
@@ -571,7 +581,7 @@ button:disabled {
 
 .news {
   position: relative;
-  background: #fffaf0;
+  background: var(--surface);
   border: 3px solid var(--ink);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
@@ -587,10 +597,10 @@ button:disabled {
   font-size: 0.95rem;
 }
 .ballot .arrow {
-  color: var(--muted);
+  color: var(--text-muted);
 }
 .ballot .accused {
-  color: var(--red-dark);
+  color: var(--text-red);
 }
 .bar-row {
   display: grid;
@@ -608,7 +618,7 @@ button:disabled {
   height: 14px;
   border: 2px solid var(--ink);
   border-radius: 999px;
-  background: #fff;
+  background: var(--surface-strong);
   overflow: hidden;
 }
 .bar span {
@@ -627,6 +637,12 @@ button:disabled {
     repeating-conic-gradient(from 0deg at 50% 40%, rgba(255, 197, 49, 0.35) 0 10deg, transparent 10deg 20deg),
     #fffaf0;
 }
+.winner-town .mega {
+  color: var(--fill-town);
+}
+.winner-neutral .mega {
+  color: var(--fill-solo);
+}
 .gameover .role-list {
   text-align: left;
 }
@@ -642,14 +658,14 @@ button:disabled {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: #fff;
+  background: var(--surface-strong);
   border: 2px solid var(--ink);
   border-radius: 12px;
   padding: 0.35rem 0.5rem;
 }
 .role-list li.dead .grow {
   text-decoration: line-through;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 
 /* ---------- confetti ---------- */
@@ -688,7 +704,7 @@ button:disabled {
 }
 .player-list li.dead .grow {
   text-decoration: line-through;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 .conn {
   width: 12px;
@@ -779,7 +795,7 @@ button:disabled {
 }
 .fine-print {
   margin-top: 0.8rem;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 
 /* ---------- host ---------- */
@@ -814,7 +830,7 @@ button:disabled {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  background: #fff;
+  background: var(--surface-strong);
   border: 2px solid var(--ink);
   border-radius: 999px;
   padding: 0.25rem 0.75rem;
@@ -874,7 +890,8 @@ button:disabled {
 .narrator-bubble p {
   position: relative;
   margin: 0;
-  background: #fff;
+  color: var(--text);
+  background: var(--surface-strong);
   border: 3px solid var(--ink);
   border-radius: 20px;
   box-shadow: var(--shadow-sm);
@@ -919,6 +936,7 @@ button:disabled {
   margin: 0 auto;
 }
 .wanted {
+  color: var(--ink);
   text-align: center;
   background: var(--paper-2);
   transform: rotate(-1.2deg);
@@ -987,6 +1005,7 @@ button:disabled {
   gap: 0.5rem;
 }
 .stepper button {
+  color: var(--ink);
   width: 2.5rem;
   height: 2.5rem;
   padding: 0;
@@ -1094,7 +1113,7 @@ label.check {
   align-items: center;
   gap: 0.3rem;
   padding: 0.75rem 0.4rem;
-  background: #fffaf0;
+  background: var(--surface);
   border-radius: 16px;
   font-family: var(--font-comic);
   font-size: 1.5rem;
@@ -1137,6 +1156,7 @@ label.check {
   touch-action: none;
 }
 .role-card {
+  color: var(--ink);
   position: relative;
   min-height: 300px;
   border: 4px solid var(--ink);
@@ -1147,7 +1167,7 @@ label.check {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  background: #fffaf0;
+  background: var(--surface);
   animation: flip 0.35s ease-out both;
 }
 .role-card .stamp {
@@ -1241,13 +1261,14 @@ label.check {
   width: 100%;
   text-align: left;
   padding: 0.55rem 0.8rem;
-  background: #fffaf0;
+  background: var(--surface);
   border-radius: 16px;
   font-family: var(--font-comic);
   font-size: 1.45rem;
   letter-spacing: 0.04em;
 }
 .target.selected {
+  color: var(--ink);
   background: var(--gold);
   transform: rotate(-1deg) scale(1.02);
 }
@@ -1262,7 +1283,7 @@ label.check {
   font-family: var(--font-body);
   font-size: 0.8rem;
   font-weight: 900;
-  background: var(--red);
+  background: var(--fill-mafia);
   color: #fff;
   border: 2px solid var(--ink);
   border-radius: 999px;
@@ -1271,16 +1292,17 @@ label.check {
 .group-status {
   display: inline-block;
   font-weight: 900;
-  background: #fff;
+  background: var(--surface-strong);
   border: 2px solid var(--ink);
   border-radius: 999px;
   padding: 0.2rem 0.7rem;
 }
 .group-status.good {
   background: #3fd48a;
+  color: var(--ink);
 }
 .locked {
-  background: #fff;
+  background: var(--surface-strong);
   border: 3px solid var(--ink);
   border-radius: 14px;
   padding: 0.7rem 1rem;
@@ -1294,6 +1316,7 @@ label.check {
 }
 .case-file {
   background: #fff4c7;
+  color: var(--ink);
 }
 .case-file.is-mafia {
   border-color: var(--red);
@@ -1313,7 +1336,15 @@ label.check {
 /* ---------- night ---------- */
 
 .is-night {
-  color: #f1eeff;
+  --surface: #262e6b;
+  --surface-strong: #313a86;
+  --text: #f6f4ff;
+  --text-muted: #d6d2f7;
+  --text-red: #ffa3ab;
+  --text-good: #7df2bd;
+  --kicker: #ffc531;
+  --disabled-bg: #3b4290;
+  --disabled-text: #e2dffb;
   background:
     radial-gradient(ellipse at 70% -10%, #3a3f8f 0%, transparent 55%),
     linear-gradient(180deg, var(--night-2), var(--night) 70%);
@@ -1321,42 +1352,22 @@ label.check {
 body:has(.is-night) {
   background: var(--night);
 }
-.is-night .kicker {
+.is-night .sticky-actions {
+  background: linear-gradient(transparent, var(--night) 35%);
+}
+.is-night .logo.small {
   color: var(--gold);
 }
-.is-night .lead,
-.is-night .small,
-.is-night .auto-note {
-  color: #d9d6f5;
-}
+.is-night .avatar,
 .is-night .target,
 .is-night .panel,
 .is-night .locked,
 .is-night .btn.ghost {
-  background: var(--night-card);
-  color: #f1eeff;
   border-color: #0b0d22;
   box-shadow: 4px 4px 0 #0b0d22;
 }
-.is-night .target.selected {
-  background: var(--gold);
-  color: var(--ink);
-}
 .is-night .avatar {
-  border-color: #0b0d22;
-}
-.is-night .sticky-actions {
-  background: linear-gradient(transparent, var(--night) 35%);
-}
-.is-night .progress-bar {
-  background: var(--night-card);
-}
-.is-night .status-pill {
-  background: var(--night-card);
-  color: #f1eeff;
-}
-.is-night .logo.small {
-  color: var(--gold);
+  box-shadow: 2px 2px 0 #0b0d22;
 }
 .night-sky {
   position: fixed;
